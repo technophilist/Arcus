@@ -69,9 +69,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.core:core-ktx:1.10.1")
 
-    // location services
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-
     // compose
     val composeBom = platform("androidx.compose:compose-bom:2023.03.00")
     implementation(composeBom)
@@ -93,4 +90,10 @@ dependencies {
 
     // logging
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // coroutines support for Task<T>
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+
+    // location services
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }
