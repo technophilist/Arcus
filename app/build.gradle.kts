@@ -94,6 +94,8 @@ dependencies {
 
     // coroutines support for Task<T>
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+
 
     // location services
     implementation("com.google.android.gms:play-services-location:21.0.1")
