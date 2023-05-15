@@ -68,6 +68,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.core:core-ktx:1.10.1")
+    testImplementation("junit:junit:4.12")
 
     // compose
     val composeBom = platform("androidx.compose:compose-bom:2023.03.00")
@@ -96,4 +97,16 @@ dependencies {
 
     // location services
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+
+    // retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    // moshi
+    implementation("com.squareup.moshi:moshi:1.15.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.0") // Make's moshi not depend on reflection + generates Kotlin code using Kotlin Poet
+
+    // junit
+    testImplementation("junit:junit:4.13.2")
 }
