@@ -25,7 +25,7 @@ import com.example.justweather.domain.models.WeatherDetails
  * @param windDirectionIcon The wind direction icon.
  * @param pressureIcon The pressure icon.
  */
-data class WeatherIcons(
+data class WeatherDetailIcons(
     @DrawableRes val minTempIcon: Int = R.drawable.ic_min_temp,
     @DrawableRes val maxTempIcon: Int = R.drawable.ic_max_temp,
     @DrawableRes val humidityIcon: Int = R.drawable.ic_humidity,
@@ -33,7 +33,6 @@ data class WeatherIcons(
     @DrawableRes val windDirectionIcon: Int = R.drawable.ic_wind_direction,
     @DrawableRes val pressureIcon: Int = R.drawable.ic_wind_pressure
 )
-
 
 /**
  * A Weather details card composable that displays the [weatherDetails] with the appropriate
@@ -48,7 +47,7 @@ fun WeatherDetailsCard(
     weatherDetails: WeatherDetails,
     shortWeatherDescription: String,
     modifier: Modifier = Modifier,
-    weatherDetailIcons: WeatherIcons = WeatherIcons(),
+    weatherDetailIcons: WeatherDetailIcons = WeatherDetailIcons(),
     cardColors: CardColors = CardDefaults.cardColors()
 ) {
     Card(
