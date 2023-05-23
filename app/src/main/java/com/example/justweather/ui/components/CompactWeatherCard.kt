@@ -84,7 +84,7 @@ private fun ShortWeatherDescriptionWithIconRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.size(16.dp),
+            modifier = Modifier.size(24.dp),
             imageVector = ImageVector.vectorResource(id = iconRes),
             contentDescription = null
         )
