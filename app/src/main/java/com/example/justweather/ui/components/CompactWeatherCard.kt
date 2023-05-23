@@ -38,15 +38,11 @@ fun CompactWeatherCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val superscriptSpan = MaterialTheme.typography.displaySmall.toSpanStyle()
     val weatherWithDegreesSuperscript = remember(weatherInDegrees) {
-        buildAnnotatedString {
-            append(weatherInDegrees)
-            withStyle(
-                style = superscriptSpan.copy(baselineShift = BaselineShift.Superscript),
-                block = { append("º") }
-            )
-        }
+        // note: the weather superscript used here is not the default one that
+        // is available on Macs by using the shortcut option + 0. The one used in
+        // MacOS does not look good in the user interface.
+        "$weatherInDegrees°"
     }
     OutlinedCard(modifier = modifier, onClick = onClick) {
         Row(
@@ -69,9 +65,7 @@ fun CompactWeatherCard(
                     iconRes = shortDescriptionIcon
                 )
             }
-            // offset text composable to accommodate for superscript
             Text(
-                modifier = Modifier.offset(y = (-8).dp),
                 text = weatherWithDegreesSuperscript,
                 style = MaterialTheme.typography.displayMedium
             )
