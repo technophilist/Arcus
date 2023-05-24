@@ -15,6 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyListScope
 import com.example.justweather.domain.models.BriefWeatherDetails
 
+/**
+ * A home screen composable that displays a search bar with a list containing the current weather for
+ * saved locations.
+ *
+ * @param modifier The modifier to be applied to the composable.
+ * @param weatherDetailsOfSavedLocations The list of weather details of saved locations.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
