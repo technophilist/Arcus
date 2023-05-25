@@ -1,5 +1,6 @@
 package com.example.justweather.ui.home
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,6 +14,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.ui.unit.IntOffset
 import com.example.justweather.domain.models.BriefWeatherDetails
 
 /**
@@ -22,7 +26,7 @@ import com.example.justweather.domain.models.BriefWeatherDetails
  * @param modifier The modifier to be applied to the composable.
  * @param weatherDetailsOfSavedLocations The list of weather details of saved locations.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -39,6 +43,7 @@ fun HomeScreen(
             Header(
                 modifier = Modifier.fillMaxWidth(),
                 currentSearchQuery = currentQueryText,
+                onClearSearchQueryIconClick = { currentQueryText = "" },
                 isSearchBarActive = isSearchBarActive,
                 onSearchQueryChange = { currentQueryText = it },
                 onSearchBarActiveChange = { isSearchBarActive = it },
@@ -79,11 +84,13 @@ fun HomeScreen(
  * of width infinity, in a lazy column, will make the app crash. Hence, the size is explicitly
  * constrained. This might be a bug, and might be fixed in the future.
  */
+@ExperimentalAnimationApi
 @ExperimentalMaterial3Api
 @Composable
 private fun Header(
     modifier: Modifier = Modifier,
     currentSearchQuery: String,
+    onClearSearchQueryIconClick: () -> Unit,
     isSearchBarActive: Boolean,
     onSearchQueryChange: (String) -> Unit,
     onSearchBarActiveChange: (Boolean) -> Unit,
@@ -106,14 +113,72 @@ private fun Header(
             active = isSearchBarActive,
             onActiveChange = onSearchBarActiveChange,
             leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = null
+                AnimatedSearchBarLeadingIcon(
+                    isSearchBarActive = isSearchBarActive,
+                    onSearchIconClick = { onSearchBarActiveChange(true) },
+                    onBackIconClick = { onSearchBarActiveChange(false) }
                 )
+            },
+            trailingIcon = {
+                AnimatedVisibility(
+                    visible = isSearchBarActive,
+                    enter = slideInHorizontally(initialOffsetX = { it }),
+                    exit = slideOutHorizontally(targetOffsetX = { it })
+                ) {
+                    val iconImageVector = Icons.Filled.Close
+                    IconButton(
+                        onClick = onClearSearchQueryIconClick,
+                        content = { Icon(imageVector = iconImageVector, contentDescription = null) }
+                    )
+                }
             },
             placeholder = { Text(text = "Search for a location") },
             content = searchBarSuggestionsContent
         )
+    }
+}
+
+/**
+ * This composable creates an animated search bar leading icon, switching between a back button
+ * icon and a search buttin icon based on the [isSearchBarActive] state.
+ *
+ * @param isSearchBarActive Indicates whether the search bar is active or not.
+ * @param onSearchIconClick The callback that will be executed when the search icon is clicked.
+ * @param onBackIconClick The callback that will be executed when the back icon is clicked.
+ */
+@ExperimentalAnimationApi
+@Composable
+private fun AnimatedSearchBarLeadingIcon(
+    isSearchBarActive: Boolean,
+    onSearchIconClick: () -> Unit,
+    onBackIconClick: () -> Unit
+) {
+    AnimatedContent(
+        targetState = isSearchBarActive,
+        transitionSpec = {
+            val isActive = this.targetState
+            val slideIn = slideIntoContainer(
+                if (isActive) AnimatedContentScope.SlideDirection.Start
+                else AnimatedContentScope.SlideDirection.End
+            )
+            val slideOut = slideOutOfContainer(
+                if (isActive) AnimatedContentScope.SlideDirection.Start
+                else AnimatedContentScope.SlideDirection.End
+            )
+            slideIn with slideOut
+        }
+    ) { isActive ->
+        if (isActive) {
+            IconButton(
+                onClick = onBackIconClick,
+                content = { Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null) }
+            )
+        } else {
+            IconButton(
+                onClick = onSearchIconClick,
+                content = { Icon(imageVector = Icons.Filled.Search, contentDescription = null) }
+            )
+        }
     }
 }
 
