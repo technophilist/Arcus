@@ -1,4 +1,4 @@
-package com.example.justweather.data.remote
+package com.example.justweather.data.remote.weather
 
 /**
  * This object contains constants used by the [WeatherClient].

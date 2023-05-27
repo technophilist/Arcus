@@ -1,4 +1,4 @@
-package com.example.justweather.data.remote.models
+package com.example.justweather.data.remote.weather.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

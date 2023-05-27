@@ -1,6 +1,7 @@
-package com.example.justweather.data.remote
+package com.example.justweather.data.remote.weather
 
 import com.example.justweather.BuildConfig
+import com.example.justweather.data.remote.weather.WeatherClientConstants
 import com.example.justweather.di.NetworkModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle

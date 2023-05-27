@@ -1,7 +1,7 @@
 package com.example.justweather.di
 
-import com.example.justweather.data.remote.WeatherClient
-import com.example.justweather.data.remote.WeatherClientConstants
+import com.example.justweather.data.remote.weather.WeatherClient
+import com.example.justweather.data.remote.weather.WeatherClientConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
