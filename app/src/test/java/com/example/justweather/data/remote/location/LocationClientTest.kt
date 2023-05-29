@@ -36,4 +36,25 @@ class LocationClientTest {
         assert(response.isSuccessful)
         assert(response.body()!!.suggestions.isEmpty())
     }
+
+    @Test
+    fun `Get coordinates of a place with a valid place id`() = runTest {
+        val commonSessionToken = "sessionToken"
+        // given a valid placeId of a valid location
+        val placeId = locationClient.getPlacesSuggestionsForQuery(
+            query = "GooglePlex",
+            accessToken = BuildConfig.MAP_BOX_API_KEY,
+            sessionToken = commonSessionToken
+        ).body()!!.suggestions.first().idOfPlace
+        advanceUntilIdle()
+        // the coordinates of the location must be successfully fetched
+        val response = locationClient.getCoordinatesForPlace(
+            placeId = placeId,
+            accessToken = BuildConfig.MAP_BOX_API_KEY,
+            sessionToken = commonSessionToken
+        )
+        advanceUntilIdle()
+        assert(response.isSuccessful)
+        println(response.body())
+    }
 }
