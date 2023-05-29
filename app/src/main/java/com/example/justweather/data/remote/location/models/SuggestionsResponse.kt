@@ -1,5 +1,6 @@
 package com.example.justweather.data.remote.location.models
 
+import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -24,4 +25,20 @@ data class SuggestionsResponse(val suggestions: List<Suggestion>) {
         @Json(name = "place_formatted") val addressOfPlace: String
     )
 }
+
+
+/**
+ * A mapper function used to map an instance of [SuggestionsResponse] to an instance of
+ * [LocationAutofillSuggestion].
+ */
+fun SuggestionsResponse.Suggestion.toLocationAutofillSuggestionList(
+    coordinates: LocationAutofillSuggestion.Coordinates
+): LocationAutofillSuggestion =
+    LocationAutofillSuggestion(
+        idOfLocation = idOfPlace,
+        nameOfLocation = nameOfPlace,
+        addressOfLocation = addressOfPlace,
+        coordinatesOfLocation = coordinates
+    )
+
 
