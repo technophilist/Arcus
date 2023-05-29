@@ -18,6 +18,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.ui.unit.IntOffset
 import com.example.justweather.domain.models.BriefWeatherDetails
+import com.example.justweather.domain.models.LocationAutofillSuggestion
+import com.example.justweather.ui.components.AutofillSuggestion
 
 /**
  * A home screen composable that displays a search bar with a list containing the current weather for
@@ -30,7 +32,9 @@ import com.example.justweather.domain.models.BriefWeatherDetails
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    weatherDetailsOfSavedLocations: List<BriefWeatherDetails>
+    weatherDetailsOfSavedLocations: List<BriefWeatherDetails>,
+    suggestionsForSearchQuery: List<LocationAutofillSuggestion>,
+    onSuggestionClick: (LocationAutofillSuggestion) -> Unit
 ) {
     var isSearchBarActive by remember { mutableStateOf(false) }
     var currentQueryText by remember { mutableStateOf("") }
@@ -48,7 +52,12 @@ fun HomeScreen(
                 onSearchQueryChange = { currentQueryText = it },
                 onSearchBarActiveChange = { isSearchBarActive = it },
                 onSearch = {/* TODO: handle search */ },
-                searchBarSuggestionsContent = { /* TODO: search bar suggestions content */ }
+                searchBarSuggestionsContent = {
+                    AutoFillSuggestionsList(
+                        suggestions = suggestionsForSearchQuery,
+                        onSuggestionClick = onSuggestionClick
+                    )
+                }
             )
         }
 
@@ -177,6 +186,26 @@ private fun AnimatedSearchBarLeadingIcon(
             IconButton(
                 onClick = onSearchIconClick,
                 content = { Icon(imageVector = Icons.Filled.Search, contentDescription = null) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun AutoFillSuggestionsList(
+    suggestions: List<LocationAutofillSuggestion>,
+    onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(modifier = modifier) {
+        items(items = suggestions, key = { it.idOfLocation }) {
+            AutofillSuggestion(
+                title = it.nameOfLocation,
+                subText = it.addressOfLocation,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                onClick = { onSuggestionClick(it) }
             )
         }
     }
