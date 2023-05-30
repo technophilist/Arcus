@@ -16,11 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.ui.unit.IntOffset
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.components.AutofillSuggestion
-import timber.log.Timber
 
 /**
  * A home screen composable that displays a search bar with a list containing the current weather for
@@ -35,6 +33,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     weatherDetailsOfSavedLocations: List<BriefWeatherDetails>,
     suggestionsForSearchQuery: List<LocationAutofillSuggestion>,
+    isSuggestionsListLoading: Boolean = false,
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSearchQueryChange: (String) -> Unit
 ) {
@@ -62,7 +61,8 @@ fun HomeScreen(
                 searchBarSuggestionsContent = {
                     AutoFillSuggestionsList(
                         suggestions = suggestionsForSearchQuery,
-                        onSuggestionClick = onSuggestionClick
+                        onSuggestionClick = onSuggestionClick,
+                        isSuggestionsListLoading = isSuggestionsListLoading
                     )
                 }
             )
@@ -201,20 +201,36 @@ private fun AnimatedSearchBarLeadingIcon(
 @Composable
 private fun AutoFillSuggestionsList(
     suggestions: List<LocationAutofillSuggestion>,
-    onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
-    modifier: Modifier = Modifier
+    isSuggestionsListLoading: Boolean,
+    onSuggestionClick: (LocationAutofillSuggestion) -> Unit
 ) {
-    LazyColumn(modifier = modifier) {
-        items(items = suggestions, key = { it.idOfLocation }) {
-            AutofillSuggestion(
-                title = it.nameOfLocation,
-                subText = it.addressOfLocation,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                onClick = { onSuggestionClick(it) }
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (isSuggestionsListLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        } else {
+            LazyColumn {
+                autofillSuggestionItems(
+                    suggestions = suggestions,
+                    onSuggestionClick = onSuggestionClick
+                )
+            }
         }
+    }
+}
+
+private fun LazyListScope.autofillSuggestionItems(
+    suggestions: List<LocationAutofillSuggestion>,
+    onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
+) {
+    items(items = suggestions, key = { it.idOfLocation }) {
+        AutofillSuggestion(
+            title = it.nameOfLocation,
+            subText = it.addressOfLocation,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            onClick = { onSuggestionClick(it) }
+        )
     }
 }
 
