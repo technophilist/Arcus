@@ -39,6 +39,10 @@ fun HomeScreen(
 ) {
     var isSearchBarActive by remember { mutableStateOf(false) }
     var currentQueryText by remember { mutableStateOf("") }
+    val clearQueryText = {
+        currentQueryText = ""
+        onSearchQueryChange("")
+    }
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -47,10 +51,7 @@ fun HomeScreen(
             Header(
                 modifier = Modifier.fillMaxWidth(),
                 currentSearchQuery = currentQueryText,
-                onClearSearchQueryIconClick = {
-                    currentQueryText = ""
-                    onSearchQueryChange("")
-                },
+                onClearSearchQueryIconClick = clearQueryText,
                 isSearchBarActive = isSearchBarActive,
                 onSearchQueryChange = {
                     currentQueryText = it
@@ -132,7 +133,11 @@ private fun Header(
                 AnimatedSearchBarLeadingIcon(
                     isSearchBarActive = isSearchBarActive,
                     onSearchIconClick = { onSearchBarActiveChange(true) },
-                    onBackIconClick = { onSearchBarActiveChange(false) }
+                    onBackIconClick = {
+                        // clear search query text when clicking on the back button
+                        onClearSearchQueryIconClick()
+                        onSearchBarActiveChange(false)
+                    }
                 )
             },
             trailingIcon = {
