@@ -218,6 +218,9 @@ private fun AutoFillSuggestionsList(
                     suggestions = suggestions,
                     onSuggestionClick = onSuggestionClick
                 )
+                item {
+                    Spacer(modifier = Modifier.imePadding())
+                }
             }
         }
     }
