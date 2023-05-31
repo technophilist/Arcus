@@ -25,7 +25,7 @@ import com.example.justweather.ui.weather.components.WeatherDetailsCard
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun WeatherScreen(
+fun WeatherDetailScreen(
     background: @Composable BoxScope.() -> Unit,
     weatherDetails: WeatherDetails,
     modifier: Modifier = Modifier,
