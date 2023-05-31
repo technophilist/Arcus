@@ -2,6 +2,8 @@ package com.example.justweather.di
 
 import com.example.justweather.data.repositories.location.JustWeatherLocationServicesRepository
 import com.example.justweather.data.repositories.location.LocationServicesRepository
+import com.example.justweather.data.repositories.weather.JustWeatherWeatherRepository
+import com.example.justweather.data.repositories.weather.WeatherRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,9 @@ abstract class RepositoriesModule {
     abstract fun bindLocationServicesRepository(
         impl: JustWeatherLocationServicesRepository
     ): LocationServicesRepository
+
+    @Binds
+    abstract fun bindWeatherRepository(
+        impl: JustWeatherWeatherRepository
+    ): WeatherRepository
 }
