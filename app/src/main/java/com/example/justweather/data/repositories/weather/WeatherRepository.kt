@@ -15,5 +15,5 @@ interface WeatherRepository {
      * @param longitude The longitude of the location.
      * @return A [Result] object containing the weather details if successful, or an exception if not.
      */
-    suspend fun getWeatherForLocation(latitude: String, longitude: String): Result<WeatherDetails>
+    suspend fun fetchWeatherForLocation(latitude: String, longitude: String): Result<WeatherDetails>
 }
