@@ -1,5 +1,8 @@
 package com.example.justweather.data.remote.location
 
+import com.example.justweather.BuildConfig
+import okhttp3.OkHttpClient
+
 
 /**
  * This object contains constants used by the [LocationClient].
@@ -25,4 +28,17 @@ object LocationClientConstants {
          */
         const val GET_COORDINATES_FOR_PLACE_ID = "retrieve/{id}"
     }
+
+    /**
+     * An OkHttpClient instance that automatically adds the location client's API key required for
+     * all requests.
+     */
+    val AutoAddApiKeyClient: OkHttpClient = OkHttpClient().newBuilder()
+        .addInterceptor { chain ->
+            val url = chain.request().url().newBuilder()
+                .addQueryParameter("access_token", BuildConfig.MAP_BOX_API_KEY)
+                .build()
+            val request = chain.request().newBuilder().url(url).build()
+            chain.proceed(request)
+        }.build()
 }

@@ -25,12 +25,10 @@ class JustWeatherLocationServicesRepository @Inject constructor(
             // null pointer exception will get caught by the enclosing try catch block.
             val suggestionCoordinatePairs = locationClient.getPlacesSuggestionsForQuery(
                 query = query,
-                accessToken = BuildConfig.MAP_BOX_API_KEY,
                 sessionToken = sessionToken,
             ).body()!!.suggestions.associateWith { suggestion ->
                 locationClient.getCoordinatesForPlace(
                     placeId = suggestion.idOfPlace,
-                    accessToken = BuildConfig.MAP_BOX_API_KEY,
                     sessionToken = sessionToken
                 ).body()!!.coordinates
             }.toList()
