@@ -46,10 +46,10 @@ class WeatherDetailViewModel @Inject constructor(
     /**
      * A sealed class that contains all possible UI states.
      */
-    sealed class UiState() {
+    sealed class UiState(val weatherDetails: WeatherDetails = WeatherDetails.EmptyWeatherDetails) {
         object Idle : UiState()
         object Loading : UiState()
-        data class SuccessfullyLoaded(val weatherDetails: WeatherDetails) : UiState()
+        class SuccessfullyLoaded(weatherDetails: WeatherDetails) : UiState(weatherDetails)
         object Error : UiState()
     }
 }
