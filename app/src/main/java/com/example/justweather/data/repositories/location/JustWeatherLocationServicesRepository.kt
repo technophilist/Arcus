@@ -1,6 +1,6 @@
 package com.example.justweather.data.repositories.location
 
-import com.example.justweather.BuildConfig
+import com.example.justweather.data.getBodyOrThrowException
 import com.example.justweather.data.remote.location.LocationClient
 import com.example.justweather.data.remote.location.models.coordinates
 import com.example.justweather.data.remote.location.models.toLocationAutofillSuggestionList
@@ -17,30 +17,32 @@ class JustWeatherLocationServicesRepository @Inject constructor(
 ) : LocationServicesRepository {
 
     override suspend fun fetchSuggestedPlacesForQuery(query: String): Result<List<LocationAutofillSuggestion>> {
-        return if (query.isBlank()) Result.success(emptyList())
-        else try {
-            val sessionToken = UUID.randomUUID().toString()
-            // non-null assertions to body() calls are fine here because, if the body is empty,
-            // it essentially means that there was some error during the fetch operation. The
-            // null pointer exception will get caught by the enclosing try catch block.
-            val suggestionCoordinatePairs = locationClient.getPlacesSuggestionsForQuery(
+        return try {
+            if (query.isBlank()) return Result.success(emptyList())
+
+            val commonSessionToken = UUID.randomUUID().toString()
+
+            val suggestions = locationClient.getPlacesSuggestionsForQuery(
                 query = query,
-                sessionToken = sessionToken,
-            ).body()!!.suggestions.associateWith { suggestion ->
+                sessionToken = commonSessionToken,
+            ).getBodyOrThrowException().suggestions
+
+            // { suggestion -> coordinate }
+            val suggestionCoordinateMap = suggestions.associateWith { suggestion ->
                 locationClient.getCoordinatesForPlace(
                     placeId = suggestion.idOfPlace,
-                    sessionToken = sessionToken
-                ).body()!!.coordinates
-            }.toList()
-            val autofillSuggestionList =
-                suggestionCoordinatePairs.map { (suggestion, coordinates) ->
-                    val autoFillSuggestionCoordinate = LocationAutofillSuggestion.Coordinates(
-                        latitude = coordinates.latitude,
-                        longitude = coordinates.longitude
-                    )
-                    suggestion.toLocationAutofillSuggestionList(autoFillSuggestionCoordinate)
-                }
-            Result.success(autofillSuggestionList)
+                    sessionToken = commonSessionToken
+                ).getBodyOrThrowException().coordinates
+            }
+
+            val autofillSuggestions = suggestionCoordinateMap.map { (suggestion, coordinates) ->
+                val autoFillSuggestionCoordinate = LocationAutofillSuggestion.Coordinates(
+                    latitude = coordinates.latitude,
+                    longitude = coordinates.longitude
+                )
+                suggestion.toLocationAutofillSuggestionList(autoFillSuggestionCoordinate)
+            }
+            Result.success(autofillSuggestions)
         } catch (exception: Exception) {
             if (exception is CancellationException) throw exception
             Result.failure(exception)
