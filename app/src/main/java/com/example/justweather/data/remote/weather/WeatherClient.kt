@@ -11,13 +11,11 @@ import retrofit2.http.Query
 interface WeatherClient {
 
     /**
-     * This method is used to get weather data for the given [latitude] and [longitude], using the
-     * provided [apiKey]. The [units] parameter determines the units in which the weather data should
-     * be returned. Default is Celsius.
+     * This method is used to get weather data for the given [latitude] and [longitude].The [units]
+     * parameter determines the units in which the weather data should be returned. Default is Celsius.
      */
     @GET(WeatherClientConstants.EndPoints.GET_WEATHER_ENDPOINT)
     suspend fun getWeatherForCoordinates(
-        @Query("appid") apiKey: String,
         @Query("lat") latitude: String,
         @Query("lon") longitude: String,
         @Query("units") units: String = WeatherClientConstants.Units.CELSIUS

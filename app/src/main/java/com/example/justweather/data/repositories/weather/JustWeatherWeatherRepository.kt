@@ -20,7 +20,6 @@ class JustWeatherWeatherRepository @Inject constructor(
         longitude: String
     ): Result<WeatherDetails> = try {
         val response = weatherClient.getWeatherForCoordinates(
-            apiKey = BuildConfig.OPEN_WEATHER_MAP_API_KEY,
             latitude = latitude,
             longitude = longitude,
             units = WeatherClientConstants.Units.CELSIUS // todo

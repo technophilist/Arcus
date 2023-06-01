@@ -16,7 +16,6 @@ class WeatherClientTest {
     @Test
     fun `Given valid coordinates, the weather should be successfully fetched`() = runTest {
         val response = client.getWeatherForCoordinates(
-            apiKey = BuildConfig.OPEN_WEATHER_MAP_API_KEY,
             latitude = "37.333333",
             longitude = "-122.028033",
             units = WeatherClientConstants.Units.CELSIUS
