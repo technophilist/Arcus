@@ -1,6 +1,7 @@
 package com.example.justweather.domain.models
 
 import androidx.annotation.DrawableRes
+import com.example.justweather.R
 
 /**
  * A data class that holds weather details for a particular location.
@@ -52,4 +53,29 @@ data class WeatherDetails(
         val oneWordDescription: String,
         @DrawableRes val currentWeatherConditionIcon: Int,
     )
+
+    companion object {
+        /**
+         * An instance of [WeatherDetails] with all string properties set to "--".
+         */
+        val EmptyWeatherDetails = WeatherDetails(
+            nameOfLocation = "Loading",
+            temperature = Temperature(
+                currentTemp = "- -",
+                minTemperature = "- -",
+                maxTemperature = "- -"
+            ),
+            wind = Wind(
+                speed = "- -",
+                direction = "- -"
+            ),
+            weatherCondition = WeatherCondition(
+                oneWordDescription = "- -",
+                currentWeatherConditionIcon = R.drawable.ic_scattered_clouds
+            ),
+            humidity = "- -",
+            pressure = "- -"
+        )
+    }
+
 }
