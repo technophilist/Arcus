@@ -18,6 +18,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.home.HomeScreen
 import com.example.justweather.ui.home.HomeViewModel
+import com.example.justweather.ui.weather.WeatherDetailScreen
+import com.example.justweather.ui.weather.WeatherDetailViewModel
 
 
 @Composable
@@ -37,14 +39,7 @@ fun JustWeatherNavigation(navController: NavHostController = rememberNavControll
             }
         )
 
-        composable(route = JustWeatherNavigationDestinations.WeatherDetailScreen.route) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "PlaceHolder"
-                )
-            }
-        }
+        weatherDetailScreen(route = JustWeatherNavigationDestinations.WeatherDetailScreen.route)
     }
 }
 
@@ -65,6 +60,18 @@ private fun NavGraphBuilder.homeScreen(
             isSuggestionsListLoading = uiState == HomeViewModel.UiState.LOADING_SUGGESTIONS,
             onSuggestionClick = onSuggestionClick,
             onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration
+        )
+    }
+}
+
+fun NavGraphBuilder.weatherDetailScreen(route: String) {
+    composable(route) {
+        val viewModel = hiltViewModel<WeatherDetailViewModel>()
+        val uiState by viewModel.uiState.collectAsState()
+        WeatherDetailScreen(
+            background = { }, // todo
+            weatherDetails = uiState.weatherDetails,
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
