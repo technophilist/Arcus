@@ -123,4 +123,7 @@ dependencies {
 
     // junit
     testImplementation("junit:junit:4.13.2")
+
+    // mockito
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
 }
