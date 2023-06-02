@@ -1,16 +1,54 @@
 package com.example.justweather.data.repositories.weather
 
+import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
+import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.di.NetworkModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
+import org.mockito.kotlin.mock
+import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.doAnswer
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class JustWeatherWeatherRepositoryTest {
 
-    private val weatherRepository =
-        JustWeatherWeatherRepository(NetworkModule.provideWeatherClient())
+    private lateinit var weatherRepository: JustWeatherWeatherRepository
+    private val savedLocations = listOf(
+        SavedWeatherLocationEntity(
+            id = "1",
+            nameOfLocation = "Seattle",
+            latitude = "47.6062",
+            longitude = "-122.3321"
+        ),
+        SavedWeatherLocationEntity(
+            id = "2",
+            nameOfLocation = "New York",
+            latitude = "40.7128",
+            longitude = "-74.0060"
+        ),
+        SavedWeatherLocationEntity(
+            id = "3",
+            nameOfLocation = "Los Angeles",
+            latitude = "34.0522",
+            longitude = "-118.2437"
+        )
+    )
+
+    @Before
+    fun setup() {
+        val daoMock = mock<JustWeatherDatabaseDao> {
+            onBlocking { getAllSavedWeatherEntities() } doAnswer {
+                flowOf(savedLocations)
+            }
+        }
+        weatherRepository = JustWeatherWeatherRepository(
+            weatherClient = NetworkModule.provideWeatherClient(),
+            justWeatherDatabaseDao = daoMock
+        )
+    }
 
     @Test
     fun `getWeatherForLocation should successfully fetch weather details for a given valid coordinate`() =
@@ -31,6 +69,17 @@ class JustWeatherWeatherRepositoryTest {
         val result = weatherRepository.fetchWeatherForLocation(latitude, longitude)
         assert(result.isFailure)
         assert(result.exceptionOrNull() != null)
+    }
+
+    @Test
+    fun `weather details for saved locations are successfully fetched`() = runTest {
+        val weatherDetailsForSavedLocations = weatherRepository
+            .getWeatherStreamForPreviouslySavedLocations().toList()
+        assert(weatherDetailsForSavedLocations.isNotEmpty())
+        for ((index, weatherDetail) in weatherDetailsForSavedLocations.withIndex()) {
+            assert(weatherDetail.nameOfLocation == savedLocations[index].nameOfLocation)
+            println(weatherDetail)
+        }
     }
 }
 
