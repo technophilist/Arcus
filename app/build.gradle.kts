@@ -97,13 +97,17 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     kapt("com.google.dagger:hilt-compiler:2.44")
 
+    // room
+    implementation("androidx.room:room-runtime:2.5.1")
+    implementation("androidx.room:room-ktx:2.5.1")
+    kapt("androidx.room:room-compiler:2.5.1")
+
     // logging
     implementation("com.jakewharton.timber:timber:5.0.1")
 
     // coroutines support for Task<T>
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
-
 
     // location services
     implementation("com.google.android.gms:play-services-location:21.0.1")
