@@ -36,6 +36,7 @@ fun WeatherDetailScreen(
     weatherDetails: WeatherDetails,
     onBackButtonClick: () -> Unit,
     onAddButtonClick: () -> Unit,
+    wasLocationPreviouslySaved: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
@@ -47,9 +48,8 @@ fun WeatherDetailScreen(
                 .padding(16.dp),
             onBackButtonClick = onBackButtonClick,
             onAddButtonClick = onAddButtonClick,
-            shouldDisplayAddButton = false // todo : hoist
+            shouldDisplayAddButton = !wasLocationPreviouslySaved
         )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
