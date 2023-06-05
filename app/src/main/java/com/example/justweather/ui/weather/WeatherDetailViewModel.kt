@@ -22,7 +22,12 @@ class WeatherDetailViewModel @Inject constructor(
     private val longitude: String =
         savedStateHandle[JustWeatherNavigationDestinations.WeatherDetailScreen.NAV_ARG_LONGITUDE]!!
 
-    private val _uiState = MutableStateFlow<UiState>(UiState.Idle)
+    private val _weatherDetailsOfChosenLocation =
+        MutableStateFlow(WeatherDetails.EmptyWeatherDetails)
+    val weatherDetailsOfChosenLocation =
+        _weatherDetailsOfChosenLocation as StateFlow<WeatherDetails>
+
+    private val _uiState = MutableStateFlow(UiState.IDLE)
     val uiState = _uiState as StateFlow<UiState>
 
     init {
@@ -34,22 +39,35 @@ class WeatherDetailViewModel @Inject constructor(
      * correctly updated.
      */
     private suspend fun fetchWeatherInfo() {
-        _uiState.value = UiState.Loading
+        _uiState.value = UiState.LOADING
         val weatherDetails = weatherRepository.fetchWeatherForLocation(
             latitude = latitude,
             longitude = longitude
-        ).getOrNull()
-        _uiState.value = if (weatherDetails == null) UiState.Error
-        else UiState.SuccessfullyLoaded(weatherDetails)
+        ).getOrNull()?.also { _weatherDetailsOfChosenLocation.value = it }
+
+        _uiState.value = if (weatherDetails == null) UiState.ERROR
+        else UiState.IDLE
+    }
+
+    fun addLocationToSavedLocations() {
+        if (weatherDetailsOfChosenLocation.value == WeatherDetails.EmptyWeatherDetails) return
+        viewModelScope.launch {
+            _uiState.value = UiState.LOADING
+            weatherRepository.saveWeatherLocation(
+                nameOfLocation = weatherDetailsOfChosenLocation.value.nameOfLocation,
+                latitude = latitude,
+                longitude = longitude
+            )
+            _uiState.value = UiState.IDLE
+        }
     }
 
     /**
-     * A sealed class that contains all possible UI states.
+     * An enum class that contains all possible UI states.
      */
-    sealed class UiState(val weatherDetails: WeatherDetails = WeatherDetails.EmptyWeatherDetails) {
-        object Idle : UiState()
-        object Loading : UiState()
-        class SuccessfullyLoaded(weatherDetails: WeatherDetails) : UiState(weatherDetails)
-        object Error : UiState()
+    enum class UiState {
+        IDLE,
+        LOADING,
+        ERROR
     }
 }
