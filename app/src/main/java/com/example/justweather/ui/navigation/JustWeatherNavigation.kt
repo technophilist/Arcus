@@ -67,11 +67,14 @@ private fun NavGraphBuilder.homeScreen(
 fun NavGraphBuilder.weatherDetailScreen(route: String) {
     composable(route) {
         val viewModel = hiltViewModel<WeatherDetailViewModel>()
-        val uiState by viewModel.uiState.collectAsState()
+        val weatherDetails by viewModel.weatherDetailsOfChosenLocation.collectAsStateWithLifecycle()
         WeatherDetailScreen(
             background = { }, // todo
-            weatherDetails = uiState.weatherDetails,
-            modifier = Modifier.fillMaxSize()
+            weatherDetails = weatherDetails,
+            modifier = Modifier.fillMaxSize(),
+            onBackButtonClick = {},
+            onAddButtonClick = {},
+            wasLocationPreviouslySaved = false // todo
         )
     }
 }
