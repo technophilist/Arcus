@@ -1,12 +1,18 @@
 package com.example.justweather.ui.weather
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -28,10 +34,22 @@ import com.example.justweather.ui.weather.components.WeatherDetailsCard
 fun WeatherDetailScreen(
     background: @Composable BoxScope.() -> Unit,
     weatherDetails: WeatherDetails,
+    onBackButtonClick: () -> Unit,
+    onAddButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
         background()
+        TopButtonRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(16.dp),
+            onBackButtonClick = onBackButtonClick,
+            onAddButtonClick = onAddButtonClick,
+            shouldDisplayAddButton = false // todo : hoist
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -54,8 +72,7 @@ fun WeatherDetailScreen(
                     .fillMaxWidth()
                     .padding(16.dp),
                 weatherDetails = weatherDetails,
-                shortWeatherDescription = "Feels like 43 with a 33 change of rain and thunderstorm night.",
-                cardColors = CardDefaults.cardColors(containerColor = Color(0xff121212))
+                shortWeatherDescription = "Feels like 43 with a 33 change of rain and thunderstorm night."
             )
         }
     }
@@ -107,3 +124,26 @@ private fun MainWeatherInfoColumn(
 }
 
 
+@Composable
+private fun TopButtonRow(
+    modifier: Modifier = Modifier,
+    onBackButtonClick: () -> Unit,
+    onAddButtonClick: () -> Unit,
+    shouldDisplayAddButton: Boolean
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        FilledIconButton(
+            onClick = onBackButtonClick,
+            content = { Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null) }
+        )
+        if (shouldDisplayAddButton) {
+            FilledIconButton(
+                onClick = onAddButtonClick,
+                content = { Icon(imageVector = Icons.Filled.Add, contentDescription = null) }
+            )
+        }
+    }
+}
