@@ -3,6 +3,7 @@ package com.example.justweather.data.repositories.weather
 import com.example.justweather.BuildConfig
 import com.example.justweather.data.getBodyOrThrowException
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
+import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.data.remote.weather.WeatherClient
 import com.example.justweather.data.remote.weather.WeatherClientConstants
 import com.example.justweather.data.remote.weather.models.toWeatherDetails
@@ -12,6 +13,7 @@ import com.example.justweather.domain.models.toBriefWeatherDetails
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -47,5 +49,19 @@ class JustWeatherWeatherRepository @Inject constructor(
                 it.getOrNull()
                     ?.toBriefWeatherDetails() ?: BriefWeatherDetails.EmptyBriefWeatherDetails
             }
+    }
+
+    override suspend fun saveWeatherLocation(
+        nameOfLocation: String,
+        latitude: String,
+        longitude: String
+    ) {
+        val savedWeatherEntity = SavedWeatherLocationEntity(
+            id = UUID.randomUUID().toString(),
+            nameOfLocation = nameOfLocation,
+            latitude = latitude,
+            longitude = longitude
+        )
+        justWeatherDatabaseDao.addSavedWeatherEntity(savedWeatherEntity)
     }
 }

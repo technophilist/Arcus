@@ -25,4 +25,9 @@ interface WeatherRepository {
      * corresponding [BriefWeatherDetails] of that location would be [BriefWeatherDetails.EmptyBriefWeatherDetails].
      */
     fun getWeatherStreamForPreviouslySavedLocations(): Flow<BriefWeatherDetails>
+
+    /**
+     * Saves the weather location with the provided [nameOfLocation], [latitude] and [longitude].
+     */
+    suspend fun saveWeatherLocation(nameOfLocation: String, latitude: String, longitude: String)
 }
