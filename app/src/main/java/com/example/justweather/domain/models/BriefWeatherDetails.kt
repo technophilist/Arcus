@@ -11,12 +11,16 @@ import com.example.justweather.R
  * @param currentTemperature The current temperature (without superscript).
  * @param shortDescription A short description of the weather.
  * @param shortDescriptionIcon An icon representing the weather.
+ * @param latitude The latitude of the location.
+ * @param longitude The longitude of the location.
  */
 data class BriefWeatherDetails(
     val nameOfLocation: String,
     val currentTemperature: String,
     val shortDescription: String,
     @DrawableRes val shortDescriptionIcon: Int,
+    val latitude: String,
+    val longitude: String
 ) {
     companion object {
         /**
@@ -26,7 +30,9 @@ data class BriefWeatherDetails(
             nameOfLocation = "- -",
             currentTemperature = "- -",
             shortDescription = "- -",
-            shortDescriptionIcon = R.drawable.ic_scattered_clouds // todo
+            shortDescriptionIcon = R.drawable.ic_scattered_clouds, // todo
+            latitude = "- -",
+            longitude = "- -"
         )
     }
 }
