@@ -47,7 +47,10 @@ fun JustWeatherNavigation(navController: NavHostController = rememberNavControll
             }
         )
 
-        weatherDetailScreen(route = JustWeatherNavigationDestinations.WeatherDetailScreen.route)
+        weatherDetailScreen(
+            route = JustWeatherNavigationDestinations.WeatherDetailScreen.route,
+            onBackButtonClick = navController::popBackStack
+        )
     }
 }
 
@@ -76,7 +79,10 @@ private fun NavGraphBuilder.homeScreen(
     }
 }
 
-fun NavGraphBuilder.weatherDetailScreen(route: String) {
+fun NavGraphBuilder.weatherDetailScreen(
+    route: String,
+    onBackButtonClick: () -> Unit
+) {
     composable(route) {
         val viewModel = hiltViewModel<WeatherDetailViewModel>()
         val weatherDetails by viewModel.weatherDetailsOfChosenLocation.collectAsStateWithLifecycle()
@@ -84,8 +90,8 @@ fun NavGraphBuilder.weatherDetailScreen(route: String) {
             background = { }, // todo
             weatherDetails = weatherDetails,
             modifier = Modifier.fillMaxSize(),
-            onBackButtonClick = {},
-            onAddButtonClick = {},
+            onBackButtonClick = onBackButtonClick,
+            onAddButtonClick = viewModel::addLocationToSavedLocations,
             wasLocationPreviouslySaved = false // todo
         )
     }
