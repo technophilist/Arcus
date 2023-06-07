@@ -27,7 +27,8 @@ data class WeatherResponse(
     @Json(name = "name") val cityName: String,
     @Json(name = "main") val additionalInfo: AdditionalInfo,
     val weather: List<Weather>,
-    val wind: Wind
+    val wind: Wind,
+    @Json(name = "coord") val coordinates: Coordinates
 ) {
     @JsonClass(generateAdapter = true)
     data class AdditionalInfo(
@@ -51,6 +52,12 @@ data class WeatherResponse(
     data class Wind(
         @Json(name = "deg") val directionInDegrees: String,
         val speed: String
+    )
+
+    @JsonClass(generateAdapter = true)
+    data class Coordinates(
+        @Json(name = "lat") val latitude: String,
+        @Json(name = "lon") val longitude: String
     )
 }
 
