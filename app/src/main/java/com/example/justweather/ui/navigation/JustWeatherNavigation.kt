@@ -61,10 +61,12 @@ private fun NavGraphBuilder.homeScreen(
         val uiState by viewModel.uiState.collectAsState()
         val suggestionsForCurrentQuery by viewModel.currentSuggestions
             .collectAsStateWithLifecycle(initialValue = emptyList())
+        val weatherDetailsOfSavedLocations by viewModel.weatherDetailsOfSavedLocations
+            .collectAsStateWithLifecycle()
 
         HomeScreen(
             modifier = Modifier.fillMaxSize(),
-            weatherDetailsOfSavedLocations = emptyList(), // todo
+            weatherDetailsOfSavedLocations = weatherDetailsOfSavedLocations, // todo
             suggestionsForSearchQuery = suggestionsForCurrentQuery,
             isSuggestionsListLoading = uiState == HomeViewModel.UiState.LOADING_SUGGESTIONS,
             onSuggestionClick = onSuggestionClick,
