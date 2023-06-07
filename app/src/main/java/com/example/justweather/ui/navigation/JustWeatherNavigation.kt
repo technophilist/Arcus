@@ -15,6 +15,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
+import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.home.HomeScreen
 import com.example.justweather.ui.home.HomeViewModel
@@ -36,6 +38,12 @@ fun JustWeatherNavigation(navController: NavHostController = rememberNavControll
                     latitude = it.coordinatesOfLocation.latitude,
                     longitude = it.coordinatesOfLocation.longitude
                 )
+            },
+            onSavedLocationItemClick = {
+                navController.navigateToWeatherDetailScreen(
+                    latitude = it.latitude,
+                    longitude = it.longitude
+                )
             }
         )
 
@@ -45,7 +53,8 @@ fun JustWeatherNavigation(navController: NavHostController = rememberNavControll
 
 private fun NavGraphBuilder.homeScreen(
     route: String,
-    onSuggestionClick: (suggestion: LocationAutofillSuggestion) -> Unit
+    onSuggestionClick: (suggestion: LocationAutofillSuggestion) -> Unit,
+    onSavedLocationItemClick: (BriefWeatherDetails) -> Unit
 ) {
     composable(route = route) {
         val viewModel = hiltViewModel<HomeViewModel>()
@@ -59,7 +68,8 @@ private fun NavGraphBuilder.homeScreen(
             suggestionsForSearchQuery = suggestionsForCurrentQuery,
             isSuggestionsListLoading = uiState == HomeViewModel.UiState.LOADING_SUGGESTIONS,
             onSuggestionClick = onSuggestionClick,
-            onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration
+            onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration,
+            onSavedLocationItemClick = onSavedLocationItemClick
         )
     }
 }
