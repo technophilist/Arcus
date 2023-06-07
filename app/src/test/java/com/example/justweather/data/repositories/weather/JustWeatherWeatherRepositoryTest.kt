@@ -3,6 +3,7 @@ package com.example.justweather.data.repositories.weather
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.di.NetworkModule
+import com.example.justweather.domain.models.BriefWeatherDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
@@ -74,7 +75,8 @@ class JustWeatherWeatherRepositoryTest {
     @Test
     fun `weather details for saved locations are successfully fetched`() = runTest {
         val weatherDetailsForSavedLocations = weatherRepository
-            .getWeatherStreamForPreviouslySavedLocations().toList()
+            .getWeatherStreamForPreviouslySavedLocations()
+            .first()
         assert(weatherDetailsForSavedLocations.isNotEmpty())
         for ((index, weatherDetail) in weatherDetailsForSavedLocations.withIndex()) {
             assert(weatherDetail.nameOfLocation == savedLocations[index].nameOfLocation)

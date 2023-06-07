@@ -38,16 +38,16 @@ class JustWeatherWeatherRepository @Inject constructor(
         if (exception is CancellationException) throw exception
         Result.failure(exception)
     }
-
-    @OptIn(FlowPreview::class)
-    override fun getWeatherStreamForPreviouslySavedLocations(): Flow<BriefWeatherDetails> {
+    override fun getWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>> {
         return justWeatherDatabaseDao.getAllSavedWeatherEntities()
-            .flatMapConcat { it.asFlow() }
-            .map {
-                fetchWeatherForLocation(latitude = it.latitude, longitude = it.longitude)
-            }.map {
-                it.getOrNull()
-                    ?.toBriefWeatherDetails() ?: BriefWeatherDetails.EmptyBriefWeatherDetails
+            .map { savedWeatherLocationEntities ->
+                savedWeatherLocationEntities.map {
+                    fetchWeatherForLocation(latitude = it.latitude, longitude = it.longitude)
+                }
+            }.map { weatherDetailResults ->
+                weatherDetailResults.mapNotNull { weatherDetailsResult ->
+                    weatherDetailsResult.getOrNull()?.toBriefWeatherDetails()
+                }
             }
     }
 

@@ -24,7 +24,7 @@ interface WeatherRepository {
      * If an error occurs while fetching the details of a single location, then, the
      * corresponding [BriefWeatherDetails] of that location would be [BriefWeatherDetails.EmptyBriefWeatherDetails].
      */
-    fun getWeatherStreamForPreviouslySavedLocations(): Flow<BriefWeatherDetails>
+    fun getWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>>
 
     /**
      * Saves the weather location with the provided [nameOfLocation], [latitude] and [longitude].
