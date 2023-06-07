@@ -77,7 +77,9 @@ fun WeatherResponse.toWeatherDetails(): WeatherDetails = WeatherDetails(
         currentWeatherConditionIcon = getWeatherIconResForId(weather[0].weatherIconId)
     ),
     humidity = additionalInfo.humidity,
-    pressure = additionalInfo.pressure
+    pressure = additionalInfo.pressure,
+    latitude = coordinates.latitude,
+    longitude = coordinates.longitude
 )
 
 /**
