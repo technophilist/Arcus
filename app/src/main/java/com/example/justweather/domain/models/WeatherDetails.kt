@@ -19,7 +19,9 @@ data class WeatherDetails(
     val wind: Wind,
     val weatherCondition: WeatherCondition,
     val humidity: String,
-    val pressure: String
+    val pressure: String,
+    val latitude: String,
+    val longitude: String
 ) {
     /**
      * A data class that holds the current temperature details of a location.
@@ -74,7 +76,9 @@ data class WeatherDetails(
                 currentWeatherConditionIcon = R.drawable.ic_scattered_clouds
             ),
             humidity = "- -",
-            pressure = "- -"
+            pressure = "- -",
+            latitude = "- -",
+            longitude = "- -"
         )
     }
 }
