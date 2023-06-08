@@ -4,11 +4,11 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
+import org.intellij.lang.annotations.Language
 
 @Dao
 interface JustWeatherDatabaseDao {
-
-    @Query("Select * from SavedWeatherLocations")
+    @Query("SELECT * FROM savedweatherlocations ORDER BY nameOfLocation ASC")
     fun getAllSavedWeatherEntities(): Flow<List<SavedWeatherLocationEntity>>
 
     @Upsert
