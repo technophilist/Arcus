@@ -46,4 +46,24 @@ internal class JustWeatherDatabaseTest {
         }
     }
 
+    @Test
+    fun deleteSavedWeatherEntityTest_ValidExistingEntity_isSuccessfullyDeleted() = runTest {
+        val weatherLocationEntity = SavedWeatherLocationEntity(
+            id = "1",
+            nameOfLocation = "Seattle",
+            latitude = "47.6062",
+            longitude = "-122.3321"
+        )
+        with(dao){
+            // add item to database
+            addSavedWeatherEntity(weatherLocationEntity)
+            // the item must be inserted
+            assert(getAllSavedWeatherEntities().first().contains(weatherLocationEntity))
+            // delete item from database
+            deleteSavedWeatherEntity(weatherLocationEntity)
+            // the item must not exist in the database
+            assert(!getAllSavedWeatherEntities().first().contains(weatherLocationEntity))
+        }
+    }
+
 }
