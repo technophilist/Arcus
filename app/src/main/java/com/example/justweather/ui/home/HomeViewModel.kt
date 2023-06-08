@@ -7,9 +7,8 @@ import com.example.justweather.data.repositories.weather.WeatherRepository
 import com.example.justweather.domain.models.BriefWeatherDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +23,7 @@ class HomeViewModel @Inject constructor(
 
     @OptIn(FlowPreview::class)
     val currentSuggestions = currentSearchQuery.debounce(250)
+        .filter { it.isNotBlank() }
         .map { query ->
             _uiState.value = UiState.LOADING_SUGGESTIONS
             locationServicesRepository.fetchSuggestedPlacesForQuery(query)
@@ -38,9 +38,15 @@ class HomeViewModel @Inject constructor(
         _weatherDetailsOfSavedLocations as StateFlow<List<BriefWeatherDetails>>
 
     init {
+        _uiState.value = UiState.LOADING_SAVED_LOCATIONS
         weatherRepository
             .getWeatherStreamForPreviouslySavedLocations()
-            .onEach { _weatherDetailsOfSavedLocations.value = it }
+            .onEach {
+                if (_uiState.value == UiState.LOADING_SAVED_LOCATIONS) {
+                    _uiState.value = UiState.IDLE
+                }
+                _weatherDetailsOfSavedLocations.value = it
+            }
             .launchIn(viewModelScope)
     }
 
@@ -54,5 +60,9 @@ class HomeViewModel @Inject constructor(
     /**
      * An enum that contains all possible UI states.
      */
-    enum class UiState { IDLE, LOADING_SUGGESTIONS }
+    enum class UiState {
+        IDLE,
+        LOADING_SUGGESTIONS,
+        LOADING_SAVED_LOCATIONS
+    }
 }
