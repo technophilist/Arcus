@@ -2,6 +2,8 @@ package com.example.justweather.domain.models
 
 import androidx.annotation.DrawableRes
 import com.example.justweather.R
+import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
+import java.util.*
 
 /**
  * A data class that holds brief weather details of a particular location. It can be seen as data
@@ -37,4 +39,13 @@ data class BriefWeatherDetails(
     }
 }
 
+/**
+ * Used to map an instance of [BriefWeatherDetails] to an instance of [SavedWeatherLocationEntity].
+ */
+fun BriefWeatherDetails.toSavedWeatherLocationEntity(): SavedWeatherLocationEntity =
+    SavedWeatherLocationEntity(
+        nameOfLocation = this.nameOfLocation,
+        latitude = this.latitude,
+        longitude = this.longitude
+    )
 
