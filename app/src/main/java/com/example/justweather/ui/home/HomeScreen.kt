@@ -34,6 +34,7 @@ fun HomeScreen(
     weatherDetailsOfSavedLocations: List<BriefWeatherDetails>,
     suggestionsForSearchQuery: List<LocationAutofillSuggestion>,
     isSuggestionsListLoading: Boolean = false,
+    isWeatherForSavedLocationsLoading: Boolean = false,
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
     onSearchQueryChange: (String) -> Unit
@@ -44,6 +45,7 @@ fun HomeScreen(
         currentQueryText = ""
         onSearchQueryChange("")
     }
+
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -71,12 +73,22 @@ fun HomeScreen(
         }
 
         item {
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Saved Locations",
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Normal
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .padding(end = 8.dp),
+                    text = "Saved Locations",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Normal
+                )
+                if (isWeatherForSavedLocationsLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(12.dp),
+                        strokeWidth = 2.dp
+                    )
+                }
+            }
         }
 
         items(weatherDetailsOfSavedLocations) {

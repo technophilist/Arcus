@@ -72,6 +72,7 @@ private fun NavGraphBuilder.homeScreen(
             weatherDetailsOfSavedLocations = weatherDetailsOfSavedLocations, // todo
             suggestionsForSearchQuery = suggestionsForCurrentQuery,
             isSuggestionsListLoading = uiState == HomeViewModel.UiState.LOADING_SUGGESTIONS,
+            isWeatherForSavedLocationsLoading = uiState == HomeViewModel.UiState.LOADING_SAVED_LOCATIONS,
             onSuggestionClick = onSuggestionClick,
             onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration,
             onSavedLocationItemClick = onSavedLocationItemClick
