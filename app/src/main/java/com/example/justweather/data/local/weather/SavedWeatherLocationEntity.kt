@@ -4,13 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * This class represents a saved weather location entity with the specified [id],[nameOfLocation],
+ * This class represents a saved weather location entity with the specified [nameOfLocation],
  * [latitude] and [longitude].
  */
 @Entity(tableName = "SavedWeatherLocations")
 data class SavedWeatherLocationEntity(
-    @PrimaryKey val id: String,
-    val nameOfLocation: String,
+    @PrimaryKey val nameOfLocation: String,
     val latitude: String,
     val longitude: String
 )

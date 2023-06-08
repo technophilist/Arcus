@@ -57,7 +57,6 @@ class JustWeatherWeatherRepository @Inject constructor(
         longitude: String
     ) {
         val savedWeatherEntity = SavedWeatherLocationEntity(
-            id = UUID.randomUUID().toString(),
             nameOfLocation = nameOfLocation,
             latitude = latitude,
             longitude = longitude

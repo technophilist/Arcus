@@ -34,7 +34,6 @@ internal class JustWeatherDatabaseTest {
     @Test
     fun addSavedWeatherEntityTest_ValidEntity_isSuccessfullySaved() = runTest {
         val weatherLocationEntity = SavedWeatherLocationEntity(
-            id = "1",
             nameOfLocation = "New York",
             latitude = "40.7128",
             longitude = "74.0060"
@@ -49,7 +48,6 @@ internal class JustWeatherDatabaseTest {
     @Test
     fun deleteSavedWeatherEntityTest_ValidExistingEntity_isSuccessfullyDeleted() = runTest {
         val weatherLocationEntity = SavedWeatherLocationEntity(
-            id = "1",
             nameOfLocation = "Seattle",
             latitude = "47.6062",
             longitude = "-122.3321"
