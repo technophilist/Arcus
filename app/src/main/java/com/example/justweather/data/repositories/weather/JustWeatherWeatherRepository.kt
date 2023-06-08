@@ -10,6 +10,7 @@ import com.example.justweather.data.remote.weather.models.toWeatherDetails
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.WeatherDetails
 import com.example.justweather.domain.models.toBriefWeatherDetails
+import com.example.justweather.domain.models.toSavedWeatherLocationEntity
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -38,6 +39,7 @@ class JustWeatherWeatherRepository @Inject constructor(
         if (exception is CancellationException) throw exception
         Result.failure(exception)
     }
+
     override fun getWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>> {
         return justWeatherDatabaseDao.getAllSavedWeatherEntities()
             .map { savedWeatherLocationEntities ->
@@ -62,5 +64,9 @@ class JustWeatherWeatherRepository @Inject constructor(
             longitude = longitude
         )
         justWeatherDatabaseDao.addSavedWeatherEntity(savedWeatherEntity)
+    }
+
+    override suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails) {
+        justWeatherDatabaseDao.deleteSavedWeatherEntity(briefWeatherLocation.toSavedWeatherLocationEntity())
     }
 }

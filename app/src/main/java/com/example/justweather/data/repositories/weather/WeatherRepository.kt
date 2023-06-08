@@ -30,4 +30,12 @@ interface WeatherRepository {
      * Saves the weather location with the provided [nameOfLocation], [latitude] and [longitude].
      */
     suspend fun saveWeatherLocation(nameOfLocation: String, latitude: String, longitude: String)
+
+    /**
+     * Deletes a weather location from the saved items.
+     *
+     * @param briefWeatherLocation The [BriefWeatherDetails] object representing the item
+     * to delete.
+     */
+    suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails)
 }
