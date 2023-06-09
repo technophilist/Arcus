@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.style.TextAlign
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.components.AutofillSuggestion
@@ -231,6 +233,20 @@ private fun AutoFillSuggestionsList(
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         } else {
             LazyColumn {
+                item {
+                    Text(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 8.dp)
+                            .alpha(alpha = 0.38f), // applied emphasis according to material 3 design spec
+                        text = "The weather information closest to the selected location is " +
+                                "displayed if the weather information for the selected location is " +
+                                "not available.",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Normal,
+                        textAlign = TextAlign.Center
+                    )
+                }
                 autofillSuggestionItems(
                     suggestions = suggestions,
                     onSuggestionClick = onSuggestionClick
