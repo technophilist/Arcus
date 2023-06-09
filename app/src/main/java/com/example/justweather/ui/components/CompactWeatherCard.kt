@@ -1,20 +1,20 @@
 package com.example.justweather.ui.home
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 
 /**
@@ -95,4 +95,45 @@ private fun ShortWeatherDescriptionWithIconRow(
             fontWeight = FontWeight.Normal
         )
     }
+}
+
+/**
+ * A swipe-to-dismiss version of [CompactWeatherCard].
+ */
+@ExperimentalMaterial3Api
+@Composable
+fun SwipeToDismissCompactWeatherCard(
+    nameOfLocation: String,
+    shortDescription: String,
+    @DrawableRes shortDescriptionIcon: Int,
+    weatherInDegrees: String,
+    onClick: () -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val dismissState = rememberDismissState(
+        confirmValueChange = {
+            if (it == DismissValue.DismissedToStart) {
+                onDismiss()
+                true
+            } else {
+                false
+            }
+        }
+    )
+    SwipeToDismiss(
+        modifier = modifier,
+        state = dismissState,
+        background = {},
+        dismissContent = {
+            CompactWeatherCard(
+                nameOfLocation = nameOfLocation,
+                shortDescription = shortDescription,
+                shortDescriptionIcon = shortDescriptionIcon,
+                weatherInDegrees = weatherInDegrees,
+                onClick = onClick
+            )
+        },
+        directions = setOf(DismissDirection.EndToStart)
+    )
 }
