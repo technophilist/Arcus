@@ -1,12 +1,9 @@
 package com.example.justweather.ui.navigation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -15,7 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.home.HomeScreen
@@ -69,13 +65,14 @@ private fun NavGraphBuilder.homeScreen(
 
         HomeScreen(
             modifier = Modifier.fillMaxSize(),
-            weatherDetailsOfSavedLocations = weatherDetailsOfSavedLocations, // todo
+            weatherDetailsOfSavedLocations = weatherDetailsOfSavedLocations,
             suggestionsForSearchQuery = suggestionsForCurrentQuery,
             isSuggestionsListLoading = uiState == HomeViewModel.UiState.LOADING_SUGGESTIONS,
             isWeatherForSavedLocationsLoading = uiState == HomeViewModel.UiState.LOADING_SAVED_LOCATIONS,
             onSuggestionClick = onSuggestionClick,
             onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration,
-            onSavedLocationItemClick = onSavedLocationItemClick
+            onSavedLocationItemClick = onSavedLocationItemClick,
+            onSavedLocationDismissed = viewModel::deleteSavedWeatherLocation
         )
     }
 }
