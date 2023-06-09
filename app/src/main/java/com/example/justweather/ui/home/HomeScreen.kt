@@ -37,6 +37,7 @@ fun HomeScreen(
     isWeatherForSavedLocationsLoading: Boolean = false,
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
+    onSavedLocationDismissed: (BriefWeatherDetails) -> Unit,
     onSearchQueryChange: (String) -> Unit
 ) {
     var isSearchBarActive by remember { mutableStateOf(false) }
@@ -90,15 +91,18 @@ fun HomeScreen(
                 }
             }
         }
-
-        items(weatherDetailsOfSavedLocations) {
-            CompactWeatherCard(
+        items(
+            items = weatherDetailsOfSavedLocations,
+            key = { it.nameOfLocation } // swipeable cards will be buggy without keys
+        ) {
+            SwipeToDismissCompactWeatherCard(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 nameOfLocation = it.nameOfLocation,
                 shortDescription = it.shortDescription,
                 shortDescriptionIcon = it.shortDescriptionIcon,
                 weatherInDegrees = it.currentTemperature,
-                onClick = { onSavedLocationItemClick(it) }
+                onClick = { onSavedLocationItemClick(it) },
+                onDismiss = { onSavedLocationDismissed(it) }
             )
         }
     }
