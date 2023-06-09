@@ -7,8 +7,8 @@ import com.example.justweather.data.repositories.weather.WeatherRepository
 import com.example.justweather.domain.models.BriefWeatherDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,6 +55,12 @@ class HomeViewModel @Inject constructor(
      */
     fun setSearchQueryForSuggestionsGeneration(searchQuery: String) {
         currentSearchQuery.value = searchQuery
+    }
+
+    fun deleteSavedWeatherLocation(briefWeatherDetails: BriefWeatherDetails) {
+        viewModelScope.launch {
+            weatherRepository.deleteWeatherLocationFromSavedItems(briefWeatherDetails)
+        }
     }
 
     /**
