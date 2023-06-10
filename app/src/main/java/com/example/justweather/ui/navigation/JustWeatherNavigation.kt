@@ -85,20 +85,17 @@ fun NavGraphBuilder.weatherDetailScreen(
     route: String,
     onBackButtonClick: () -> Unit
 ) {
-    composable(route) { backStackEntry ->
+    composable(route) {
         val viewModel = hiltViewModel<WeatherDetailViewModel>()
         val weatherDetails by viewModel.weatherDetailsOfChosenLocation.collectAsStateWithLifecycle()
-        val argumentKey =
-            JustWeatherNavigationDestinations.WeatherDetailScreen.NAV_ARG_WAS_LOCATION_PREVIOUSLY_SAVED
-        val wasLocationPreviouslySaved =
-            backStackEntry.arguments!!.getString(argumentKey).toBoolean()
+        val isSavedLocation by viewModel.isSavedLocation.collectAsStateWithLifecycle()
         WeatherDetailScreen(
             background = { }, // todo
             weatherDetails = weatherDetails,
             modifier = Modifier.fillMaxSize(),
             onBackButtonClick = onBackButtonClick,
             onAddButtonClick = viewModel::addLocationToSavedLocations,
-            wasLocationPreviouslySaved = wasLocationPreviouslySaved
+            wasLocationPreviouslySaved = isSavedLocation
         )
     }
 }
