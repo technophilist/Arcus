@@ -6,6 +6,8 @@ import com.example.justweather.data.repositories.location.LocationServicesReposi
 import com.example.justweather.data.repositories.weather.WeatherRepository
 import com.example.justweather.domain.models.BriefWeatherDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -21,10 +23,11 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(UiState.IDLE)
     val uiState = _uiState as StateFlow<UiState>
 
-    @OptIn(FlowPreview::class)
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val currentSuggestions = currentSearchQuery.debounce(250)
-        .filter { it.isNotBlank() }
-        .map { query ->
+        .distinctUntilChanged()
+        .mapLatest { query ->
+            if (query.isBlank()) return@mapLatest Result.success(emptyList())
             _uiState.value = UiState.LOADING_SUGGESTIONS
             locationServicesRepository.fetchSuggestedPlacesForQuery(query)
                 .also { _uiState.value = UiState.IDLE }
