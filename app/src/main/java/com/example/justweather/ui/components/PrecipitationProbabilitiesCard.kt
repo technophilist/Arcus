@@ -1,8 +1,10 @@
 package com.example.justweather.ui.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -54,6 +56,11 @@ private fun ProbabilityProgressRow(
     precipitationProbability: PrecipitationProbability,
     modifier: Modifier = Modifier
 ) {
+    var progressValue by remember { mutableStateOf(0f) }
+    val animatedProgressValue by animateFloatAsState(targetValue = progressValue)
+    LaunchedEffect(precipitationProbability) {
+        progressValue = precipitationProbability.probability
+    }
     Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(
             text = precipitationProbability.hourString,
@@ -64,7 +71,7 @@ private fun ProbabilityProgressRow(
                 .padding(horizontal = 16.dp)
                 .height(24.dp)
                 .weight(1f),
-            progress = precipitationProbability.probability,
+            progress = animatedProgressValue,
             strokeCap = StrokeCap.Round,
             trackColor = ProgressIndicatorDefaults.linearColor.copy(alpha = 0.5f)
         )
