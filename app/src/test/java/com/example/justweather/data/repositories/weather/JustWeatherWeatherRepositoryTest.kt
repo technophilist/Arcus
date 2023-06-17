@@ -3,7 +3,6 @@ package com.example.justweather.data.repositories.weather
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.di.NetworkModule
-import com.example.justweather.domain.models.BriefWeatherDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
@@ -19,19 +18,16 @@ class JustWeatherWeatherRepositoryTest {
     private lateinit var weatherRepository: JustWeatherWeatherRepository
     private val savedLocations = listOf(
         SavedWeatherLocationEntity(
-            id = "1",
             nameOfLocation = "Seattle",
             latitude = "47.6062",
             longitude = "-122.3321"
         ),
         SavedWeatherLocationEntity(
-            id = "2",
             nameOfLocation = "New York",
             latitude = "40.7128",
             longitude = "-74.0060"
         ),
         SavedWeatherLocationEntity(
-            id = "3",
             nameOfLocation = "Los Angeles",
             latitude = "34.0522",
             longitude = "-118.2437"
