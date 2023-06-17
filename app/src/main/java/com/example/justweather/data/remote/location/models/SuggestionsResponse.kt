@@ -23,11 +23,11 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
         @Json(name = "id") val idOfPlace: String,
         @Json(name = "name") val nameOfPlace: String,
         @Json(name = "country") val country: String,
+        @Json(name = "admin1") val state: String,
         val latitude: String,
         val longitude: String
     )
 }
-
 
 /**
  * A mapper function used to map an instance of [SuggestionsResponse] to an instance of
@@ -37,7 +37,7 @@ fun SuggestionsResponse.Suggestion.toLocationAutofillSuggestionList(): LocationA
     LocationAutofillSuggestion(
         idOfLocation = idOfPlace,
         nameOfLocation = nameOfPlace,
-        addressOfLocation = country,
+        addressOfLocation = "$state, $country",
         coordinatesOfLocation = LocationAutofillSuggestion.Coordinates(
             latitude = latitude,
             longitude = longitude
