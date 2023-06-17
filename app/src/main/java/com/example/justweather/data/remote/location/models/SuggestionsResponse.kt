@@ -9,20 +9,22 @@ import com.squareup.moshi.JsonClass
  * query.
  */
 @JsonClass(generateAdapter = true)
-data class SuggestionsResponse(val suggestions: List<Suggestion>) {
+data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Suggestion> = emptyList()) {
 
     /**
      * This data class represents a single place suggestion for a specific query.
      *
      * @property idOfPlace The ID of the place.
      * @property nameOfPlace The name of the place.
-     * @property addressOfPlace The address of the place.
+     * @property country The country that the place is situated in.
      */
     @JsonClass(generateAdapter = true)
     data class Suggestion(
-        @Json(name = "mapbox_id") val idOfPlace: String,
+        @Json(name = "id") val idOfPlace: String,
         @Json(name = "name") val nameOfPlace: String,
-        @Json(name = "place_formatted") val addressOfPlace: String
+        @Json(name = "country") val country: String,
+        val latitude: String,
+        val longitude: String
     )
 }
 
@@ -31,14 +33,15 @@ data class SuggestionsResponse(val suggestions: List<Suggestion>) {
  * A mapper function used to map an instance of [SuggestionsResponse] to an instance of
  * [LocationAutofillSuggestion].
  */
-fun SuggestionsResponse.Suggestion.toLocationAutofillSuggestionList(
-    coordinates: LocationAutofillSuggestion.Coordinates
-): LocationAutofillSuggestion =
+fun SuggestionsResponse.Suggestion.toLocationAutofillSuggestionList(): LocationAutofillSuggestion =
     LocationAutofillSuggestion(
         idOfLocation = idOfPlace,
         nameOfLocation = nameOfPlace,
-        addressOfLocation = addressOfPlace,
-        coordinatesOfLocation = coordinates
+        addressOfLocation = country,
+        coordinatesOfLocation = LocationAutofillSuggestion.Coordinates(
+            latitude = latitude,
+            longitude = longitude
+        )
     )
 
 
