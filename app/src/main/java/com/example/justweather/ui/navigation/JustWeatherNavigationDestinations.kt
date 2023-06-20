@@ -9,6 +9,7 @@ sealed class JustWeatherNavigationDestinations(val route: String) {
 
     object WeatherDetailScreen :
         JustWeatherNavigationDestinations(route = "weather_detail/{latitude}/{longitude}/{wasPreviouslySaved}") {
+        const val NAV_ARG_NAME_OF_LOCATION = "nameOfLocation"
         const val NAV_ARG_LATITUDE = "latitude"
         const val NAV_ARG_LONGITUDE = "longitude"
         const val NAV_ARG_WAS_LOCATION_PREVIOUSLY_SAVED = "wasPreviouslySaved"
@@ -18,9 +19,10 @@ sealed class JustWeatherNavigationDestinations(val route: String) {
          * [latitude] and [longitude].
          */
         fun buildRoute(
+            nameOfLocation: String,
             latitude: String,
             longitude: String,
             wasLocationPreviouslySaved: Boolean,
-        ) = "weather_detail/$latitude/$longitude/${wasLocationPreviouslySaved}"
+        ) = "weather_detail/$nameOfLocation/$latitude/$longitude/${wasLocationPreviouslySaved}"
     }
 }

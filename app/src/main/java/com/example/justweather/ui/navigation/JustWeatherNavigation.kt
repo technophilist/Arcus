@@ -1,6 +1,5 @@
 package com.example.justweather.ui.navigation
 
-import android.util.Log.d
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,9 +16,7 @@ import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.home.HomeScreen
 import com.example.justweather.ui.home.HomeViewModel
-import com.example.justweather.ui.weather.WeatherDetailScreen
 import com.example.justweather.ui.weather.WeatherDetailViewModel
-import timber.log.Timber
 
 
 @Composable
@@ -33,6 +30,7 @@ fun JustWeatherNavigation(navController: NavHostController = rememberNavControll
             route = JustWeatherNavigationDestinations.HomeScreen.route,
             onSuggestionClick = {
                 navController.navigateToWeatherDetailScreen(
+                    nameOfLocation = it.nameOfLocation,
                     latitude = it.coordinatesOfLocation.latitude,
                     longitude = it.coordinatesOfLocation.longitude,
                     wasLocationPreviouslySaved = false
@@ -40,6 +38,7 @@ fun JustWeatherNavigation(navController: NavHostController = rememberNavControll
             },
             onSavedLocationItemClick = {
                 navController.navigateToWeatherDetailScreen(
+                    nameOfLocation = it.nameOfLocation,
                     latitude = it.latitude,
                     longitude = it.longitude,
                     wasLocationPreviouslySaved = true
@@ -89,23 +88,18 @@ fun NavGraphBuilder.weatherDetailScreen(
         val viewModel = hiltViewModel<WeatherDetailViewModel>()
         val weatherDetails by viewModel.weatherDetailsOfChosenLocation.collectAsStateWithLifecycle()
         val isSavedLocation by viewModel.isSavedLocation.collectAsStateWithLifecycle()
-        WeatherDetailScreen(
-            background = { }, // todo
-            weatherDetails = weatherDetails,
-            modifier = Modifier.fillMaxSize(),
-            onBackButtonClick = onBackButtonClick,
-            onAddButtonClick = viewModel::addLocationToSavedLocations,
-            wasLocationPreviouslySaved = isSavedLocation
-        )
+
     }
 }
 
 private fun NavHostController.navigateToWeatherDetailScreen(
+    nameOfLocation: String,
     latitude: String,
     longitude: String,
     wasLocationPreviouslySaved: Boolean
 ) {
     val destination = JustWeatherNavigationDestinations.WeatherDetailScreen.buildRoute(
+        nameOfLocation = nameOfLocation,
         latitude = latitude,
         longitude = longitude,
         wasLocationPreviouslySaved = wasLocationPreviouslySaved
