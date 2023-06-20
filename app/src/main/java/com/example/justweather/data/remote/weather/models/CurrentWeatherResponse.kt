@@ -1,6 +1,7 @@
 package com.example.justweather.data.remote.weather.models
 
 import com.example.justweather.R
+import com.example.justweather.domain.models.CurrentWeatherDetails
 import com.example.justweather.domain.models.WeatherDetails
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -36,6 +37,23 @@ data class CurrentWeatherResponse(
 }
 
 /**
+ * Used to map an instance of [CurrentWeatherResponse] to an instance of [CurrentWeatherDetails]
+ */
+fun CurrentWeatherResponse.toCurrentWeatherDetails(nameOfLocation: String): CurrentWeatherDetails =
+    CurrentWeatherDetails(
+        temperature = currentWeather.temperature,
+        nameOfLocation = nameOfLocation,
+        isDay = currentWeather.isDay,
+        iconResId = getWeatherIconResForCode(
+            weatherCode = currentWeather.weatherCode,
+            isDay = currentWeather.isDay == 1
+        ),
+        imageResId = R.drawable.ic_launcher_background, // todo
+        latitude = latitude,
+        longitude = longitude,
+    )
+
+/**
  * Used to map an instance of [CurrentWeatherResponse] to an instance of [WeatherDetails]
  */
 fun CurrentWeatherResponse.toWeatherDetails(nameOfLocation: String): WeatherDetails {
@@ -68,7 +86,10 @@ fun CurrentWeatherResponse.toWeatherDetails(nameOfLocation: String): WeatherDeta
 /**
  * Returns an appropriate resource ID for the corresponding [weatherCode]
  */
-private fun getWeatherIconResForCode(weatherCode: Int, isDay: Boolean): Int { // todo check if it works properly
+private fun getWeatherIconResForCode(
+    weatherCode: Int,
+    isDay: Boolean
+): Int { // todo check if it works properly
     // mainly clear, partly cloudy, and overcast
     val cloudyWeatherCodes = setOf(1, 2, 3)
     // drizzle: Light, moderate, and dense intensity ,
