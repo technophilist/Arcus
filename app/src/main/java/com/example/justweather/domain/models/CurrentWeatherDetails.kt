@@ -1,7 +1,6 @@
 package com.example.justweather.domain.models
 
 import androidx.annotation.DrawableRes
-import com.example.justweather.data.remote.weather.models.CurrentWeatherResponse
 
 /**
  * A data class that holds the current weather details for a specific location.
@@ -18,7 +17,7 @@ data class CurrentWeatherDetails(
 )
 
 /**
- * Used to convert an instance of [CurrentWeatherDetails] to an instance of [toBriefWeatherDetails].
+ * Used to convert an instance of [CurrentWeatherDetails] to an instance of [BriefWeatherDetails].
  */
 fun CurrentWeatherDetails.toBriefWeatherDetails(): BriefWeatherDetails = BriefWeatherDetails(
     nameOfLocation = nameOfLocation,
