@@ -12,11 +12,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.justweather.R
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.LocationAutofillSuggestion
+import com.example.justweather.domain.models.SingleWeatherDetail
 import com.example.justweather.ui.home.HomeScreen
 import com.example.justweather.ui.home.HomeViewModel
 import com.example.justweather.ui.weather.WeatherDetailViewModel
+import com.example.justweather.ui.weather.WeatherDetailsV2
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -87,8 +91,21 @@ fun NavGraphBuilder.weatherDetailScreen(
     composable(route) {
         val viewModel = hiltViewModel<WeatherDetailViewModel>()
         val weatherDetails by viewModel.weatherDetailsOfChosenLocation.collectAsStateWithLifecycle()
-        val isSavedLocation by viewModel.isSavedLocation.collectAsStateWithLifecycle()
+        val isSavedLocation by viewModel.isSavedLocation.collectAsStateWithLifecycle() // todo
 
+        WeatherDetailsV2(
+            nameOfLocation = weatherDetails?.nameOfLocation ?: "- -",
+            weatherConditionImage = weatherDetails?.imageResId ?: R.drawable.ic_day_clear, // todo
+            weatherConditionIconId = weatherDetails?.iconResId ?: R.drawable.ic_day_clear,
+            weatherInDegrees = weatherDetails?.temperature?.toFloat()?.roundToInt() ?: 0,
+            weatherCondition = weatherDetails?.weatherCondition ?: "- -",
+            onBackButtonClick = onBackButtonClick,
+            singleWeatherDetails = List(5){ //todo
+                SingleWeatherDetail("Test", value = "1", R.drawable.ic_wind_pressure)
+            },
+            hourlyForecasts = emptyList(),
+            precipitationProbabilities = emptyList()
+        )
     }
 }
 
