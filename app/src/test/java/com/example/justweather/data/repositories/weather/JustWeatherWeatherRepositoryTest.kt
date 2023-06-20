@@ -52,7 +52,7 @@ class JustWeatherWeatherRepositoryTest {
         runTest {
             val latitude = "37.422131"
             val longitude = "-122.084801"
-            val result = weatherRepository.fetchWeatherForLocation(latitude, longitude)
+            val result = weatherRepository.fetchWeatherForLocation("test", latitude, longitude)
             assert(result.isSuccess)
             assert(result.getOrNull() != null)
         }
@@ -63,7 +63,7 @@ class JustWeatherWeatherRepositoryTest {
         // valid range of -90 to 90 and -180 to 180 degrees, respectively.
         val latitude = "1000.0"
         val longitude = "-2000.0"
-        val result = weatherRepository.fetchWeatherForLocation(latitude, longitude)
+        val result = weatherRepository.fetchWeatherForLocation("", latitude, longitude)
         assert(result.isFailure)
         assert(result.exceptionOrNull() != null)
     }

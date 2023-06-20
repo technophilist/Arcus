@@ -6,11 +6,9 @@ import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.data.remote.weather.WeatherClient
 import com.example.justweather.data.remote.weather.WeatherClientConstants
+import com.example.justweather.data.remote.weather.models.toCurrentWeatherDetails
 import com.example.justweather.data.remote.weather.models.toWeatherDetails
-import com.example.justweather.domain.models.BriefWeatherDetails
-import com.example.justweather.domain.models.WeatherDetails
-import com.example.justweather.domain.models.toBriefWeatherDetails
-import com.example.justweather.domain.models.toSavedWeatherLocationEntity
+import com.example.justweather.domain.models.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -26,15 +24,15 @@ class JustWeatherWeatherRepository @Inject constructor(
 ) : WeatherRepository {
 
     override suspend fun fetchWeatherForLocation(
+        nameOfLocation: String,
         latitude: String,
         longitude: String
-    ): Result<WeatherDetails> = try {
+    ): Result<CurrentWeatherDetails> = try {
         val response = weatherClient.getWeatherForCoordinates(
             latitude = latitude,
-            longitude = longitude,
-            units = WeatherClientConstants.Units.CELSIUS // todo
+            longitude = longitude
         )
-        Result.success(response.getBodyOrThrowException().toWeatherDetails())
+        Result.success(response.getBodyOrThrowException().toCurrentWeatherDetails(nameOfLocation))
     } catch (exception: Exception) {
         if (exception is CancellationException) throw exception
         Result.failure(exception)
@@ -44,11 +42,15 @@ class JustWeatherWeatherRepository @Inject constructor(
         return justWeatherDatabaseDao.getAllSavedWeatherEntities()
             .map { savedWeatherLocationEntities ->
                 savedWeatherLocationEntities.map {
-                    fetchWeatherForLocation(latitude = it.latitude, longitude = it.longitude)
+                    fetchWeatherForLocation(
+                        nameOfLocation = it.nameOfLocation,
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    )
                 }
-            }.map { weatherDetailResults ->
-                weatherDetailResults.mapNotNull { weatherDetailsResult ->
-                    weatherDetailsResult.getOrNull()?.toBriefWeatherDetails()
+            }.map { currentWeatherDetailResults ->
+                currentWeatherDetailResults.mapNotNull { currentWeatherDetailResult ->
+                    currentWeatherDetailResult.getOrNull()?.toBriefWeatherDetails()
                 }
             }
     }
