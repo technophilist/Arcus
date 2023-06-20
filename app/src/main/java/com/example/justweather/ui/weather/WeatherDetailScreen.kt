@@ -28,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.justweather.R
 import com.example.justweather.domain.models.HourlyForecast
 import com.example.justweather.domain.models.PrecipitationProbability
 import com.example.justweather.domain.models.SingleWeatherDetail
@@ -40,7 +39,7 @@ import com.example.justweather.ui.components.SingleWeatherDetailCard
 
 // todo - need to add top bar when screen is fully scrolled
 @Composable
-fun WeatherDetailsV2(
+fun WeatherDetailScreen(
     nameOfLocation: String,
     @DrawableRes weatherConditionImage: Int,
     @DrawableRes weatherConditionIconId: Int,

@@ -19,7 +19,7 @@ import com.example.justweather.domain.models.SingleWeatherDetail
 import com.example.justweather.ui.home.HomeScreen
 import com.example.justweather.ui.home.HomeViewModel
 import com.example.justweather.ui.weather.WeatherDetailViewModel
-import com.example.justweather.ui.weather.WeatherDetailsV2
+import com.example.justweather.ui.weather.WeatherDetailScreen
 import kotlin.math.roundToInt
 
 
@@ -93,7 +93,7 @@ fun NavGraphBuilder.weatherDetailScreen(
         val weatherDetails by viewModel.weatherDetailsOfChosenLocation.collectAsStateWithLifecycle()
         val isSavedLocation by viewModel.isSavedLocation.collectAsStateWithLifecycle() // todo
 
-        WeatherDetailsV2(
+        WeatherDetailScreen(
             nameOfLocation = weatherDetails?.nameOfLocation ?: "- -",
             weatherConditionImage = weatherDetails?.imageResId ?: R.drawable.ic_day_clear, // todo
             weatherConditionIconId = weatherDetails?.iconResId ?: R.drawable.ic_day_clear,
