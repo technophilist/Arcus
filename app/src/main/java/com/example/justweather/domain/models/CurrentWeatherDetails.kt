@@ -9,6 +9,7 @@ import com.example.justweather.data.remote.weather.models.CurrentWeatherResponse
 data class CurrentWeatherDetails(
     val nameOfLocation: String,
     val temperature: String,
+    val weatherCondition: String,
     val isDay: Int,
     @DrawableRes val iconResId: Int,
     @DrawableRes val imageResId: Int,
@@ -22,7 +23,7 @@ data class CurrentWeatherDetails(
 fun CurrentWeatherDetails.toBriefWeatherDetails(): BriefWeatherDetails = BriefWeatherDetails(
     nameOfLocation = nameOfLocation,
     currentTemperature = temperature,
-    shortDescription = "N/A", //todo
+    shortDescription = weatherCondition,
     shortDescriptionIcon = iconResId,
     latitude = latitude,
     longitude = longitude
