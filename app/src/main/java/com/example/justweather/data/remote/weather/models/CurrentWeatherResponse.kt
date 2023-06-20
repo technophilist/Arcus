@@ -2,7 +2,6 @@ package com.example.justweather.data.remote.weather.models
 
 import com.example.justweather.R
 import com.example.justweather.domain.models.CurrentWeatherDetails
-import com.example.justweather.domain.models.WeatherDetails
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -53,36 +52,6 @@ fun CurrentWeatherResponse.toCurrentWeatherDetails(nameOfLocation: String): Curr
         latitude = latitude,
         longitude = longitude,
     )
-
-/**
- * Used to map an instance of [CurrentWeatherResponse] to an instance of [WeatherDetails]
- */
-fun CurrentWeatherResponse.toWeatherDetails(nameOfLocation: String): WeatherDetails {
-    return WeatherDetails(
-        nameOfLocation = nameOfLocation,
-        temperature = WeatherDetails.Temperature(
-            currentTemp = currentWeather.temperature,
-            minTemperature = "U/A", // todo
-            maxTemperature = "U/A"// todo
-        ),
-        wind = WeatherDetails.Wind(
-            speed = "U/A",// todo
-            direction = "U/A"// todo
-        ),
-        weatherCondition = WeatherDetails.WeatherCondition(
-            oneWordDescription = "",// todo
-            currentWeatherConditionIcon = getWeatherIconResForCode(
-                weatherCode = currentWeather.weatherCode,
-                isDay = currentWeather.isDay == 1
-            ),
-        ),
-        humidity = "U/A",// todo
-        pressure = "U/A",// todo
-        latitude = latitude,
-        longitude = longitude
-    )
-}
-
 
 private val weatherCodeToDescriptionMap = mapOf(
     0 to "Clear sky",

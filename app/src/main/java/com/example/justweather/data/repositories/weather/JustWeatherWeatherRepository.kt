@@ -1,18 +1,13 @@
 package com.example.justweather.data.repositories.weather
 
-import com.example.justweather.BuildConfig
 import com.example.justweather.data.getBodyOrThrowException
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.data.remote.weather.WeatherClient
-import com.example.justweather.data.remote.weather.WeatherClientConstants
 import com.example.justweather.data.remote.weather.models.toCurrentWeatherDetails
-import com.example.justweather.data.remote.weather.models.toWeatherDetails
 import com.example.justweather.domain.models.*
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import java.util.UUID
 import javax.inject.Inject
 
 /**

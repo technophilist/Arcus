@@ -2,7 +2,6 @@ package com.example.justweather.data.repositories.weather
 
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.CurrentWeatherDetails
-import com.example.justweather.domain.models.WeatherDetails
 import kotlinx.coroutines.flow.Flow
 
 /**
