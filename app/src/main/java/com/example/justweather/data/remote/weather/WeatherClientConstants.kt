@@ -12,35 +12,32 @@ object WeatherClientConstants {
     /**
      * The base URL of the weather API.
      */
-    const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+    const val BASE_URL = "https://api.open-meteo.com/v1/"
 
     /**
      * The endpoints of the weather API.
      */
     object EndPoints {
-        const val GET_WEATHER_ENDPOINT = "weather"
+        const val GET_WEATHER_ENDPOINT = "forecast"
     }
 
     /**
      * Used to configure the units returned by the weather API.
      */
     object Units {
-        const val CELSIUS = "metric"
-        const val FAHRENHEIT = "imperial"
+        object TemperatureUnits {
+            const val CELSIUS = "celsius"
+            const val FAHRENHEIT = "fahrenheit"
+        }
+
+        object WindSpeedUnit {
+            const val KILOMETERS_PER_HOUR = "kmh"
+            const val MILES_PER_HOUR = "mph"
+        }
+
+        object PrecipitationUnit {
+            const val MILLIMETERS = "mm"
+            const val INCHES = "inch"
+        }
     }
-
-    /**
-     * An OkHttpClient instance that automatically adds the weather client's API key required for
-     * all requests.
-     */
-    val AutoAddApiKeyClient: OkHttpClient = OkHttpClient().newBuilder()
-        .addInterceptor { chain ->
-            val url = chain.request().url().newBuilder()
-                .addQueryParameter("appid", BuildConfig.OPEN_WEATHER_MAP_API_KEY)
-                .build()
-            val request = chain.request().newBuilder().url(url).build()
-            chain.proceed(request)
-        }.build()
-
-
 }
