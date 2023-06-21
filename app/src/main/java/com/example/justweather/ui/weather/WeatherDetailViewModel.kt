@@ -27,17 +27,14 @@ class WeatherDetailViewModel @Inject constructor(
     val weatherDetailsOfChosenLocation =
         _weatherDetailsOfChosenLocation as StateFlow<CurrentWeatherDetails?>
 
-    private val initialValueOfIsSavedLocation: String =
-        savedStateHandle[WeatherDetailScreen.NAV_ARG_WAS_LOCATION_PREVIOUSLY_SAVED]!!
     val isSavedLocation = weatherRepository.getWeatherStreamForPreviouslySavedLocations()
         .map { savedWeatherDetails ->
             savedWeatherDetails.any { it.nameOfLocation == weatherDetailsOfChosenLocation.value?.nameOfLocation }
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 250L),
-            initialValue = initialValueOfIsSavedLocation.toBoolean()
+            initialValue = true
         )
-
 
     private val _uiState = MutableStateFlow(UiState.IDLE)
     val uiState = _uiState as StateFlow<UiState>
