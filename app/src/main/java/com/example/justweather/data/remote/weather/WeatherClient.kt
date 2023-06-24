@@ -5,6 +5,7 @@ import com.example.justweather.data.remote.weather.models.HourlyWeatherInfoRespo
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.time.LocalDate
 import java.time.ZoneId
 
 /**
@@ -49,8 +50,8 @@ interface WeatherClient {
     suspend fun getHourlyForecast(
         @Query("latitude") latitude: String,
         @Query("longitude") longitude: String,
-        @Query("start_date") startDate: String, // YYYY-MM-DD
-        @Query("end_date") endDate: String, // YYYY-MM-DD
+        @Query("start_date") startDate: LocalDate, // YYYY-MM-DD
+        @Query("end_date") endDate: LocalDate, // YYYY-MM-DD
         @Query("timezone") timezone: String = ZoneId.systemDefault().toString(),
         @Query("precipitation_unit") precipitationUnit: WeatherClientConstants.PrecipitationUnit = WeatherClientConstants.PrecipitationUnit.INCHES,
         @Query("timeformat") timeFormat: WeatherClientConstants.TimeFormats = WeatherClientConstants.TimeFormats.UNIX_EPOCH_TIME_IN_SECONDS,

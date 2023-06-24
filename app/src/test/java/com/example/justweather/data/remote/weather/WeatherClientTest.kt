@@ -31,8 +31,8 @@ class WeatherClientTest {
             val response = client.getHourlyForecast(
                 latitude = "37.333333",
                 longitude = "-122.028033",
-                startDate = startDate.toString(),
-                endDate = endDate.toString(),
+                startDate = startDate,
+                endDate = endDate,
             ).body()
             // the response must be successfully fetched
             assert(response != null)
