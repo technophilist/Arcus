@@ -37,20 +37,24 @@ object WeatherClientConstants {
     }
 
     /**
-     * Contains strings that represent different hourly forecast items available in the API.
+     * Contains constants that represent the different hourly forecast items available in the API.
      */
-    object HourlyForecastItems {
-        const val PRECIPITATION_PROBABILITIES = "precipitation_probability"
-        const val WEATHER_CODE = "weathercode"
-        const val TEMPERATURE = "temperature_2m"
-        const val DEFAULT_ITEMS = "$WEATHER_CODE,$PRECIPITATION_PROBABILITIES,$TEMPERATURE"
+    enum class HourlyForecastItems(private val valueToBeSentToTheApi: String) {
+        PRECIPITATION_PROBABILITIES("precipitation_probability"),
+        WEATHER_CODE("weathercode"),
+        TEMPERATURE("temperature_2m"),
+        ALL("$WEATHER_CODE,$PRECIPITATION_PROBABILITIES,$TEMPERATURE");
+
+        override fun toString(): String = valueToBeSentToTheApi
     }
 
     /**
-     * Used to configure the time format returned by the weather API.
+     * Contains supported return type time formats by the API.
      */
-    object TimeFormats {
-        const val UNIX_EPOCH_TIME_IN_SECONDS = "unixtime"
-        const val ISO_8601 = "iso8601"
+    enum class TimeFormats(private val valueToBeSentToTheApi: String) {
+        UNIX_EPOCH_TIME_IN_SECONDS("unixtime"),
+        ISO_8601("iso8601");
+
+        override fun toString(): String = valueToBeSentToTheApi
     }
 }

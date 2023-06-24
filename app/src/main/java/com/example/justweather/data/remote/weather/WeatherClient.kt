@@ -53,7 +53,7 @@ interface WeatherClient {
         @Query("end_date") endDate: String, // YYYY-MM-DD
         @Query("timezone") timezone: String = ZoneId.systemDefault().toString(),
         @Query("precipitation_unit") precipitationUnit: String = WeatherClientConstants.Units.PrecipitationUnit.INCHES,
-        @Query("timeformat") timeFormat: String = WeatherClientConstants.TimeFormats.UNIX_EPOCH_TIME_IN_SECONDS,
-        @Query("hourly") hourlyForecastsToReturn: String = WeatherClientConstants.HourlyForecastItems.DEFAULT_ITEMS
+        @Query("timeformat") timeFormat: WeatherClientConstants.TimeFormats = WeatherClientConstants.TimeFormats.UNIX_EPOCH_TIME_IN_SECONDS,
+        @Query("hourly") hourlyForecastsToReturn: WeatherClientConstants.HourlyForecastItems = WeatherClientConstants.HourlyForecastItems.ALL
     ): Response<HourlyWeatherInfoResponse>
 }
