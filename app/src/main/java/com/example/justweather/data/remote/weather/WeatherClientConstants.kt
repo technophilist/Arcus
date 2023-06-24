@@ -17,23 +17,35 @@ object WeatherClientConstants {
     }
 
     /**
-     * Used to configure the units returned by the weather API.
+     * Different temperature units supported by the API.
      */
-    object Units {
-        object TemperatureUnits {
-            const val CELSIUS = "celsius"
-            const val FAHRENHEIT = "fahrenheit"
-        }
+    enum class TemperatureUnits(private val valueToBeSentToTheApi: String) {
+        CELSIUS("celsius"),
+        FAHRENHEIT("fahrenheit");
 
-        object WindSpeedUnit {
-            const val KILOMETERS_PER_HOUR = "kmh"
-            const val MILES_PER_HOUR = "mph"
-        }
+        override fun toString(): String = valueToBeSentToTheApi
 
-        object PrecipitationUnit {
-            const val MILLIMETERS = "mm"
-            const val INCHES = "inch"
-        }
+    }
+
+    /**
+     * Different wind speed units supported by the API.
+     */
+    enum class WindSpeedUnit(private val valueToBeSentToTheApi: String) {
+        KILOMETERS_PER_HOUR("kmh"),
+        MILES_PER_HOUR("mph");
+
+        override fun toString(): String = valueToBeSentToTheApi
+    }
+
+    /**
+     * Different precipitation units supported by the API.
+     */
+    enum class PrecipitationUnit(private val valueToBeSentToTheApi: String) {
+        MILLIMETERS("mm"),
+        INCHES("inch");
+
+        override fun toString(): String = valueToBeSentToTheApi
+
     }
 
     /**

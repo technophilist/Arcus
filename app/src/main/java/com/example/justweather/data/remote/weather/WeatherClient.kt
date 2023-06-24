@@ -27,9 +27,9 @@ interface WeatherClient {
     suspend fun getWeatherForCoordinates(
         @Query("latitude") latitude: String,
         @Query("longitude") longitude: String,
-        @Query("temperature_unit") temperatureUnit: String = WeatherClientConstants.Units.TemperatureUnits.CELSIUS,
-        @Query("windspeed_unit") windSpeedUnit: String = WeatherClientConstants.Units.WindSpeedUnit.KILOMETERS_PER_HOUR,
-        @Query("precipitation_unit") precipitationUnit: String = WeatherClientConstants.Units.PrecipitationUnit.INCHES,
+        @Query("temperature_unit") temperatureUnit: WeatherClientConstants.TemperatureUnits = WeatherClientConstants.TemperatureUnits.CELSIUS,
+        @Query("windspeed_unit") windSpeedUnit: WeatherClientConstants.WindSpeedUnit = WeatherClientConstants.WindSpeedUnit.KILOMETERS_PER_HOUR,
+        @Query("precipitation_unit") precipitationUnit: WeatherClientConstants.PrecipitationUnit = WeatherClientConstants.PrecipitationUnit.INCHES,
         @Query("current_weather") shouldIncludeCurrentWeatherInformation: Boolean = true // must always be set to true
     ): Response<CurrentWeatherResponse>
 
@@ -52,7 +52,7 @@ interface WeatherClient {
         @Query("start_date") startDate: String, // YYYY-MM-DD
         @Query("end_date") endDate: String, // YYYY-MM-DD
         @Query("timezone") timezone: String = ZoneId.systemDefault().toString(),
-        @Query("precipitation_unit") precipitationUnit: String = WeatherClientConstants.Units.PrecipitationUnit.INCHES,
+        @Query("precipitation_unit") precipitationUnit: WeatherClientConstants.PrecipitationUnit = WeatherClientConstants.PrecipitationUnit.INCHES,
         @Query("timeformat") timeFormat: WeatherClientConstants.TimeFormats = WeatherClientConstants.TimeFormats.UNIX_EPOCH_TIME_IN_SECONDS,
         @Query("hourly") hourlyForecastsToReturn: WeatherClientConstants.HourlyForecastItems = WeatherClientConstants.HourlyForecastItems.ALL
     ): Response<HourlyWeatherInfoResponse>
