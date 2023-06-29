@@ -15,7 +15,11 @@ import kotlin.math.roundToInt
  * @property hourlyForecast The hourly forecast data.
  */
 @JsonClass(generateAdapter = true)
-data class HourlyWeatherInfoResponse(@Json(name = "hourly") val hourlyForecast: HourlyForecast) {
+data class HourlyWeatherInfoResponse(
+    val latitude: String,
+    val longitude: String,
+    @Json(name = "hourly") val hourlyForecast: HourlyForecast
+) {
     /**
      * A data class representing the hourly forecast data.
      * @property timestamps The list of timestamps representing the hours.
@@ -72,8 +76,10 @@ fun HourlyWeatherInfoResponse.toPrecipitationProbabilities(): List<Precipitation
 
             val precipitationProbability = PrecipitationProbability(
                 hour = correspondingLocalTime,
-                probability = precipitationProbabilities[i]
-            ) 
+                probability = precipitationProbabilities[i],
+                latitude = latitude,
+                longitude = longitude
+            )
             probabilitiesList.add(precipitationProbability)
         }
         return@run probabilitiesList

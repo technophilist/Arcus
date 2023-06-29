@@ -9,6 +9,8 @@ import androidx.annotation.FloatRange
  * of this app, is not internationalization/user specific customization, LocalDateTime is not used here.
  */
 data class PrecipitationProbability(
+    val latitude:String,
+    val longitude:String,
     val hour: Int,
     @FloatRange(0.0, 1.0) val probability: Float
 )
