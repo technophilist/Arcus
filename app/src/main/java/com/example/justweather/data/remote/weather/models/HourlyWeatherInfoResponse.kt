@@ -63,20 +63,20 @@ fun HourlyWeatherInfoResponse.toHourlyForecasts(): List<HourlyForecast> = hourly
  */
 fun HourlyWeatherInfoResponse.toPrecipitationProbabilities(): List<PrecipitationProbability> =
     hourlyForecast.run {
-        val hourlyForecasts = mutableListOf<PrecipitationProbability>()
+        val probabilitiesList = mutableListOf<PrecipitationProbability>()
         for (i in timestamps.indices) {
             val epochSeconds = timestamps[i].toLong()
             val correspondingLocalTime = LocalTime
                 .ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneId.systemDefault())
                 .formatTo12HourInt()
 
-            val hourlyForecast = PrecipitationProbability(
+            val precipitationProbability = PrecipitationProbability(
                 hour = correspondingLocalTime,
-                probability = precipitationProbabilities[i].toFloat()
-            )
-            hourlyForecasts.add(hourlyForecast)
+                probability = precipitationProbabilities[i]
+            ) 
+            probabilitiesList.add(precipitationProbability)
         }
-        return@run hourlyForecasts
+        return@run probabilitiesList
     }
 
 /**
