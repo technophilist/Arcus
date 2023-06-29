@@ -7,11 +7,11 @@ import androidx.annotation.DrawableRes
  * @param hour The hour of the forecast.
  * @param isAM Whether the hour is AM or not.
  * @param weatherIconResId The resource ID of the weather icon.
- * @param temperatureString The temperature string containing the temperature
+ * @param temperature The forecasted temperature for the hour, rounded to an [Int].
  */
 data class HourlyForecast(
     val hour: Int,
     val isAM: Boolean,
     @DrawableRes val weatherIconResId: Int,
-    val temperatureString: String
+    val temperature: Int
 )
