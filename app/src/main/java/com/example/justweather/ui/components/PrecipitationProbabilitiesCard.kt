@@ -1,7 +1,6 @@
 package com.example.justweather.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -63,7 +62,7 @@ private fun ProbabilityProgressRow(
     }
     Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(
-            text = precipitationProbability.hourString,
+            text = precipitationProbability.hour.toString(),
             style = MaterialTheme.typography.labelLarge
         )
         LinearProgressIndicator(
