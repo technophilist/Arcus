@@ -1,5 +1,7 @@
 package com.example.justweather.data.repositories.weather
 
+import androidx.core.util.toClosedRange
+import androidx.core.util.toRange
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.di.NetworkModule
@@ -10,6 +12,7 @@ import org.mockito.kotlin.mock
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.doAnswer
+import java.time.LocalDate
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -79,5 +82,50 @@ class JustWeatherWeatherRepositoryTest {
             println(weatherDetail)
         }
     }
+
+    @Test
+    fun `Hourly precipitation probabilities must be fetched successfully for a valid date range & coordinate`() =
+        runTest {
+            // Given a set of valid test coordinates
+            val testLatitude = "38.6275"
+            val testLongitude = "-92.5666"
+            val currentLocalDate = LocalDate.now().also(::println)
+            val dateRange = currentLocalDate..currentLocalDate.plusDays(1)
+            // when getting the hourly precipitation probabilities for a given date range
+            val result =
+                weatherRepository.getHourlyPrecipitationProbabilities(
+                    latitude = testLatitude,
+                    longitude = testLongitude,
+                    dateRange = dateRange
+                ).getOrNull()!! // the result must be successfully fetched
+            // the result must contain the precipitation probabilities of only one coordinate
+            val resultCoordinateCount = result.distinctBy { it.latitude }.count()
+            assert(resultCoordinateCount == 1)
+            // the coordinates of the response can differ by at most 1 degree
+            // (the open-mateo api tends to return responses with coordinates that slightly
+            // deviate from what is passed to the API)
+            for (probability in result) {
+                val latitudeDifference = probability.latitude.toDouble() - testLatitude.toDouble()
+                val longitudeDifference =
+                    probability.longitude.toDouble() - testLongitude.toDouble()
+                assert(latitudeDifference <= 1 && longitudeDifference <= 1)
+            }
+            val probabilityHoursFor1Day = buildList {
+                var hour = 12
+                repeat(12) {
+                    add(Pair(hour, true))
+                    hour = (hour + 1) % 12
+                }
+                hour = 12
+                repeat(12) {
+                    add(Pair(hour, false))
+                    hour = (hour + 1) % 12
+                }
+            } // [ (12,true)..(11,true),(12,false)..(11,false)] the second value in the pair indicates whether the hour isAM or not
+            // the list must contain hourly probabilities for the given date range (2 days)
+            val expectedProbabilityHours = probabilityHoursFor1Day + probabilityHoursFor1Day
+            val probabilityHours = result.map { Pair(it.hour, it.isAM) }
+            assert(probabilityHours == expectedProbabilityHours)
+        }
 }
 
