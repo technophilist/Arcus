@@ -25,7 +25,11 @@ class HourlyWeatherInfoResponseMappingTest {
         temperatureForecasts = temperatureForecasts
     )
 
-    private val hourlyWeatherInfoResponse = HourlyWeatherInfoResponse(hourlyForecast)
+    private val hourlyWeatherInfoResponse = HourlyWeatherInfoResponse(
+        latitude = "",
+        longitude = "",
+        hourlyForecast = hourlyForecast
+    )
 
     @Test
     fun `HourlyWeatherInfoResponse to HourlyForecasts mapping test`() {
@@ -82,7 +86,7 @@ class HourlyWeatherInfoResponseMappingTest {
             assert(mappedPrecipitationProbability.hour == corresponding12hourTime)
             // the probability must match the expected probability (based on
             // the probabilities passed to the constructor of HourlyWeatherInfoResponse in this test)
-            assert(precipitationProbabilities[i].toFloat() == mappedPrecipitationProbability.probability)
+            assert(precipitationProbabilities[i] == mappedPrecipitationProbability.probability)
         }
     }
 }
