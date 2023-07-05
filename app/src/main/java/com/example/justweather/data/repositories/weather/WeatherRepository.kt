@@ -2,7 +2,9 @@ package com.example.justweather.data.repositories.weather
 
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.CurrentWeatherDetails
+import com.example.justweather.domain.models.PrecipitationProbability
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 /**
  * A repository that is responsible for containing all methods related with fetching weather
@@ -43,4 +45,19 @@ interface WeatherRepository {
      * to delete.
      */
     suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails)
+
+    /**
+     * Returns a [Result] containing a list of [PrecipitationProbability] objects for the specified
+     * location and date range.
+     *
+     * @param latitude The latitude of the location to retrieve precipitation probabilities for.
+     * @param longitude The longitude of the location to retrieve precipitation probabilities for.
+     * @param dateRange The date range to retrieve precipitation probabilities for. Defaults to
+     * today and tomorrow.
+     */
+    suspend fun getHourlyPrecipitationProbabilities(
+        latitude: String,
+        longitude: String,
+        dateRange: ClosedRange<LocalDate> = LocalDate.now()..LocalDate.now().plusDays(1)
+    ): Result<List<PrecipitationProbability>>
 }

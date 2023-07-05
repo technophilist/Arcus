@@ -1,13 +1,17 @@
 package com.example.justweather.data.repositories.weather
 
+import android.util.Range
 import com.example.justweather.data.getBodyOrThrowException
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.data.remote.weather.WeatherClient
 import com.example.justweather.data.remote.weather.models.toCurrentWeatherDetails
+import com.example.justweather.data.remote.weather.models.toHourlyForecasts
+import com.example.justweather.data.remote.weather.models.toPrecipitationProbabilities
 import com.example.justweather.domain.models.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.*
+import java.time.LocalDate
 import javax.inject.Inject
 
 /**
@@ -65,5 +69,22 @@ class JustWeatherWeatherRepository @Inject constructor(
 
     override suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails) {
         justWeatherDatabaseDao.deleteSavedWeatherEntity(briefWeatherLocation.toSavedWeatherLocationEntity())
+    }
+
+    override suspend fun getHourlyPrecipitationProbabilities(
+        latitude: String,
+        longitude: String,
+        dateRange: ClosedRange<LocalDate>
+    ): Result<List<PrecipitationProbability>> = try {
+        val precipitationProbabilities = weatherClient.getHourlyForecast(
+            latitude = latitude,
+            longitude = longitude,
+            startDate = dateRange.start,
+            endDate = dateRange.endInclusive
+        ).getBodyOrThrowException().toPrecipitationProbabilities()
+        Result.success(precipitationProbabilities)
+    } catch (exception: Exception) {
+        if (exception is CancellationException) throw exception
+        Result.failure(exception)
     }
 }
