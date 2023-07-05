@@ -52,7 +52,7 @@ fun HourlyWeatherInfoResponse.toHourlyForecasts(): List<HourlyForecast> = hourly
         )
         val hourlyForecast = HourlyForecast(
             hour = correspondingLocalTime.formatTo12HourInt(),
-            isAM = correspondingLocalTime.hour < 12,
+            isAM = correspondingLocalTime.isAM,
             weatherIconResId = weatherIconResId,
             temperature = temperatureForecasts[i].roundToInt()
         )
@@ -72,10 +72,12 @@ fun HourlyWeatherInfoResponse.toPrecipitationProbabilities(): List<Precipitation
             val epochSeconds = timestamps[i].toLong()
             val correspondingLocalTime = LocalTime
                 .ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneId.systemDefault())
-                .formatTo12HourInt()
+
+            val hourOfCorrespondingLocalTime = correspondingLocalTime.formatTo12HourInt()
 
             val precipitationProbability = PrecipitationProbability(
-                hour = correspondingLocalTime,
+                hour = hourOfCorrespondingLocalTime,
+                isAM = correspondingLocalTime.isAM,
                 probability = precipitationProbabilities[i],
                 latitude = latitude,
                 longitude = longitude
@@ -95,3 +97,8 @@ private fun LocalTime.formatTo12HourInt(): Int {
     return if (hourOfLocalTime.first() == '0') hourOfLocalTime.last().digitToInt()
     else hourOfLocalTime.toInt()
 }
+
+/**
+ * Returns true if this [LocalTime] is in the AM (before noon), false otherwise.
+ */
+private val LocalTime.isAM get() = hour < 12

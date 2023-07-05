@@ -12,6 +12,7 @@ data class PrecipitationProbability(
     val latitude:String,
     val longitude:String,
     val hour: Int,
+    val isAM:Boolean,
     @FloatRange(0.0, 1.0) val probability: Float
 )
 
