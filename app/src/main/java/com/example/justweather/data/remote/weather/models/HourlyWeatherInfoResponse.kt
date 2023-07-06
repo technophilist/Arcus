@@ -32,7 +32,7 @@ data class HourlyWeatherInfoResponse(
     @JsonClass(generateAdapter = true)
     data class HourlyForecast(
         @Json(name = "time") val timestamps: List<String>,
-        @Json(name = "precipitation_probability") val precipitationProbabilityPercentages: List<Float> = emptyList(),
+        @Json(name = "precipitation_probability") val precipitationProbabilityPercentages: List<Int> = emptyList(),
         @Json(name = "weathercode") val weatherCodes: List<Int> = emptyList(),
         @Json(name = "temperature_2m") val temperatureForecasts: List<Float> = emptyList()
     )

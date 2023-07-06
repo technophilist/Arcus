@@ -12,7 +12,7 @@ class HourlyWeatherInfoResponseMappingTest {
     private val endEpochSecond = LocalDateTime.now().plusHours(9).toEpochSecond(ZoneOffset.UTC)
     private val timeStampsFor10hours =
         (startEpochSecond..endEpochSecond step 3600).map { it.toString() }
-    private val precipitationProbabilities = List(10) { Random.nextFloat() }
+    private val precipitationProbabilities = List(10) { Random.nextInt(from = 0, until = 101) }
     private val weatherCodes = List(10) { 1 }
     private val temperatureForecasts = List(10) {
         Random.nextDouble(from = 0.0, until = 100.0).toFloat()
@@ -20,7 +20,7 @@ class HourlyWeatherInfoResponseMappingTest {
 
     private val hourlyForecast = HourlyWeatherInfoResponse.HourlyForecast(
         timestamps = timeStampsFor10hours,
-        precipitationProbabilities = precipitationProbabilities,
+        precipitationProbabilityPercentages = precipitationProbabilities,
         weatherCodes = weatherCodes,
         temperatureForecasts = temperatureForecasts
     )
@@ -86,7 +86,7 @@ class HourlyWeatherInfoResponseMappingTest {
             assert(mappedPrecipitationProbability.hour == corresponding12hourTime)
             // the probability must match the expected probability (based on
             // the probabilities passed to the constructor of HourlyWeatherInfoResponse in this test)
-            assert(precipitationProbabilities[i] == mappedPrecipitationProbability.probability)
+            assert(precipitationProbabilities[i] == mappedPrecipitationProbability.probabilityPercentage)
         }
     }
 }
