@@ -5,6 +5,7 @@ import com.example.justweather.domain.models.PrecipitationProbability
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -70,8 +71,9 @@ fun HourlyWeatherInfoResponse.toPrecipitationProbabilities(): List<Precipitation
         val probabilitiesList = mutableListOf<PrecipitationProbability>()
         for (i in timestamps.indices) {
             val epochSeconds = timestamps[i].toLong()
-            val correspondingLocalTime = LocalTime
+            val correspondingLocalTime = LocalDateTime
                 .ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneId.systemDefault())
+                .toLocalTime()
 
             val hourOfCorrespondingLocalTime = correspondingLocalTime.formatTo12HourInt()
 
