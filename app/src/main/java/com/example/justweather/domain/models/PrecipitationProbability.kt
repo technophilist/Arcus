@@ -11,7 +11,7 @@ data class PrecipitationProbability(
     val longitude:String,
     val hour: Int,
     val isAM:Boolean,
-    val probabilityPercentage: Float
+    val probabilityPercentage: Int
 )
 
 /**
