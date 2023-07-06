@@ -7,14 +7,9 @@ package com.example.justweather.domain.models
  * of this app, is not internationalization/user specific customization, LocalDateTime is not used here.
  */
 data class PrecipitationProbability(
-    val latitude:String,
-    val longitude:String,
+    val latitude: String,
+    val longitude: String,
     val hour: Int,
-    val isAM:Boolean,
+    val isAM: Boolean,
     val probabilityPercentage: Int
 )
-
-/**
- * Returns the precipitation probability as a percentage string.
- */
-val PrecipitationProbability.probabilityPercentageString get() = "${probabilityPercentage * 100}%"
