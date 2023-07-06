@@ -58,7 +58,8 @@ private fun ProbabilityProgressRow(
     var progressValue by remember { mutableStateOf(0f) }
     val animatedProgressValue by animateFloatAsState(targetValue = progressValue)
     LaunchedEffect(precipitationProbability) {
-        progressValue = precipitationProbability.probability
+        // dividing a percentage value by 100 will yield a value that is between 0.0f..1.0f
+        progressValue = precipitationProbability.probabilityPercentage / 100f
     }
     Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(
@@ -75,7 +76,7 @@ private fun ProbabilityProgressRow(
             trackColor = ProgressIndicatorDefaults.linearColor.copy(alpha = 0.5f)
         )
         Text(
-            text = precipitationProbability.probabilityPercentageString,
+            text = "${precipitationProbability.probabilityPercentage}%",
             style = MaterialTheme.typography.labelLarge
         )
     }
