@@ -1,7 +1,5 @@
 package com.example.justweather.domain.models
 
-import androidx.annotation.FloatRange
-
 /**
  * A data class that represents the precipitation probability.
  * Note: It's better to have the time as an instance of LocalDateTime. This will allow for additional
@@ -13,10 +11,10 @@ data class PrecipitationProbability(
     val longitude:String,
     val hour: Int,
     val isAM:Boolean,
-    @FloatRange(0.0, 1.0) val probability: Float
+    val probabilityPercentage: Float
 )
 
 /**
  * Returns the precipitation probability as a percentage string.
  */
-val PrecipitationProbability.probabilityPercentageString get() = "${probability * 100}%"
+val PrecipitationProbability.probabilityPercentageString get() = "${probabilityPercentage * 100}%"
