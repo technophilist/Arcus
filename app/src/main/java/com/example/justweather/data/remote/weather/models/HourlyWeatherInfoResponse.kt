@@ -24,14 +24,15 @@ data class HourlyWeatherInfoResponse(
     /**
      * A data class representing the hourly forecast data.
      * @property timestamps The list of timestamps representing the hours.
-     * @property precipitationProbabilities A list of precipitation probabilities for the [timestamps].
+     * @property precipitationProbabilityPercentages A list of precipitation probability percentages
+     * for the [timestamps].
      * @property weatherCodes A list of weather codes for the [timestamps].
      * @property temperatureForecasts A list of forecasted temperatures for the [timestamps].
      */
     @JsonClass(generateAdapter = true)
     data class HourlyForecast(
         @Json(name = "time") val timestamps: List<String>,
-        @Json(name = "precipitation_probability") val precipitationProbabilities: List<Float> = emptyList(),
+        @Json(name = "precipitation_probability") val precipitationProbabilityPercentages: List<Float> = emptyList(),
         @Json(name = "weathercode") val weatherCodes: List<Int> = emptyList(),
         @Json(name = "temperature_2m") val temperatureForecasts: List<Float> = emptyList()
     )
@@ -80,7 +81,7 @@ fun HourlyWeatherInfoResponse.toPrecipitationProbabilities(): List<Precipitation
             val precipitationProbability = PrecipitationProbability(
                 hour = hourOfCorrespondingLocalTime,
                 isAM = correspondingLocalTime.isAM,
-                probability = precipitationProbabilities[i],
+                probability = precipitationProbabilityPercentages[i],
                 latitude = latitude,
                 longitude = longitude
             )
