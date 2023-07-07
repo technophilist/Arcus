@@ -5,10 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.justweather.data.repositories.weather.WeatherRepository
 import com.example.justweather.domain.models.CurrentWeatherDetails
+import com.example.justweather.domain.models.PrecipitationProbability
 import com.example.justweather.ui.navigation.JustWeatherNavigationDestinations.WeatherDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,11 +42,19 @@ class WeatherDetailViewModel @Inject constructor(
             initialValue = true
         )
 
+    private val _precipitationProbabilityList =
+        MutableStateFlow<List<PrecipitationProbability>>(emptyList())
+    val precipitationProbabilityList =
+        _precipitationProbabilityList as StateFlow<List<PrecipitationProbability>>
+
     private val _uiState = MutableStateFlow(UiState.IDLE)
     val uiState = _uiState as StateFlow<UiState>
 
     init {
-        viewModelScope.launch { fetchWeatherInfo() }
+        viewModelScope.launch {
+            fetchWeatherInfo()
+            fetchAndAssignPrecipitationForecasts()
+        }
     }
 
     /**
@@ -57,6 +71,21 @@ class WeatherDetailViewModel @Inject constructor(
 
         _uiState.value = if (weatherDetails == null) UiState.ERROR
         else UiState.IDLE
+    }
+
+    private suspend fun fetchAndAssignPrecipitationForecasts() {
+        val hourlyPrecipitationProbabilities =
+            weatherRepository.getHourlyPrecipitationProbabilities(
+                latitude = latitude,
+                longitude = longitude,
+                dateRange = LocalDate.now()..LocalDate.now().plusDays(1)
+            ).getOrNull() ?: return
+        val precipitationProbabilitiesForTheNext24hours = hourlyPrecipitationProbabilities.filter {
+            val isSameDay = it.dateTime == LocalDateTime.now()
+            if (isSameDay) it.dateTime.toLocalTime() >= LocalTime.now()
+            else it.dateTime > LocalDateTime.now()
+        }.take(24)
+        _precipitationProbabilityList.value = precipitationProbabilitiesForTheNext24hours
     }
 
     fun addLocationToSavedLocations() {
