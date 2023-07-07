@@ -11,7 +11,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.justweather.R
 import com.example.justweather.domain.models.PrecipitationProbability
-import com.example.justweather.domain.models.probabilityPercentageString
 
 /**
  * A card composable that displays precipitation probabilities in a "progress bar" styled manner.
