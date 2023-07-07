@@ -1,16 +1,19 @@
 package com.example.justweather.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.justweather.R
 import com.example.justweather.domain.models.PrecipitationProbability
+import com.example.justweather.domain.models.hourStringInTwelveHourFormat
 
 /**
  * A card composable that displays precipitation probabilities in a "progress bar" styled manner.
@@ -56,22 +59,13 @@ private fun ProbabilityProgressRow(
 ) {
     var progressValue by remember { mutableStateOf(0f) }
     val animatedProgressValue by animateFloatAsState(targetValue = progressValue)
-    val hourText = remember(precipitationProbability) {
-        val isProbabilityHourSingleDigit = precipitationProbability.hour < 10
-        // Add empty characters to the start of the string if the hour is a single digit number
-        // to ensure that the length of the hour text remains constant, regardless of whether
-        // the hour text is a single digit or not.
-        val hourText = if (isProbabilityHourSingleDigit) "  ${precipitationProbability.hour}"
-        else precipitationProbability.hour
-        "$hourText ${if (precipitationProbability.isAM) "AM" else "PM"}"
-    }
     LaunchedEffect(precipitationProbability) {
         // dividing a percentage value by 100 will yield a value that is between 0.0f..1.0f
         progressValue = precipitationProbability.probabilityPercentage / 100f
     }
     Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(
-            text = hourText,
+            text = precipitationProbability.hourStringInTwelveHourFormat.padStart(length = 5),
             style = MaterialTheme.typography.labelLarge
         )
         LinearProgressIndicator(
@@ -84,7 +78,7 @@ private fun ProbabilityProgressRow(
             trackColor = ProgressIndicatorDefaults.linearColor.copy(alpha = 0.5f)
         )
         Text(
-            text = "${precipitationProbability.probabilityPercentage}%",
+            text = "${precipitationProbability.probabilityPercentage}%".padStart(length = 4),
             style = MaterialTheme.typography.labelLarge
         )
     }
