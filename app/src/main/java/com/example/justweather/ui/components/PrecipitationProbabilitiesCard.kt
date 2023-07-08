@@ -1,12 +1,8 @@
 package com.example.justweather.ui.components
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateDpAsState
+
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
@@ -14,16 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.justweather.R
+import com.example.justweather.domain.hourStringInTwelveHourFormat
 import com.example.justweather.domain.models.PrecipitationProbability
-import com.example.justweather.domain.models.hourStringInTwelveHourFormat
 
 /**
  * A card composable that displays precipitation probabilities in a "vertical progress bar" styled manner.
@@ -84,7 +77,7 @@ private fun ProbabilityProgressColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = precipitationProbability.hourStringInTwelveHourFormat.padStart(length = 5),
+            text = precipitationProbability.dateTime.hourStringInTwelveHourFormat.padStart(length = 5),
             style = MaterialTheme.typography.labelLarge
         )
         // Since Modifier.rotate() rotates the composable in a separate graphics layer,
