@@ -46,15 +46,17 @@ fun HourlyWeatherInfoResponse.toHourlyForecasts(): List<HourlyForecast> = hourly
     val hourlyForecasts = mutableListOf<HourlyForecast>()
     for (i in timestamps.indices) {
         val epochSeconds = timestamps[i].toLong()
-        val correspondingLocalTime =
-            LocalTime.ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneId.systemDefault())
+        val correspondingLocalTime = LocalDateTime
+            .ofInstant(
+                Instant.ofEpochSecond(epochSeconds),
+                ZoneId.systemDefault()
+            )
         val weatherIconResId = getWeatherIconResForCode(
             weatherCode = weatherCodes[i],
             isDay = correspondingLocalTime.hour < 19
         )
         val hourlyForecast = HourlyForecast(
-            hour = correspondingLocalTime.formatTo12HourInt(),
-            isAM = correspondingLocalTime.isAM,
+            dateTime = correspondingLocalTime,
             weatherIconResId = weatherIconResId,
             temperature = temperatureForecasts[i].roundToInt()
         )

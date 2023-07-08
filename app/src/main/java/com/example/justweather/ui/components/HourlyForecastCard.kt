@@ -9,16 +9,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.example.justweather.R
+import com.example.justweather.domain.hourStringInTwelveHourFormat
 import com.example.justweather.domain.models.HourlyForecast
+import java.time.LocalDateTime
 
 /**
  * A Card composable that contains a horizontally scrolling list of [hourlyForecasts].
@@ -55,8 +54,7 @@ fun HourlyForecastCard(
         ) {
             items(hourlyForecasts) {
                 HourlyForecastItem(
-                    hourOfDay = it.hour,
-                    isAM = it.isAM,
+                    dateTime = it.dateTime,
                     iconResId = it.weatherIconResId,
                     temperature = it.temperature
                 )
@@ -69,30 +67,17 @@ fun HourlyForecastCard(
 @Composable
 private fun HourlyForecastItem(
     modifier: Modifier = Modifier,
-    hourOfDay: Int,
-    isAM: Boolean,
+    dateTime: LocalDateTime,
     @DrawableRes iconResId: Int,
     temperature: Int
 ) {
-    val labelLargeStyle = MaterialTheme.typography.labelLarge.toSpanStyle()
-    val labelSmallStyle = MaterialTheme.typography.labelSmall.toSpanStyle()
-    val hourOfDayText = remember(hourOfDay) {
-        buildAnnotatedString {
-            withStyle(labelLargeStyle) {
-                append(hourOfDay.toString())
-            }
-            withStyle(labelSmallStyle) {
-                append(if (isAM) "AM" else "PM")
-            }
-        }
-    }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = hourOfDayText,
+            text = dateTime.hourStringInTwelveHourFormat,
             style = MaterialTheme.typography.labelLarge
         )
         Icon(
