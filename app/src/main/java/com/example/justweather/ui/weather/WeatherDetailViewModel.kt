@@ -11,11 +11,9 @@ import com.example.justweather.ui.navigation.JustWeatherNavigationDestinations.W
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -80,7 +78,7 @@ class WeatherDetailViewModel @Inject constructor(
 
     private suspend fun fetchAndAssignPrecipitationForecasts() {
         val hourlyPrecipitationProbabilities =
-            weatherRepository.getHourlyPrecipitationProbabilities(
+            weatherRepository.fetchHourlyPrecipitationProbabilities(
                 latitude = latitude,
                 longitude = longitude,
                 dateRange = LocalDate.now()..LocalDate.now().plusDays(1)

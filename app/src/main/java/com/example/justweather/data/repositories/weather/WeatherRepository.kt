@@ -56,7 +56,7 @@ interface WeatherRepository {
      * @param dateRange The date range to retrieve precipitation probabilities for. Defaults to
      * today and tomorrow.
      */
-    suspend fun getHourlyPrecipitationProbabilities(
+    suspend fun fetchHourlyPrecipitationProbabilities(
         latitude: String,
         longitude: String,
         dateRange: ClosedRange<LocalDate> = LocalDate.now()..LocalDate.now().plusDays(1)

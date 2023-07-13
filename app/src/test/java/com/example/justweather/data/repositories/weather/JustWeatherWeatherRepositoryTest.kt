@@ -1,7 +1,5 @@
 package com.example.justweather.data.repositories.weather
 
-import androidx.core.util.toClosedRange
-import androidx.core.util.toRange
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
 import com.example.justweather.di.NetworkModule
@@ -13,7 +11,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.doAnswer
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -94,7 +91,7 @@ class JustWeatherWeatherRepositoryTest {
             val dateRange = currentLocalDate..currentLocalDate.plusDays(1) // 48 hours
             // when getting the hourly precipitation probabilities for a given date range (48 hours)
             val result =
-                weatherRepository.getHourlyPrecipitationProbabilities(
+                weatherRepository.fetchHourlyPrecipitationProbabilities(
                     latitude = testLatitude,
                     longitude = testLongitude,
                     dateRange = dateRange

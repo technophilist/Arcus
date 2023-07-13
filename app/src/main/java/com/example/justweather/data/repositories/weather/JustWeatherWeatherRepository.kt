@@ -1,6 +1,5 @@
 package com.example.justweather.data.repositories.weather
 
-import android.util.Range
 import com.example.justweather.data.getBodyOrThrowException
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
@@ -72,7 +71,7 @@ class JustWeatherWeatherRepository @Inject constructor(
     }
 
     // todo - rename prefix of function to "fetch"
-    override suspend fun getHourlyPrecipitationProbabilities(
+    override suspend fun fetchHourlyPrecipitationProbabilities(
         latitude: String,
         longitude: String,
         dateRange: ClosedRange<LocalDate>
