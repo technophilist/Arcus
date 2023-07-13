@@ -6,9 +6,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 /**
@@ -42,51 +40,50 @@ data class HourlyWeatherInfoResponse(
 /**
  * Used to convert an instance of [HourlyWeatherInfoResponse] to a list of [HourlyForecast]'s.
  */
-fun HourlyWeatherInfoResponse.toHourlyForecasts(): List<HourlyForecast> = hourlyForecast.run {
-    val hourlyForecasts = mutableListOf<HourlyForecast>()
-    for (i in timestamps.indices) {
-        val epochSeconds = timestamps[i].toLong()
+fun HourlyWeatherInfoResponse.toHourlyForecasts(): List<HourlyForecast> {
+    val hourlyForecastList = mutableListOf<HourlyForecast>()
+    for (i in hourlyForecast.timestamps.indices) {
+        val epochSeconds = hourlyForecast.timestamps[i].toLong()
         val correspondingLocalTime = LocalDateTime
             .ofInstant(
                 Instant.ofEpochSecond(epochSeconds),
                 ZoneId.systemDefault()
             )
         val weatherIconResId = getWeatherIconResForCode(
-            weatherCode = weatherCodes[i],
+            weatherCode = hourlyForecast.weatherCodes[i],
             isDay = correspondingLocalTime.hour < 19
         )
         val hourlyForecast = HourlyForecast(
             dateTime = correspondingLocalTime,
             weatherIconResId = weatherIconResId,
-            temperature = temperatureForecasts[i].roundToInt()
+            temperature = hourlyForecast.temperatureForecasts[i].roundToInt()
         )
-        hourlyForecasts.add(hourlyForecast)
+        hourlyForecastList.add(hourlyForecast)
     }
-    return@run hourlyForecasts
+    return hourlyForecastList
 }
 
 /**
  * Used to convert an instance of [HourlyWeatherInfoResponse] to a list of
  * PrecipitationProbabilities.
  */
-fun HourlyWeatherInfoResponse.toPrecipitationProbabilities(): List<PrecipitationProbability> =
-    hourlyForecast.run {
-        val probabilitiesList = mutableListOf<PrecipitationProbability>()
-        for (i in timestamps.indices) {
-            val epochSeconds = timestamps[i].toLong()
-            val correspondingLocalDateTime = LocalDateTime
-                .ofInstant(
-                    Instant.ofEpochSecond(epochSeconds),
-                    ZoneId.systemDefault()
-                )
-
-            val precipitationProbability = PrecipitationProbability(
-                dateTime = correspondingLocalDateTime,
-                probabilityPercentage = precipitationProbabilityPercentages[i],
-                latitude = latitude,
-                longitude = longitude
+fun HourlyWeatherInfoResponse.toPrecipitationProbabilities(): List<PrecipitationProbability> {
+    val probabilitiesList = mutableListOf<PrecipitationProbability>()
+    for (i in hourlyForecast.timestamps.indices) {
+        val epochSeconds = hourlyForecast.timestamps[i].toLong()
+        val correspondingLocalDateTime = LocalDateTime
+            .ofInstant(
+                Instant.ofEpochSecond(epochSeconds),
+                ZoneId.systemDefault()
             )
-            probabilitiesList.add(precipitationProbability)
-        }
-        return@run probabilitiesList
+
+        val precipitationProbability = PrecipitationProbability(
+            dateTime = correspondingLocalDateTime,
+            probabilityPercentage = hourlyForecast.precipitationProbabilityPercentages[i],
+            latitude = latitude,
+            longitude = longitude
+        )
+        probabilitiesList.add(precipitationProbability)
     }
+    return probabilitiesList
+}
