@@ -90,7 +90,7 @@ class JustWeatherWeatherRepositoryTest {
             // Given a set of valid test coordinates
             val testLatitude = "38.6275"
             val testLongitude = "-92.5666"
-            val currentLocalDate = LocalDate.now().also(::println)
+            val currentLocalDate = LocalDate.now()
             val dateRange = currentLocalDate..currentLocalDate.plusDays(1) // 48 hours
             // when getting the hourly precipitation probabilities for a given date range (48 hours)
             val result =
@@ -112,6 +112,24 @@ class JustWeatherWeatherRepositoryTest {
                 assert(latitudeDifference <= 1 && longitudeDifference <= 1)
             }
             // the result must have exactly 48 hourly forecast items
+            assert(result.size == 48)
+        }
+
+    @Test
+    fun `Hourly forecasts must be fetched successfully for a valid date range & coordinate`() =
+        runTest {
+            // Given a set of valid test coordinates
+            val testLatitude = "38.6275"
+            val testLongitude = "-92.5666"
+            val currentLocalDate = LocalDate.now().also(::println)
+            val dateRange = currentLocalDate..currentLocalDate.plusDays(1) // 48 hours
+            // when getting the hourly forecasts for a given date range (48 hours)
+            val result = weatherRepository.fetchHourlyForecasts(
+                latitude = testLatitude,
+                longitude = testLongitude,
+                dateRange = dateRange
+            ).getOrNull()!! // the result must be successfully fetched
+            // and it must exactly have 48 hourly forecast items
             assert(result.size == 48)
         }
 }
