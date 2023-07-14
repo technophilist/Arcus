@@ -7,10 +7,12 @@ import com.example.justweather.data.repositories.weather.WeatherRepository
 import com.example.justweather.domain.models.CurrentWeatherDetails
 import com.example.justweather.domain.models.HourlyForecast
 import com.example.justweather.domain.models.PrecipitationProbability
+import com.example.justweather.domain.models.SingleWeatherDetail
 import com.example.justweather.ui.navigation.JustWeatherNavigationDestinations.WeatherDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -49,6 +51,11 @@ class WeatherDetailViewModel @Inject constructor(
     private val _hourlyForecastList = MutableStateFlow<List<HourlyForecast>>(emptyList())
     val hourlyForecastList = _hourlyForecastList as StateFlow<List<HourlyForecast>>
 
+    private val _additionalWeatherDetailsList =
+        MutableStateFlow<List<SingleWeatherDetail>>(emptyList())
+    val additionalWeatherDetailsList =
+        _additionalWeatherDetailsList as StateFlow<List<SingleWeatherDetail>>
+
     private val _uiState = MutableStateFlow(UiState.IDLE)
     val uiState = _uiState as StateFlow<UiState>
 
@@ -57,6 +64,7 @@ class WeatherDetailViewModel @Inject constructor(
             fetchWeatherInfo()
             fetchAndAssignPrecipitationForecasts()
             fetchAndAssignHourlyForecasts()
+            fetchAndAssignSingleWeatherDetailList()
         }
     }
 
@@ -103,6 +111,14 @@ class WeatherDetailViewModel @Inject constructor(
             else it.dateTime > LocalDateTime.now()
         }.take(24)
         _hourlyForecastList.value = hourlyForecastsForTheNext24hours
+    }
+
+    private suspend fun fetchAndAssignSingleWeatherDetailList() {
+        _additionalWeatherDetailsList.value =
+            weatherRepository.fetchAdditionalWeatherInfoItemsListForCurrentDay(
+                latitude = latitude,
+                longitude = longitude
+            ).getOrNull() ?: return
     }
 
     fun addLocationToSavedLocations() {
