@@ -49,6 +49,28 @@ object WeatherClientConstants {
     }
 
     /**
+     * Contains constants that represent the different daily forecast items available in the API.
+     */
+    enum class DailyForecastItems(private val valueToBeSentToTheApi: String) {
+        MAX_TEMPERATURE("temperature_2m_max"),
+        MIN_TEMPERATURE("temperature_2m_min"),
+        MAX_APPARENT_TEMPERATURE("apparent_temperature_max"),
+        MIN_APPARENT_TEMPERATURE("apparent_temperature_min"),
+        SUNRISE("sunrise"),
+        SUNSET("sunset"),
+        UV_INDEX("uv_index_max"),
+        WIND_SPEED("windspeed_10m_max"),
+        WIND_DIRECTION("winddirection_10m_dominant"),
+        ALL(
+            "${MAX_TEMPERATURE},$MIN_TEMPERATURE," +
+                    "$MAX_APPARENT_TEMPERATURE,$MIN_APPARENT_TEMPERATURE," +
+                    "$SUNRISE,$SUNSET,$UV_INDEX,$WIND_SPEED,${WIND_DIRECTION}"
+        );
+
+        override fun toString(): String = valueToBeSentToTheApi
+    }
+
+    /**
      * Contains constants that represent the different hourly forecast items available in the API.
      */
     enum class HourlyForecastItems(private val valueToBeSentToTheApi: String) {
