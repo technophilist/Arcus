@@ -4,6 +4,7 @@ import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.CurrentWeatherDetails
 import com.example.justweather.domain.models.HourlyForecast
 import com.example.justweather.domain.models.PrecipitationProbability
+import com.example.justweather.domain.models.SingleWeatherDetail
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
@@ -65,11 +66,22 @@ interface WeatherRepository {
     /**
      * Fetches hourly forecasts for the given [latitude] and [longitude] within the specified
      * [dateRange]. It returns a [Result] object containing a list of [HourlyForecast] objects if
-     * the fetch operation was successful, else an error message.
+     * the fetch operation was successful, else an error messagex.
      */
     suspend fun fetchHourlyForecasts(
         latitude: String,
         longitude: String,
         dateRange: ClosedRange<LocalDate>
     ): Result<List<HourlyForecast>>
+
+
+    /**
+     * Used to fetch a list of [SingleWeatherDetail] items for the current day encapsulated in a
+     * [Result] type. These items represent additional weather information for the given location at
+     * the specified [latitude] and [longitude].
+     */
+    suspend fun fetchAdditionalWeatherInfoItemsListForCurrentDay(
+        latitude: String,
+        longitude: String
+    ): Result<List<SingleWeatherDetail>>
 }
