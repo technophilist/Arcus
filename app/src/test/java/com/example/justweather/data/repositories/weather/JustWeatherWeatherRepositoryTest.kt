@@ -129,5 +129,16 @@ class JustWeatherWeatherRepositoryTest {
             // and it must exactly have 48 hourly forecast items
             assert(result.size == 48)
         }
+
+    @Test
+    fun `Additional Weather Items must be fetched successfully for a valid coordinate`() =
+        runTest {
+            val testLatitude = "38.6275"
+            val testLongitude = "-92.5666"
+            weatherRepository.fetchAdditionalWeatherInfoItemsListForCurrentDay(
+                latitude = testLatitude,
+                longitude = testLongitude
+            ).getOrThrow() // the result must be successfully fetched
+        }
 }
 
