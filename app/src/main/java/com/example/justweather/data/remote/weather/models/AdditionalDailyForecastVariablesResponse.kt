@@ -1,7 +1,14 @@
 package com.example.justweather.data.remote.weather.models
 
+import com.example.justweather.R
+import com.example.justweather.domain.models.SingleWeatherDetail
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import kotlin.math.roundToInt
 
 /**
  * A response object that contains [AdditionalForecastedVariables] for a specific location.
@@ -34,5 +41,76 @@ data class AdditionalDailyForecastVariablesResponse(
         @Json(name = "uv_index_max") val maxUvIndex: List<Double>,
         @Json(name = "winddirection_10m_dominant") val dominantWindDirection: List<Int>,
         @Json(name = "windspeed_10m_max") val windSpeed: List<Double>
+    )
+}
+
+
+/**
+ * Used to convert an instance of [AdditionalDailyForecastVariablesResponse] to a list of
+ * [SingleWeatherDetail] items.
+ */
+fun AdditionalDailyForecastVariablesResponse.toSingleWeatherDetailList(
+    timeFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm a")
+): List<SingleWeatherDetail> = additionalForecastedVariables.toSingleWeatherDetailList(timeFormat)
+
+/**
+ * Used to convert an instance of [AdditionalDailyForecastVariablesResponse.AdditionalForecastedVariables]
+ * to a list of [SingleWeatherDetail] items.
+ */
+private fun AdditionalDailyForecastVariablesResponse.AdditionalForecastedVariables.toSingleWeatherDetailList(
+    timeFormat: DateTimeFormatter
+): List<SingleWeatherDetail> {
+    require(minTemperatureForTheDay.size == 1) {
+        "This mapper method will only consider the first value of each list" +
+                "Make sure you request the details for only one day."
+    }
+    val apparentTemperature =
+        (minApparentTemperature.first().roundToInt() + maxApparentTemperature.first()
+            .roundToInt()) / 2
+    val sunriseTimeString = LocalDateTime.ofInstant(
+        Instant.ofEpochSecond(sunrise.first().toLong()), // todo: change type of property to long
+        ZoneId.systemDefault()
+    ).toLocalTime().format(timeFormat)
+    val sunsetTimeString = LocalDateTime.ofInstant(
+        Instant.ofEpochSecond(sunset.first().toLong()), // todo: change type of property to long
+        ZoneId.systemDefault()
+    ).format(timeFormat)
+
+    return listOf(
+        SingleWeatherDetail(
+            name = "Feels Like",
+            value = apparentTemperature.toString(),
+            iconResId = R.drawable.ic_day_clear // todo : this is a place holder
+        ),
+        SingleWeatherDetail(
+            name = "Max Temperature",
+            value = maxTemperatureForTheDay.first().roundToInt().toString(),
+            iconResId = R.drawable.ic_day_clear // todo : this is a place holder
+        ),
+        SingleWeatherDetail(
+            name = "Sunrise",
+            value = sunriseTimeString,
+            iconResId = R.drawable.ic_day_clear // todo : this is a place holder
+        ),
+        SingleWeatherDetail(
+            name = "Sunset",
+            value = sunsetTimeString,
+            iconResId = R.drawable.ic_day_clear // todo : this is a place holder
+        ),
+        SingleWeatherDetail(
+            name = "Max UV Index",
+            value = maxUvIndex.toString(),
+            iconResId = R.drawable.ic_day_clear // todo : this is a place holder
+        ),
+        SingleWeatherDetail(
+            name = "Wind Direction",
+            value = dominantWindDirection.toString(), // todo : this is a place holder
+            iconResId = R.drawable.ic_day_clear // todo : this is a place holder
+        ),
+        SingleWeatherDetail(
+            name = "Wind Speed",
+            value = windSpeed.toString(),
+            iconResId = R.drawable.ic_day_clear // todo : this is a place holder
+        )
     )
 }
