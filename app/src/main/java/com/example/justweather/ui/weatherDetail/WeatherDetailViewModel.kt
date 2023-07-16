@@ -1,4 +1,4 @@
-package com.example.justweather.ui.weather
+package com.example.justweather.ui.weatherDetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,6 @@ import com.example.justweather.ui.navigation.JustWeatherNavigationDestinations.W
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime

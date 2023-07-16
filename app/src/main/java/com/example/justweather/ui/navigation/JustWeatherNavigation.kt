@@ -15,11 +15,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.justweather.R
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.LocationAutofillSuggestion
-import com.example.justweather.domain.models.SingleWeatherDetail
 import com.example.justweather.ui.home.HomeScreen
 import com.example.justweather.ui.home.HomeViewModel
-import com.example.justweather.ui.weather.WeatherDetailViewModel
-import com.example.justweather.ui.weather.WeatherDetailScreen
+import com.example.justweather.ui.weatherDetail.WeatherDetailViewModel
+import com.example.justweather.ui.weatherDetail.WeatherDetailScreen
 import kotlin.math.roundToInt
 
 

@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
-package com.example.justweather.ui.weather
+package com.example.justweather.ui.weatherDetail
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
