@@ -179,10 +179,13 @@ private fun Header(
                 modifier = Modifier.offset(y = (-24).dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Explicitly set tint to Color.Unspecified to ensure that no tint is applied to the vector
+                // resource. See documentation of the Icon composable for more information.
                 Icon(
                     modifier = Modifier.size(32.dp),
                     imageVector = ImageVector.vectorResource(id = weatherConditionIconId),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = Color.Unspecified
                 )
                 Text(text = weatherCondition)
             }

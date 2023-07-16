@@ -83,10 +83,13 @@ private fun ShortWeatherDescriptionWithIconRow(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Explicitly set tint to Color.Unspecified to ensure that no tint is applied to the vector
+        // resource. See documentation of the Icon composable for more information.
         Icon(
             modifier = Modifier.size(24.dp),
             imageVector = ImageVector.vectorResource(id = iconRes),
-            contentDescription = null
+            contentDescription = null,
+            tint = Color.Unspecified
         )
         Text(
             text = shortDescription,

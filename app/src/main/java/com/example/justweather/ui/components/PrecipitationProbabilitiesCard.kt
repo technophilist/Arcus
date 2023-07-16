@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -33,10 +34,13 @@ fun PrecipitationProbabilitiesCard(
             modifier = Modifier.padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            // Explicitly set tint to Color.Unspecified to ensure that no tint is applied to the vector
+            // resource. See documentation of the Icon composable for more information.
             Icon(
                 modifier = Modifier.size(24.dp),
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_day_rain), // todo change icon
-                contentDescription = null
+                contentDescription = null,
+                tint = Color.Unspecified
             )
             Text(
                 text = "Chance of Rain",
