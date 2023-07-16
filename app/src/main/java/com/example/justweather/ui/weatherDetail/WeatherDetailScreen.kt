@@ -88,11 +88,7 @@ fun WeatherDetailScreen(
             )
         }
         item {
-            Spacer(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .padding(16.dp)
-            )
+            Spacer(modifier = Modifier.navigationBarsPadding())
         }
     }
 }
