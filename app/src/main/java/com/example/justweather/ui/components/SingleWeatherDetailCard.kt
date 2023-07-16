@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 /**
@@ -46,7 +47,8 @@ fun SingleWeatherDetailCard(
                     text = name,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
-                    minLines = 1
+                    minLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = value,
