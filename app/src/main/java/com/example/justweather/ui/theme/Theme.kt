@@ -10,18 +10,49 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 
-private val DarkColorScheme = darkColorScheme()
-private val LightColorScheme = lightColorScheme()
+private val JustWeatherDarkColorScheme = darkColorScheme(
+    primary = Blue80,
+    onPrimary = Blue20,
+    primaryContainer = Blue30,
+    onPrimaryContainer = Blue90,
+    inversePrimary = Blue40,
+    secondary = DarkBlue80,
+    onSecondary = DarkBlue20,
+    secondaryContainer = DarkBlue30,
+    onSecondaryContainer = DarkBlue90,
+    tertiary = Yellow80,
+    onTertiary = Yellow20,
+    tertiaryContainer = Yellow30,
+    onTertiaryContainer = Yellow90,
+    error = Red80,
+    onError = Red20,
+    errorContainer = Red30,
+    onErrorContainer = Red90,
+    background = Grey10,
+    onBackground = Grey90,
+    surface = Grey10,
+    onSurface = Grey80,
+    inverseSurface = Grey90,
+    inverseOnSurface = Grey20,
+    surfaceVariant = BlueGrey30,
+    onSurfaceVariant = BlueGrey80,
+    outline = BlueGrey60
+)
 
 @Composable
-fun JustWeatherTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun JustWeatherTheme(areDynamicColorsEnabled: Boolean = true, content: @Composable () -> Unit) {
+    val doesDeviceSupportDynamicColors =
+        areDynamicColorsEnabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val context = LocalContext.current
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+        colorScheme = if (doesDeviceSupportDynamicColors) dynamicDarkColorScheme(context)
+        else JustWeatherDarkColorScheme,
         typography = Typography,
         content = content
     )
