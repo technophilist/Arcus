@@ -4,6 +4,7 @@ import com.example.justweather.R
 import com.example.justweather.domain.models.CurrentWeatherDetails
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlin.math.roundToInt
 
 /**
  * A data class that models the response that would be received when a request to get the current
@@ -29,7 +30,7 @@ data class CurrentWeatherResponse(
 ) {
     @JsonClass(generateAdapter = true)
     data class CurrentWeather(
-        val temperature: String,
+        val temperature: Double,
         @Json(name = "is_day") val isDay: Int,
         @Json(name = "weathercode") val weatherCode: Int,
     )
@@ -40,7 +41,7 @@ data class CurrentWeatherResponse(
  */
 fun CurrentWeatherResponse.toCurrentWeatherDetails(nameOfLocation: String): CurrentWeatherDetails =
     CurrentWeatherDetails(
-        temperature = currentWeather.temperature,
+        temperature = currentWeather.temperature.roundToInt().toString(),
         nameOfLocation = nameOfLocation,
         weatherCondition = weatherCodeToDescriptionMap.getValue(currentWeather.weatherCode),
         isDay = currentWeather.isDay,
