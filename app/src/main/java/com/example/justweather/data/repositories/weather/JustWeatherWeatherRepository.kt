@@ -68,7 +68,14 @@ class JustWeatherWeatherRepository @Inject constructor(
     }
 
     override suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails) {
-        justWeatherDatabaseDao.deleteSavedWeatherEntity(briefWeatherLocation.toSavedWeatherLocationEntity())
+        val savedLocationEntity = briefWeatherLocation.toSavedWeatherLocationEntity()
+        justWeatherDatabaseDao.markWeatherEntityAsDeleted(savedLocationEntity.nameOfLocation)
+    }
+
+    override suspend fun permanentlyDeleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails) {
+        briefWeatherLocation.toSavedWeatherLocationEntity().run {
+            justWeatherDatabaseDao.deleteSavedWeatherEntity(this)
+        }
     }
 
     // todo - rename prefix of function to "fetch"

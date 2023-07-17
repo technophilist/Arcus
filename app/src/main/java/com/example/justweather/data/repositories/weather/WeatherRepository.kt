@@ -42,11 +42,20 @@ interface WeatherRepository {
 
     /**
      * Deletes a weather location from the saved items.
-     *
+     * If an item is needed to be permanently deleted, see [permanentlyDeleteWeatherLocationFromSavedItems].
+     * // todo, update docs of this method
      * @param briefWeatherLocation The [BriefWeatherDetails] object representing the item
      * to delete.
      */
     suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails)
+
+    /**
+     * Used to permanently delete a weather location from the saved items.
+     *
+     * @param briefWeatherLocation The [BriefWeatherDetails] object representing the item
+     * to permanently delete.
+     */
+    suspend fun permanentlyDeleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails)
 
     /**
      * Returns a [Result] containing a list of [PrecipitationProbability] objects for the specified
