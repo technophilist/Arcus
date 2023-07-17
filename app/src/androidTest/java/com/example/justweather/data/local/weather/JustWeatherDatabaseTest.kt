@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import kotlin.concurrent.fixedRateTimer
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -52,7 +53,7 @@ internal class JustWeatherDatabaseTest {
             latitude = "47.6062",
             longitude = "-122.3321"
         )
-        with(dao){
+        with(dao) {
             // add item to database
             addSavedWeatherEntity(weatherLocationEntity)
             // the item must be inserted
@@ -62,6 +63,34 @@ internal class JustWeatherDatabaseTest {
             // the item must not exist in the database
             assert(!getAllSavedWeatherEntities().first().contains(weatherLocationEntity))
         }
+    }
+
+
+    @Test
+    fun markAndUnMarkEntityAsDeletedTest_savedEntity_isMarkedAndUnMarkedCorrectly() = runTest {
+        // Given an entity saved in the database
+        val weatherLocationEntity = SavedWeatherLocationEntity(
+            nameOfLocation = "New York",
+            latitude = "40.7128",
+            longitude = "74.0060"
+        ).also { dao.addSavedWeatherEntity(it) }
+
+        // the isDeleted property must be initially set to false
+        var savedWeatherEntitiesList: List<SavedWeatherLocationEntity> =
+            dao.getAllSavedWeatherEntities().first()
+        assert(!savedWeatherEntitiesList.first().isDeleted)
+
+        // when the item is marked as deleted
+        dao.markWeatherEntityAsDeleted(weatherLocationEntity.nameOfLocation)
+        savedWeatherEntitiesList = dao.getAllSavedWeatherEntities().first()
+        // the isDeleted property of the item must be set to true
+        assert(savedWeatherEntitiesList.first().isDeleted)
+
+        // when the item is unmarked as deleted
+        dao.markWeatherEntityAsUnDeleted(weatherLocationEntity.nameOfLocation)
+        savedWeatherEntitiesList = dao.getAllSavedWeatherEntities().first()
+        // the isDeleted property of the item must be set back to false
+        assert(!savedWeatherEntitiesList.first().isDeleted)
     }
 
 }
