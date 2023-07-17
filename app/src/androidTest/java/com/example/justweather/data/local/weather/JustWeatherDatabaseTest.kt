@@ -65,6 +65,27 @@ internal class JustWeatherDatabaseTest {
         }
     }
 
+    @Test
+    fun fetchSavedItemsTest_onlyItemsMarkedAsNotDeletedAreFetched() = runTest {
+        // given two saved entities in the database - one marked as deleted and the other not
+        // marked as deleted
+        val savedEntity1 = SavedWeatherLocationEntity(
+            nameOfLocation = "New York",
+            latitude = "40.7128",
+            longitude = "74.0060",
+            isDeleted = false // marked as not deleted
+        ).also { dao.addSavedWeatherEntity(it) }
+        val savedEntity2 = SavedWeatherLocationEntity(
+            nameOfLocation = "Seattle",
+            latitude = "47.6062",
+            longitude = "-122.3321",
+            isDeleted = true // marked as deleted
+        ).also { dao.addSavedWeatherEntity(it) }
+        // when getting the list of all saved weather entities
+        val savedWeatherEntities = dao.getAllSavedWeatherEntities().first()
+        // only those entities that are not marked as deleted must be fetched
+        assert(savedWeatherEntities.contains(savedEntity1))
+    }
 
     @Test
     fun markAndUnMarkEntityAsDeletedTest_savedEntity_isMarkedAndUnMarkedCorrectly() = runTest {
