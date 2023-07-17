@@ -9,7 +9,7 @@ import org.intellij.lang.annotations.Language
 
 @Dao
 interface JustWeatherDatabaseDao {
-    @Query("SELECT * FROM savedweatherlocations ORDER BY nameOfLocation ASC")
+    @Query("SELECT * FROM savedweatherlocations WHERE isDeleted == 0 ORDER BY nameOfLocation ASC")
     fun getAllSavedWeatherEntities(): Flow<List<SavedWeatherLocationEntity>>
 
     @Upsert
