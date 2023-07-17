@@ -11,5 +11,6 @@ import androidx.room.PrimaryKey
 data class SavedWeatherLocationEntity(
     @PrimaryKey val nameOfLocation: String,
     val latitude: String,
-    val longitude: String
+    val longitude: String,
+    val isDeleted: Boolean = false
 )
