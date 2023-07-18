@@ -6,7 +6,6 @@ import com.example.justweather.data.repositories.location.LocationServicesReposi
 import com.example.justweather.data.repositories.weather.WeatherRepository
 import com.example.justweather.domain.models.BriefWeatherDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -40,6 +39,8 @@ class HomeViewModel @Inject constructor(
     val weatherDetailsOfSavedLocations =
         _weatherDetailsOfSavedLocations as StateFlow<List<BriefWeatherDetails>>
 
+    private var recentlyDeletedItem: BriefWeatherDetails? = null
+
     init {
         _uiState.value = UiState.LOADING_SAVED_LOCATIONS
         weatherRepository
@@ -61,8 +62,15 @@ class HomeViewModel @Inject constructor(
     }
 
     fun deleteSavedWeatherLocation(briefWeatherDetails: BriefWeatherDetails) {
+        recentlyDeletedItem = briefWeatherDetails
         viewModelScope.launch {
             weatherRepository.deleteWeatherLocationFromSavedItems(briefWeatherDetails)
+        }
+    }
+
+    fun restoreRecentlyDeletedItem() {
+        recentlyDeletedItem?.let {
+            viewModelScope.launch { weatherRepository.tryRestoringDeletedWeatherLocation(it.nameOfLocation) }
         }
     }
 
