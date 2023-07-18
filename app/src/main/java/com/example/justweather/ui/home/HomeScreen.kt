@@ -1,6 +1,7 @@
 package com.example.justweather.ui.home
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,7 +30,11 @@ import com.example.justweather.ui.components.AutofillSuggestion
  * @param modifier The modifier to be applied to the composable.
  * @param weatherDetailsOfSavedLocations The list of weather details of saved locations.
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalAnimationApi::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -98,14 +103,35 @@ fun HomeScreen(
                 items = weatherDetailsOfSavedLocations,
                 key = { it.nameOfLocation } // swipeable cards will be buggy without keys
             ) {
+                // The default "rememberDismissState" uses "rememberSaveable" under the hood.
+                // This is an issue because the swiped state gets restored when the item is removed
+                // and added back to the list.
+                // If an item gets removed (after getting swiped) and is added back to the list,
+                // the item's state would still be set to "swiped" because the state got saved in
+                // savedInstanceState by rememberSaveable.
+                val dismissState = remember{
+                    DismissState(
+                        initialValue = DismissValue.Default,
+                        confirmValueChange = { dismissValue ->
+                            if (dismissValue == DismissValue.DismissedToStart) {
+                                onSavedLocationDismissed(it)
+                                true
+                            } else {
+                                false
+                            }
+                        }
+                    )
+                }
                 SwipeToDismissCompactWeatherCard(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .animateItemPlacement(),
                     nameOfLocation = it.nameOfLocation,
                     shortDescription = it.shortDescription,
                     shortDescriptionIcon = it.shortDescriptionIcon,
                     weatherInDegrees = it.currentTemperature,
                     onClick = { onSavedLocationItemClick(it) },
-                    onDismiss = { onSavedLocationDismissed(it) }
+                    dismissState = dismissState
                 )
             }
         }

@@ -111,19 +111,9 @@ fun SwipeToDismissCompactWeatherCard(
     @DrawableRes shortDescriptionIcon: Int,
     weatherInDegrees: String,
     onClick: () -> Unit,
-    onDismiss: () -> Unit,
+    dismissState: DismissState,
     modifier: Modifier = Modifier,
 ) {
-    val dismissState = rememberDismissState(
-        confirmValueChange = {
-            if (it == DismissValue.DismissedToStart) {
-                onDismiss()
-                true
-            } else {
-                false
-            }
-        }
-    )
     SwipeToDismiss(
         modifier = modifier,
         state = dismissState,
