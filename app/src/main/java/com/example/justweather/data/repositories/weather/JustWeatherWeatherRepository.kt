@@ -128,4 +128,8 @@ class JustWeatherWeatherRepository @Inject constructor(
         if (exception is CancellationException) throw exception
         Result.failure(exception)
     }
+
+    override suspend fun tryRestoringDeletedWeatherLocation(nameOfLocation: String) {
+        justWeatherDatabaseDao.markWeatherEntityAsUnDeleted(nameOfLocation)
+    }
 }

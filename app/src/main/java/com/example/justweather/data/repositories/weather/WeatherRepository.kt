@@ -41,21 +41,32 @@ interface WeatherRepository {
     suspend fun saveWeatherLocation(nameOfLocation: String, latitude: String, longitude: String)
 
     /**
-     * Deletes a weather location from the saved items.
-     * If an item is needed to be permanently deleted, see [permanentlyDeleteWeatherLocationFromSavedItems].
-     * // todo, update docs of this method
+     * Deletes a weather location from the saved items. Deleting an item using this method will
+     * allow it to be restored using [tryRestoringDeletedWeatherLocation]. If an item is needed to be
+     * permanently deleted, use [permanentlyDeleteWeatherLocationFromSavedItems].
      * @param briefWeatherLocation The [BriefWeatherDetails] object representing the item
      * to delete.
      */
     suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails)
 
     /**
-     * Used to permanently delete a weather location from the saved items.
+     * Used to permanently delete a weather location from the saved items. If an item is needed to be
+     * deleted, with a chance of it getting restored using [tryRestoringDeletedWeatherLocation], then
+     * use [deleteWeatherLocationFromSavedItems].
      *
      * @param briefWeatherLocation The [BriefWeatherDetails] object representing the item
      * to permanently delete.
      */
     suspend fun permanentlyDeleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails)
+
+    /**
+     * Used to try restoring a recently deleted weather location with the provided [nameOfLocation].
+     * This method doesn't guarantee that the item would be restored. As the name indicates, it only
+     * tries to restore the item. If the item gets restored successfully, then the
+     * [getWeatherStreamForPreviouslySavedLocations] will automatically emit a new list with the
+     * item added to it.
+     */
+    suspend fun tryRestoringDeletedWeatherLocation(nameOfLocation: String)
 
     /**
      * Returns a [Result] containing a list of [PrecipitationProbability] objects for the specified
