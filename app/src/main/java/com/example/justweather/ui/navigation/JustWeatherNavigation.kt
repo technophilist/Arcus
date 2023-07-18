@@ -1,9 +1,13 @@
 package com.example.justweather.ui.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -19,6 +23,7 @@ import com.example.justweather.ui.home.HomeScreen
 import com.example.justweather.ui.home.HomeViewModel
 import com.example.justweather.ui.weatherDetail.WeatherDetailViewModel
 import com.example.justweather.ui.weatherDetail.WeatherDetailScreen
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
@@ -66,7 +71,8 @@ private fun NavGraphBuilder.homeScreen(
             .collectAsStateWithLifecycle(initialValue = emptyList())
         val weatherDetailsOfSavedLocations by viewModel.weatherDetailsOfSavedLocations
             .collectAsStateWithLifecycle()
-
+        val snackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
         HomeScreen(
             modifier = Modifier.fillMaxSize(),
             weatherDetailsOfSavedLocations = weatherDetailsOfSavedLocations,
@@ -76,7 +82,14 @@ private fun NavGraphBuilder.homeScreen(
             onSuggestionClick = onSuggestionClick,
             onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration,
             onSavedLocationItemClick = onSavedLocationItemClick,
-            onSavedLocationDismissed = viewModel::deleteSavedWeatherLocation
+            onSavedLocationDismissed = {
+                viewModel.deleteSavedWeatherLocation(it)
+                snackbarHostState.currentSnackbarData?.dismiss()
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(message = "${it.nameOfLocation} has been deleted")
+                }
+            },
+            snackbarHostState = snackbarHostState
         )
     }
 }

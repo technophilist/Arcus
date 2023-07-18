@@ -40,7 +40,8 @@ fun HomeScreen(
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
     onSavedLocationDismissed: (BriefWeatherDetails) -> Unit,
-    onSearchQueryChange: (String) -> Unit
+    onSearchQueryChange: (String) -> Unit,
+    snackbarHostState: SnackbarHostState
 ) {
     var isSearchBarActive by remember { mutableStateOf(false) }
     var currentQueryText by remember { mutableStateOf("") }
@@ -48,65 +49,72 @@ fun HomeScreen(
         currentQueryText = ""
         onSearchQueryChange("")
     }
-
-    LazyColumn(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item {
-            Header(
-                modifier = Modifier.fillMaxWidth(),
-                currentSearchQuery = currentQueryText,
-                onClearSearchQueryIconClick = clearQueryText,
-                isSearchBarActive = isSearchBarActive,
-                onSearchQueryChange = {
-                    currentQueryText = it
-                    onSearchQueryChange(it)
-                },
-                onSearchBarActiveChange = { isSearchBarActive = it },
-                onSearch = {/* TODO: handle search */ },
-                searchBarSuggestionsContent = {
-                    AutoFillSuggestionsList(
-                        suggestions = suggestionsForSearchQuery,
-                        onSuggestionClick = onSuggestionClick,
-                        isSuggestionsListLoading = isSuggestionsListLoading
-                    )
-                }
-            )
-        }
-
-        item {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .padding(end = 8.dp),
-                    text = "Saved Locations",
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Normal
+    Box {
+        LazyColumn(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                Header(
+                    modifier = Modifier.fillMaxWidth(),
+                    currentSearchQuery = currentQueryText,
+                    onClearSearchQueryIconClick = clearQueryText,
+                    isSearchBarActive = isSearchBarActive,
+                    onSearchQueryChange = {
+                        currentQueryText = it
+                        onSearchQueryChange(it)
+                    },
+                    onSearchBarActiveChange = { isSearchBarActive = it },
+                    onSearch = {/* TODO: handle search */ },
+                    searchBarSuggestionsContent = {
+                        AutoFillSuggestionsList(
+                            suggestions = suggestionsForSearchQuery,
+                            onSuggestionClick = onSuggestionClick,
+                            isSuggestionsListLoading = isSuggestionsListLoading
+                        )
+                    }
                 )
-                if (isWeatherForSavedLocationsLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(12.dp),
-                        strokeWidth = 2.dp
+            }
+
+            item {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                            .padding(end = 8.dp),
+                        text = "Saved Locations",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Normal
                     )
+                    if (isWeatherForSavedLocationsLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(12.dp),
+                            strokeWidth = 2.dp
+                        )
+                    }
                 }
             }
+            items(
+                items = weatherDetailsOfSavedLocations,
+                key = { it.nameOfLocation } // swipeable cards will be buggy without keys
+            ) {
+                SwipeToDismissCompactWeatherCard(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    nameOfLocation = it.nameOfLocation,
+                    shortDescription = it.shortDescription,
+                    shortDescriptionIcon = it.shortDescriptionIcon,
+                    weatherInDegrees = it.currentTemperature,
+                    onClick = { onSavedLocationItemClick(it) },
+                    onDismiss = { onSavedLocationDismissed(it) }
+                )
+            }
         }
-        items(
-            items = weatherDetailsOfSavedLocations,
-            key = { it.nameOfLocation } // swipeable cards will be buggy without keys
-        ) {
-            SwipeToDismissCompactWeatherCard(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                nameOfLocation = it.nameOfLocation,
-                shortDescription = it.shortDescription,
-                shortDescriptionIcon = it.shortDescriptionIcon,
-                weatherInDegrees = it.currentTemperature,
-                onClick = { onSavedLocationItemClick(it) },
-                onDismiss = { onSavedLocationDismissed(it) }
-            )
-        }
+        SnackbarHost(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding(),
+            hostState = snackbarHostState
+        )
     }
 }
 
