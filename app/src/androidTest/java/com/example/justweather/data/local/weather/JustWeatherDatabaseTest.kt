@@ -114,4 +114,17 @@ internal class JustWeatherDatabaseTest {
         assert(!savedWeatherEntitiesList.first().isDeleted)
     }
 
+    @Test
+    fun markAndUnMarkEntityAsDeletedTest_nonExistingEntry_doesNotThrowAnyException() = runTest {
+        // Given an entity not saved in the database
+        val weatherLocationEntity = SavedWeatherLocationEntity(
+            nameOfLocation = "New York",
+            latitude = "40.7128",
+            longitude = "74.0060"
+        )
+        // no exception must be thrown when marking the item as deleted/non-deleted
+        dao.markWeatherEntityAsDeleted(weatherLocationEntity.nameOfLocation)
+        dao.markWeatherEntityAsUnDeleted(weatherLocationEntity.nameOfLocation)
+    }
+
 }
