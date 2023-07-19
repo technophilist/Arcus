@@ -56,11 +56,15 @@ internal class JustWeatherDatabaseTest {
             // add item to database
             addSavedWeatherEntity(weatherLocationEntity)
             // the item must be inserted
-            assert(getAllWeatherEntitiesMarkedAsNotDeleted().first().contains(weatherLocationEntity))
+            assert(
+                getAllWeatherEntitiesMarkedAsNotDeleted().first().contains(weatherLocationEntity)
+            )
             // delete item from database
             deleteSavedWeatherEntity(weatherLocationEntity)
             // the item must not exist in the database
-            assert(!getAllWeatherEntitiesMarkedAsNotDeleted().first().contains(weatherLocationEntity))
+            assert(
+                !getAllWeatherEntitiesMarkedAsNotDeleted().first().contains(weatherLocationEntity)
+            )
         }
     }
 
@@ -124,6 +128,30 @@ internal class JustWeatherDatabaseTest {
         // no exception must be thrown when marking the item as deleted/non-deleted
         dao.markWeatherEntityAsDeleted(weatherLocationEntity.nameOfLocation)
         dao.markWeatherEntityAsUnDeleted(weatherLocationEntity.nameOfLocation)
+    }
+
+    @Test
+    fun deleteAllItemsMarkedAsDeletedTest_allItemsMarkedAsDeletedMustBeDeleted() = runTest {
+        val markedAsDeletedItems = listOf(
+            SavedWeatherLocationEntity("New York", "40.7128", "-74.0060", isDeleted = true),
+            SavedWeatherLocationEntity("Los Angeles", "34.0522", "-118.2437", isDeleted = true)
+        ).onEach { dao.addSavedWeatherEntity(it) }
+        val markedAsNotDeletedItems = listOf(
+            SavedWeatherLocationEntity("Chicago", "41.8781", "-87.6298", isDeleted = false),
+            SavedWeatherLocationEntity("Houston", "29.7604", "-95.3698", isDeleted = false)
+        ).onEach { dao.addSavedWeatherEntity(it) }
+        // given a database filled with some items marked as deleted and some items marked as not deleted
+        assert(
+            dao.getAllWeatherEntitiesIrrespectiveOfDeletedStatus().first()
+                .containsAll(markedAsDeletedItems + markedAsDeletedItems)
+        )
+        // when dao.deleteAllItemsMarkedAsDeleted() is invoked
+        dao.deleteAllItemsMarkedAsDeleted()
+        // all items that were marked as deleted must be removed
+        val savedEntities =
+            dao.getAllWeatherEntitiesIrrespectiveOfDeletedStatus().first().also(::println)
+        assert(savedEntities.size == 2)
+        assert(savedEntities.containsAll(markedAsNotDeletedItems))
     }
 
 }
