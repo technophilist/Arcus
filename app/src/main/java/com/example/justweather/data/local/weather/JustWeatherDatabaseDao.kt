@@ -11,6 +11,9 @@ interface JustWeatherDatabaseDao {
     @Query("SELECT * FROM savedweatherlocations WHERE isDeleted == 0 ORDER BY nameOfLocation ASC")
     fun getAllWeatherEntitiesMarkedAsNotDeleted(): Flow<List<SavedWeatherLocationEntity>>
 
+    @Query("SELECT * FROM savedweatherlocations")
+    fun getAllWeatherEntitiesIrrespectiveOfDeletedStatus(): Flow<List<SavedWeatherLocationEntity>>
+
     @Upsert
     suspend fun addSavedWeatherEntity(weatherLocationEntity: SavedWeatherLocationEntity)
 
