@@ -23,6 +23,9 @@ interface JustWeatherDatabaseDao {
     @Query("UPDATE savedweatherlocations SET isDeleted = 0 WHERE nameOfLocation = :nameOfWeatherLocationEntity")
     suspend fun markWeatherEntityAsUnDeleted(nameOfWeatherLocationEntity: String)
 
+    @Query("DELETE FROM savedweatherlocations WHERE isDeleted = 1")
+    suspend fun deleteAllItemsMarkedAsDeleted()
+
     @Delete
     suspend fun deleteSavedWeatherEntity(weatherLocationEntity: SavedWeatherLocationEntity)
 }
