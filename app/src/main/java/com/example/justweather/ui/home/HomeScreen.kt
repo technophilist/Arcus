@@ -57,7 +57,8 @@ fun HomeScreen(
     Box {
         LazyColumn(
             modifier = modifier,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = WindowInsets.navigationBars.asPaddingValues()
         ) {
             item {
                 Header(
@@ -109,7 +110,7 @@ fun HomeScreen(
                 // If an item gets removed (after getting swiped) and is added back to the list,
                 // the item's state would still be set to "swiped" because the state got saved in
                 // savedInstanceState by rememberSaveable.
-                val dismissState = remember{
+                val dismissState = remember {
                     DismissState(
                         initialValue = DismissValue.Default,
                         confirmValueChange = { dismissValue ->
@@ -133,6 +134,10 @@ fun HomeScreen(
                     onClick = { onSavedLocationItemClick(it) },
                     dismissState = dismissState
                 )
+            }
+
+            item {
+
             }
         }
         SnackbarHost(
