@@ -9,7 +9,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import kotlin.concurrent.fixedRateTimer
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -40,7 +39,7 @@ internal class JustWeatherDatabaseTest {
             longitude = "74.0060"
         )
         dao.addSavedWeatherEntity(weatherLocationEntity)
-        with(dao.getAllSavedWeatherEntities().first()) {
+        with(dao.getAllWeatherEntitiesMarkedAsNotDeleted().first()) {
             assert(size == 1)
             assert(first() == weatherLocationEntity)
         }
@@ -57,11 +56,11 @@ internal class JustWeatherDatabaseTest {
             // add item to database
             addSavedWeatherEntity(weatherLocationEntity)
             // the item must be inserted
-            assert(getAllSavedWeatherEntities().first().contains(weatherLocationEntity))
+            assert(getAllWeatherEntitiesMarkedAsNotDeleted().first().contains(weatherLocationEntity))
             // delete item from database
             deleteSavedWeatherEntity(weatherLocationEntity)
             // the item must not exist in the database
-            assert(!getAllSavedWeatherEntities().first().contains(weatherLocationEntity))
+            assert(!getAllWeatherEntitiesMarkedAsNotDeleted().first().contains(weatherLocationEntity))
         }
     }
 
@@ -82,7 +81,7 @@ internal class JustWeatherDatabaseTest {
             isDeleted = true // marked as deleted
         ).also { dao.addSavedWeatherEntity(it) }
         // when getting the list of all saved weather entities
-        val savedWeatherEntities = dao.getAllSavedWeatherEntities().first()
+        val savedWeatherEntities = dao.getAllWeatherEntitiesMarkedAsNotDeleted().first()
         // only those entities that are not marked as deleted must be fetched
         assert(savedWeatherEntities.contains(savedEntity1))
     }
@@ -98,18 +97,18 @@ internal class JustWeatherDatabaseTest {
 
         // the isDeleted property must be initially set to false
         var savedWeatherEntitiesList: List<SavedWeatherLocationEntity> =
-            dao.getAllSavedWeatherEntities().first()
+            dao.getAllWeatherEntitiesMarkedAsNotDeleted().first()
         assert(!savedWeatherEntitiesList.first().isDeleted)
 
         // when the item is marked as deleted
         dao.markWeatherEntityAsDeleted(weatherLocationEntity.nameOfLocation)
-        savedWeatherEntitiesList = dao.getAllSavedWeatherEntities().first()
+        savedWeatherEntitiesList = dao.getAllWeatherEntitiesMarkedAsNotDeleted().first()
         // the isDeleted property of the item must be set to true
         assert(savedWeatherEntitiesList.first().isDeleted)
 
         // when the item is unmarked as deleted
         dao.markWeatherEntityAsUnDeleted(weatherLocationEntity.nameOfLocation)
-        savedWeatherEntitiesList = dao.getAllSavedWeatherEntities().first()
+        savedWeatherEntitiesList = dao.getAllWeatherEntitiesMarkedAsNotDeleted().first()
         // the isDeleted property of the item must be set back to false
         assert(!savedWeatherEntitiesList.first().isDeleted)
     }

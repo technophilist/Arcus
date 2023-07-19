@@ -5,12 +5,11 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
-import org.intellij.lang.annotations.Language
 
 @Dao
 interface JustWeatherDatabaseDao {
     @Query("SELECT * FROM savedweatherlocations WHERE isDeleted == 0 ORDER BY nameOfLocation ASC")
-    fun getAllSavedWeatherEntities(): Flow<List<SavedWeatherLocationEntity>>
+    fun getAllWeatherEntitiesMarkedAsNotDeleted(): Flow<List<SavedWeatherLocationEntity>>
 
     @Upsert
     suspend fun addSavedWeatherEntity(weatherLocationEntity: SavedWeatherLocationEntity)

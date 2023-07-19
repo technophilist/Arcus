@@ -38,7 +38,7 @@ class JustWeatherWeatherRepositoryTest {
     @Before
     fun setup() {
         val daoMock = mock<JustWeatherDatabaseDao> {
-            onBlocking { getAllSavedWeatherEntities() } doAnswer {
+            onBlocking { getAllWeatherEntitiesMarkedAsNotDeleted() } doAnswer {
                 flowOf(savedLocations)
             }
         }
