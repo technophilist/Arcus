@@ -1,6 +1,6 @@
 package com.example.justweather.data.workers
 
-import android.app.Application
+import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -17,11 +17,11 @@ import kotlinx.coroutines.withContext
  */
 @HiltWorker
 class DeleteMarkedItemsWorker @AssistedInject constructor(
-    @Assisted application: Application,
+    @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val dao: JustWeatherDatabaseDao,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
-) : CoroutineWorker(application, workerParameters) {
+) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         try {
