@@ -126,6 +126,10 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.15.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.0") // Make's moshi not depend on reflection + generates Kotlin code using Kotlin Poet
 
+    // work manager
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.hilt:hilt-work:1.0.0")
+
     // junit
     testImplementation("junit:junit:4.13.2")
 
