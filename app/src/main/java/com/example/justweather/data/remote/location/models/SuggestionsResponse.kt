@@ -23,7 +23,7 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
         @Json(name = "id") val idOfPlace: String,
         @Json(name = "name") val nameOfPlace: String,
         @Json(name = "country") val country: String,
-        @Json(name = "admin1") val state: String,
+        @Json(name = "admin1") val state: String?,
         val latitude: String,
         val longitude: String
     )
@@ -43,5 +43,6 @@ fun SuggestionsResponse.Suggestion.toLocationAutofillSuggestion(): LocationAutof
             longitude = longitude
         )
     )
+
 
 
