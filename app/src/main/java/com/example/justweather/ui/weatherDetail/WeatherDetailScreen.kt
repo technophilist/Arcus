@@ -173,7 +173,9 @@ private fun Header(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                modifier = Modifier.offset(y = 24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
                 text = nameOfLocation,
                 style = MaterialTheme.typography.displayMedium,
                 textAlign = TextAlign.Center,
@@ -185,7 +187,7 @@ private fun Header(
                 style = MaterialTheme.typography.displayLarge.copy(fontSize = 80.sp)
             )
             Row(
-                modifier = Modifier.offset(y = (-24).dp),
+                modifier = Modifier.offset(x = (-8).dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // Explicitly set tint to Color.Unspecified to ensure that no tint is applied to the vector
