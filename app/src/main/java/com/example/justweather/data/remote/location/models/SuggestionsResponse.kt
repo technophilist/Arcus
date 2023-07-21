@@ -30,21 +30,6 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
 }
 
 /**
- * A mapper function used to map an instance of [SuggestionsResponse] to an instance of
- * [LocationAutofillSuggestion].
- */
-fun SuggestionsResponse.Suggestion.toLocationAutofillSuggestion(): LocationAutofillSuggestion =
-    LocationAutofillSuggestion(
-        idOfLocation = idOfPlace,
-        nameOfLocation = nameOfPlace,
-        addressOfLocation = "$state, $country",
-        coordinatesOfLocation = LocationAutofillSuggestion.Coordinates(
-            latitude = latitude,
-            longitude = longitude
-        )
-    )
-
-/**
  * A mapper function used to map a list of type [SuggestionsResponse.Suggestion] to a list of
  * of type [LocationAutofillSuggestion].
  */
