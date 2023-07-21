@@ -2,11 +2,9 @@ package com.example.justweather.data.repositories.location
 
 import com.example.justweather.data.getBodyOrThrowException
 import com.example.justweather.data.remote.location.LocationClient
-import com.example.justweather.data.remote.location.models.coordinates
-import com.example.justweather.data.remote.location.models.toLocationAutofillSuggestionList
+import com.example.justweather.data.remote.location.models.toLocationAutofillSuggestion
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import kotlinx.coroutines.CancellationException
-import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -22,7 +20,7 @@ class JustWeatherLocationServicesRepository @Inject constructor(
             val suggestions = locationClient.getPlacesSuggestionsForQuery(query = query)
                 .getBodyOrThrowException()
                 .suggestions
-                .map { it.toLocationAutofillSuggestionList() }
+                .map { it.toLocationAutofillSuggestion() }
             Result.success(suggestions)
         } catch (exception: Exception) {
             if (exception is CancellationException) throw exception
