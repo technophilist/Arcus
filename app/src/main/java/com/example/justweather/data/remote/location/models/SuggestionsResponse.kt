@@ -44,5 +44,20 @@ fun SuggestionsResponse.Suggestion.toLocationAutofillSuggestion(): LocationAutof
         )
     )
 
-
-
+/**
+ * A mapper function used to map a list of type [SuggestionsResponse.Suggestion] to a list of
+ * of type [LocationAutofillSuggestion].
+ */
+fun List<SuggestionsResponse.Suggestion>.toLocationAutofillSuggestionList(): List<LocationAutofillSuggestion> =
+    this.filter { it.state != null }
+        .map {
+            LocationAutofillSuggestion(
+                idOfLocation = it.idOfPlace,
+                nameOfLocation = it.nameOfPlace,
+                addressOfLocation = "${it.state}, ${it.country}",
+                coordinatesOfLocation = LocationAutofillSuggestion.Coordinates(
+                    latitude = it.latitude,
+                    longitude = it.longitude
+                )
+            )
+        }
