@@ -49,7 +49,7 @@ fun CompactWeatherCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = nameOfLocation,
                     maxLines = 1,
