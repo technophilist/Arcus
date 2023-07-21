@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -106,10 +107,9 @@ private fun Header(
     weatherCondition: String,
 ) {
     Box(modifier = modifier) {
-        val iconButtonContainerColor by animateColorAsState(
-            targetValue = if (isSystemInDarkTheme()) Color.Black.copy(0.4f)
-            else Color.White.copy(0.4f)
-        )
+        val iconButtonContainerColor = remember {
+            Color.Black.copy(0.4f)
+        }
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = headerImageResId),
