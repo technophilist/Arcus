@@ -114,6 +114,8 @@ fun NavGraphBuilder.weatherDetailScreen(
         val precipitationProbabilityList by viewModel.precipitationProbabilityList.collectAsStateWithLifecycle()
         val hourlyForecastList by viewModel.hourlyForecastList.collectAsStateWithLifecycle()
         val singleWeatherDetailList by viewModel.additionalWeatherDetailsList.collectAsStateWithLifecycle()
+        val snackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
 
         WeatherDetailScreen(
             nameOfLocation = weatherDetails?.nameOfLocation ?: "- -",
@@ -123,10 +125,17 @@ fun NavGraphBuilder.weatherDetailScreen(
             weatherCondition = weatherDetails?.weatherCondition ?: "- -",
             onBackButtonClick = onBackButtonClick,
             isPreviouslySavedLocation = isSavedLocation,
-            onSaveButtonClick = viewModel::addLocationToSavedLocations,
+            onSaveButtonClick = {
+                viewModel.addLocationToSavedLocations()
+                snackbarHostState.currentSnackbarData?.dismiss()
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(message = "Added to saved locations")
+                }
+            },
             singleWeatherDetails = singleWeatherDetailList,
             hourlyForecasts = hourlyForecastList,
-            precipitationProbabilities = precipitationProbabilityList
+            precipitationProbabilities = precipitationProbabilityList,
+            snackbarHostState = snackbarHostState
         )
     }
 }
