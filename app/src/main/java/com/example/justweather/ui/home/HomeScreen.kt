@@ -17,11 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.text.style.TextAlign
 import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.components.AutofillSuggestion
+import com.example.justweather.ui.components.SwipeToDismissCompactWeatherCard
 
 /**
  * A home screen composable that displays a search bar with a list containing the current weather for
