@@ -1,6 +1,5 @@
 package com.example.justweather.data.remote.weather.models
 
-import com.example.justweather.R
 import com.example.justweather.domain.models.CurrentWeatherDetails
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -41,7 +40,7 @@ data class CurrentWeatherResponse(
  */
 fun CurrentWeatherResponse.toCurrentWeatherDetails(nameOfLocation: String): CurrentWeatherDetails =
     CurrentWeatherDetails(
-        temperature = currentWeather.temperature.roundToInt().toString(),
+        temperatureRoundedToInt = currentWeather.temperature.roundToInt(),
         nameOfLocation = nameOfLocation,
         weatherCondition = weatherCodeToDescriptionMap.getValue(currentWeather.weatherCode),
         isDay = currentWeather.isDay,

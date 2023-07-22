@@ -58,9 +58,9 @@ fun WeatherDetailScreen(
     } else {
         WeatherDetailScreen(
             nameOfLocation = currentWeatherDetails.nameOfLocation,
-            weatherConditionImage = currentWeatherDetails.imageResId, // todo
+            weatherConditionImage = currentWeatherDetails.imageResId,
             weatherConditionIconId = currentWeatherDetails.iconResId,
-            weatherInDegrees = currentWeatherDetails.temperature.toFloat().roundToInt(),
+            weatherInDegrees = currentWeatherDetails.temperatureRoundedToInt,
             weatherCondition = currentWeatherDetails.weatherCondition,
             onBackButtonClick = onBackButtonClick,
             isPreviouslySavedLocation = isPreviouslySavedLocation,

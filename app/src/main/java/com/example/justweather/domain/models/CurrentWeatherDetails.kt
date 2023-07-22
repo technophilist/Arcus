@@ -7,7 +7,7 @@ import androidx.annotation.DrawableRes
  */
 data class CurrentWeatherDetails(
     val nameOfLocation: String,
-    val temperature: String,
+    val temperatureRoundedToInt: Int,
     val weatherCondition: String,
     val isDay: Int,
     @DrawableRes val iconResId: Int,
@@ -21,7 +21,7 @@ data class CurrentWeatherDetails(
  */
 fun CurrentWeatherDetails.toBriefWeatherDetails(): BriefWeatherDetails = BriefWeatherDetails(
     nameOfLocation = nameOfLocation,
-    currentTemperature = temperature,
+    currentTemperature = temperatureRoundedToInt.toString(),
     shortDescription = weatherCondition,
     shortDescriptionIcon = iconResId,
     latitude = latitude,
