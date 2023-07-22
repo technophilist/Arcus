@@ -118,11 +118,7 @@ fun NavGraphBuilder.weatherDetailScreen(
         val coroutineScope = rememberCoroutineScope()
 
         WeatherDetailScreen(
-            nameOfLocation = weatherDetails?.nameOfLocation ?: "- -",
-            weatherConditionImage = weatherDetails?.imageResId ?: R.drawable.ic_day_clear, // todo
-            weatherConditionIconId = weatherDetails?.iconResId ?: R.drawable.ic_day_clear,
-            weatherInDegrees = weatherDetails?.temperature?.toFloat()?.roundToInt() ?: 0,
-            weatherCondition = weatherDetails?.weatherCondition ?: "- -",
+            currentWeatherDetails = weatherDetails,
             onBackButtonClick = onBackButtonClick,
             isPreviouslySavedLocation = isSavedLocation,
             onSaveButtonClick = {

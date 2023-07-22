@@ -1,11 +1,8 @@
 package com.example.justweather.ui.weatherDetail
 
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -16,7 +13,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,15 +26,53 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.justweather.domain.models.CurrentWeatherDetails
 import com.example.justweather.domain.models.HourlyForecast
 import com.example.justweather.domain.models.PrecipitationProbability
 import com.example.justweather.domain.models.SingleWeatherDetail
 import com.example.justweather.ui.components.HourlyForecastCard
 import com.example.justweather.ui.components.PrecipitationProbabilitiesCard
 import com.example.justweather.ui.components.SingleWeatherDetailCard
+import kotlin.math.roundToInt
 
+/**
+ * An overload of WeatherDetailScreen that takes in a nullable parameter of type
+ * [CurrentWeatherDetails]. If the [CurrentWeatherDetails] parameter is set to null, then this
+ * composable will display a [CircularProgressIndicator] in the middle of the screen
+ */
+@Composable
+fun WeatherDetailScreen(
+    currentWeatherDetails: CurrentWeatherDetails?,
+    onBackButtonClick: () -> Unit,
+    isPreviouslySavedLocation: Boolean,
+    onSaveButtonClick: () -> Unit,
+    singleWeatherDetails: List<SingleWeatherDetail>,
+    hourlyForecasts: List<HourlyForecast>,
+    precipitationProbabilities: List<PrecipitationProbability>,
+    snackbarHostState: SnackbarHostState
+) {
+    if (currentWeatherDetails == null) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+    } else {
+        WeatherDetailScreen(
+            nameOfLocation = currentWeatherDetails.nameOfLocation,
+            weatherConditionImage = currentWeatherDetails.imageResId, // todo
+            weatherConditionIconId = currentWeatherDetails.iconResId,
+            weatherInDegrees = currentWeatherDetails.temperature.toFloat().roundToInt(),
+            weatherCondition = currentWeatherDetails.weatherCondition,
+            onBackButtonClick = onBackButtonClick,
+            isPreviouslySavedLocation = isPreviouslySavedLocation,
+            onSaveButtonClick = onSaveButtonClick,
+            singleWeatherDetails = singleWeatherDetails,
+            hourlyForecasts = hourlyForecasts,
+            precipitationProbabilities = precipitationProbabilities,
+            snackbarHostState = snackbarHostState
+        )
+    }
+}
 
-// todo stopship - need to add top bar when screen is fully scrolled + add Save button
 @Composable
 fun WeatherDetailScreen(
     nameOfLocation: String,
