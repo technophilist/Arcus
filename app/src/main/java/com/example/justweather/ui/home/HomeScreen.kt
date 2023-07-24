@@ -134,10 +134,6 @@ fun HomeScreen(
                     dismissState = dismissState
                 )
             }
-
-            item {
-
-            }
         }
         SnackbarHost(
             modifier = Modifier
