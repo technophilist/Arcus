@@ -22,21 +22,7 @@ data class BriefWeatherDetails(
     @DrawableRes val shortDescriptionIcon: Int,
     val latitude: String,
     val longitude: String
-) {
-    companion object {
-        /**
-         * An instance of [BriefWeatherDetails] with all string properties set to "--".
-         */
-        val EmptyBriefWeatherDetails = BriefWeatherDetails(
-            nameOfLocation = "- -",
-            currentTemperature = "- -",
-            shortDescription = "- -",
-            shortDescriptionIcon = R.drawable.ic_scattered_clouds, // todo
-            latitude = "- -",
-            longitude = "- -"
-        )
-    }
-}
+)
 
 /**
  * Used to map an instance of [BriefWeatherDetails] to an instance of [SavedWeatherLocationEntity].

@@ -31,7 +31,7 @@ interface WeatherRepository {
     /**
      * Used to get a a [Flow] of [BriefWeatherDetails] for each previously saved location.
      * If an error occurs while fetching the details of a single location, then, the
-     * that weather location would not be included in the list.
+     * that location will not be included in the list.
      */
     fun getWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>>
 
@@ -86,7 +86,7 @@ interface WeatherRepository {
     /**
      * Fetches hourly forecasts for the given [latitude] and [longitude] within the specified
      * [dateRange]. It returns a [Result] object containing a list of [HourlyForecast] objects if
-     * the fetch operation was successful, else an error messagex.
+     * the fetch operation was successful, else an error message.
      */
     suspend fun fetchHourlyForecasts(
         latitude: String,
