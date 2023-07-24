@@ -31,7 +31,7 @@ interface WeatherRepository {
     /**
      * Used to get a a [Flow] of [BriefWeatherDetails] for each previously saved location.
      * If an error occurs while fetching the details of a single location, then, the
-     * corresponding [BriefWeatherDetails] of that location would be [BriefWeatherDetails.EmptyBriefWeatherDetails].
+     * that weather location would not be included in the list.
      */
     fun getWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>>
 
