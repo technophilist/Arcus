@@ -21,7 +21,7 @@ data class CurrentWeatherDetails(
  */
 fun CurrentWeatherDetails.toBriefWeatherDetails(): BriefWeatherDetails = BriefWeatherDetails(
     nameOfLocation = nameOfLocation,
-    currentTemperature = temperatureRoundedToInt.toString(),
+    currentTemperatureRoundedToInt = temperatureRoundedToInt,
     shortDescription = weatherCondition,
     shortDescriptionIcon = iconResId,
     latitude = latitude,

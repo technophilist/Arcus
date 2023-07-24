@@ -129,7 +129,7 @@ fun HomeScreen(
                     nameOfLocation = it.nameOfLocation,
                     shortDescription = it.shortDescription,
                     shortDescriptionIcon = it.shortDescriptionIcon,
-                    weatherInDegrees = it.currentTemperature,
+                    weatherInDegrees = it.currentTemperatureRoundedToInt.toString(),
                     onClick = { onSavedLocationItemClick(it) },
                     dismissState = dismissState
                 )
