@@ -54,25 +54,8 @@ fun CompactWeatherCardWithHourlyForecast(
     OutlinedCard(modifier = modifier, onClick = onClick) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_assistant_navigation),
-                contentDescription = null
-            )
-            Spacer(modifier = Modifier.size(8.dp))
-            Text(
-                text = "Current Location",
-                style = MaterialTheme.typography.labelLarge
-            )
-        }
-        Row(
-            modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
