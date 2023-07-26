@@ -34,6 +34,40 @@ import com.example.justweather.ui.components.HourlyForecastCard
 import com.example.justweather.ui.components.PrecipitationProbabilitiesCard
 import com.example.justweather.ui.components.SingleWeatherDetailCard
 
+
+/**
+ * An overload that uses [WeatherDetailScreenUiState].
+ */
+@Composable
+fun WeatherDetailScreen(
+    uiState: WeatherDetailScreenUiState,
+    snackbarHostState: SnackbarHostState,
+    onSaveButtonClick: () -> Unit,
+    onBackButtonClick: () -> Unit,
+) {
+    if (uiState.weatherDetailsOfChosenLocation == null) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+    } else {
+        WeatherDetailScreen(
+            snackbarHostState = snackbarHostState,
+            nameOfLocation = uiState.weatherDetailsOfChosenLocation.nameOfLocation,
+            weatherConditionImage = uiState.weatherDetailsOfChosenLocation.imageResId,
+            weatherConditionIconId = uiState.weatherDetailsOfChosenLocation.iconResId,
+            weatherInDegrees = uiState.weatherDetailsOfChosenLocation.temperatureRoundedToInt,
+            weatherCondition = uiState.weatherDetailsOfChosenLocation.weatherCondition,
+            isPreviouslySavedLocation = uiState.isPreviouslySavedLocation,
+            isLoading = uiState.isLoading,
+            singleWeatherDetails = uiState.additionalWeatherInfoItems,
+            hourlyForecasts = uiState.hourlyForecasts,
+            precipitationProbabilities = uiState.precipitationProbabilities,
+            onBackButtonClick = onBackButtonClick,
+            onSaveButtonClick = onSaveButtonClick,
+        )
+    }
+}
+
 @Composable
 fun WeatherDetailScreen(
     nameOfLocation: String,
