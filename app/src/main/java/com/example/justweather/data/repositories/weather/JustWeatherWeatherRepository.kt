@@ -3,6 +3,7 @@ package com.example.justweather.data.repositories.weather
 import com.example.justweather.data.getBodyOrThrowException
 import com.example.justweather.data.local.weather.JustWeatherDatabaseDao
 import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
+import com.example.justweather.data.local.weather.toSavedLocation
 import com.example.justweather.data.remote.weather.WeatherClient
 import com.example.justweather.data.remote.weather.models.toCurrentWeatherDetails
 import com.example.justweather.data.remote.weather.models.toHourlyForecasts
@@ -38,27 +39,9 @@ class JustWeatherWeatherRepository @Inject constructor(
         Result.failure(exception)
     }
 
-    override fun fetchWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>> {
-        return justWeatherDatabaseDao.getAllWeatherEntitiesMarkedAsNotDeleted()
-            .map { savedWeatherLocationEntities ->
-                savedWeatherLocationEntities.map {
-                    fetchWeatherForLocation(
-                        nameOfLocation = it.nameOfLocation,
-                        latitude = it.latitude,
-                        longitude = it.longitude
-                    )
-                }
-            }.map { currentWeatherDetailResults ->
-                currentWeatherDetailResults.mapNotNull { currentWeatherDetailResult ->
-                    currentWeatherDetailResult.getOrNull()?.toBriefWeatherDetails()
-                }
-            }
-    }
-
-    override fun getNamesOfPreviouslySavedLocationsListStream(): Flow<List<String>> {
-        return justWeatherDatabaseDao.getAllWeatherEntitiesMarkedAsNotDeleted()
-            .map { savedLocations -> savedLocations.map { it.nameOfLocation } }
-    }
+    override fun getSavedLocationsListStream(): Flow<List<SavedLocation>> = justWeatherDatabaseDao
+        .getAllWeatherEntitiesMarkedAsNotDeleted()
+        .map { savedLocationEntitiesList -> savedLocationEntitiesList.map { it.toSavedLocation() } }
 
     override suspend fun saveWeatherLocation(
         nameOfLocation: String,

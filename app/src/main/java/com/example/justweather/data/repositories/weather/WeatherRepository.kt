@@ -4,6 +4,7 @@ import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.CurrentWeatherDetails
 import com.example.justweather.domain.models.HourlyForecast
 import com.example.justweather.domain.models.PrecipitationProbability
+import com.example.justweather.domain.models.SavedLocation
 import com.example.justweather.domain.models.SingleWeatherDetail
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
@@ -29,22 +30,9 @@ interface WeatherRepository {
     ): Result<CurrentWeatherDetails>
 
     /**
-     * Used to get a a [Flow] of [BriefWeatherDetails] for each previously saved location.
-     * If an error occurs while fetching the details of a single location, then, the
-     * that location will not be included in the list.
+     * Used to get a a [Flow] of [List] of [SavedLocation]s that were previously saved by the user.
      */
-    fun fetchWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>>
-
-    /**
-     * Used to get a stream of list of [String]s representing the names of all the saved locations.
-     * The stream will emit a new list every time an update is made to the list of saved locations.
-     *
-     * Use this method if you're only interested in getting the names of the saved locations and
-     * not the current weather of the saved locations. If a list of saved locations together
-     * with the current weather for each corresponding location is to retrieved, use
-     * [fetchWeatherStreamForPreviouslySavedLocations].
-     */
-    fun getNamesOfPreviouslySavedLocationsListStream(): Flow<List<String>>
+    fun getSavedLocationsListStream(): Flow<List<SavedLocation>>
 
     /**
      * Saves the weather location with the provided [nameOfLocation], [latitude] and [longitude].
