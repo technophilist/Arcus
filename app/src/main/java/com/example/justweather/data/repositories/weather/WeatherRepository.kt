@@ -38,6 +38,11 @@ interface WeatherRepository {
     /**
      * Used to get a stream of list of [String]s representing the names of all the saved locations.
      * The stream will emit a new list every time an update is made to the list of saved locations.
+     *
+     * Use this method if you're only interested in getting the names of the saved locations and
+     * not the current weather of the saved locations. If a list of saved locations together
+     * with the current weather for each corresponding location is to retrieved, use
+     * [fetchWeatherStreamForPreviouslySavedLocations].
      */
     fun getNamesOfPreviouslySavedLocationsListStream(): Flow<List<String>>
 
