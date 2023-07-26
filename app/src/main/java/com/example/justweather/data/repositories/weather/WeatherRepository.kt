@@ -33,7 +33,7 @@ interface WeatherRepository {
      * If an error occurs while fetching the details of a single location, then, the
      * that location will not be included in the list.
      */
-    fun getWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>>
+    fun fetchWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>>
 
     /**
      * Saves the weather location with the provided [nameOfLocation], [latitude] and [longitude].
@@ -63,7 +63,7 @@ interface WeatherRepository {
      * Used to try restoring a recently deleted weather location with the provided [nameOfLocation].
      * This method doesn't guarantee that the item would be restored. As the name indicates, it only
      * tries to restore the item. If the item gets restored successfully, then the
-     * [getWeatherStreamForPreviouslySavedLocations] will automatically emit a new list with the
+     * [fetchWeatherStreamForPreviouslySavedLocations] will automatically emit a new list with the
      * item added to it.
      */
     suspend fun tryRestoringDeletedWeatherLocation(nameOfLocation: String)

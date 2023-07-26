@@ -10,7 +10,6 @@ import com.example.justweather.ui.navigation.JustWeatherNavigationDestinations.W
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -34,7 +33,7 @@ class WeatherDetailViewModel @Inject constructor(
 
     init {
         viewModelScope.launch { fetchWeatherDetailsAndUpdateState() }
-        weatherRepository.getWeatherStreamForPreviouslySavedLocations()
+        weatherRepository.fetchWeatherStreamForPreviouslySavedLocations()
             .map { savedWeatherDetails ->
                 savedWeatherDetails.any { it.nameOfLocation == nameOfLocation }
             }

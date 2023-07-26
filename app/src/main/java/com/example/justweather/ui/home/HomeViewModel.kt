@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
     init {
         _uiState.update { it.copy(isLoadingSavedLocations = true) }
         weatherRepository
-            .getWeatherStreamForPreviouslySavedLocations()
+            .fetchWeatherStreamForPreviouslySavedLocations()
             .onEach { weatherDetailsOfSavedLocations ->
                 _uiState.update {
                     it.copy(

@@ -37,7 +37,7 @@ class JustWeatherWeatherRepository @Inject constructor(
         Result.failure(exception)
     }
 
-    override fun getWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>> {
+    override fun fetchWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>> {
         return justWeatherDatabaseDao.getAllWeatherEntitiesMarkedAsNotDeleted()
             .map { savedWeatherLocationEntities ->
                 savedWeatherLocationEntities.map {
