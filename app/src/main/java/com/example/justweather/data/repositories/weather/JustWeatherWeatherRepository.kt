@@ -10,6 +10,7 @@ import com.example.justweather.data.remote.weather.models.toPrecipitationProbabi
 import com.example.justweather.data.remote.weather.models.toSingleWeatherDetailList
 import com.example.justweather.domain.models.*
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import java.time.LocalDate
 import javax.inject.Inject
@@ -52,6 +53,11 @@ class JustWeatherWeatherRepository @Inject constructor(
                     currentWeatherDetailResult.getOrNull()?.toBriefWeatherDetails()
                 }
             }
+    }
+
+    override fun getNamesOfPreviouslySavedLocationsListStream(): Flow<List<String>> {
+        return justWeatherDatabaseDao.getAllWeatherEntitiesMarkedAsNotDeleted()
+            .map { savedLocations -> savedLocations.map { it.nameOfLocation } }
     }
 
     override suspend fun saveWeatherLocation(

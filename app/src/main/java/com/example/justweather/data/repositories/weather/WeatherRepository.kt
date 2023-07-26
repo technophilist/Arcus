@@ -36,6 +36,12 @@ interface WeatherRepository {
     fun fetchWeatherStreamForPreviouslySavedLocations(): Flow<List<BriefWeatherDetails>>
 
     /**
+     * Used to get a stream of list of [String]s representing the names of all the saved locations.
+     * The stream will emit a new list every time an update is made to the list of saved locations.
+     */
+    fun getNamesOfPreviouslySavedLocationsListStream(): Flow<List<String>>
+
+    /**
      * Saves the weather location with the provided [nameOfLocation], [latitude] and [longitude].
      */
     suspend fun saveWeatherLocation(nameOfLocation: String, latitude: String, longitude: String)
