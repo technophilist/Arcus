@@ -33,13 +33,12 @@ class WeatherDetailViewModel @Inject constructor(
 
     init {
         viewModelScope.launch { fetchWeatherDetailsAndUpdateState() }
-        weatherRepository.fetchWeatherStreamForPreviouslySavedLocations()
-            .map { savedWeatherDetails ->
-                savedWeatherDetails.any { it.nameOfLocation == nameOfLocation }
+        weatherRepository.getNamesOfPreviouslySavedLocationsListStream()
+            .map { namesOfSavedLocationsList ->
+                namesOfSavedLocationsList.any { it == nameOfLocation }
             }
-            .distinctUntilChanged()
-            .onEach { isSavedLocation ->
-                _uiState.update { it.copy(isPreviouslySavedLocation = isSavedLocation) }
+            .onEach { isPreviouslySavedLocation ->
+                _uiState.update { it.copy(isPreviouslySavedLocation = isPreviouslySavedLocation) }
             }
             .launchIn(scope = viewModelScope)
     }
