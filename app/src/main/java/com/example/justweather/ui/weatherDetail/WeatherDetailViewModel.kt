@@ -13,6 +13,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,7 +45,9 @@ class WeatherDetailViewModel @Inject constructor(
             .launchIn(scope = viewModelScope)
     }
 
-    private suspend fun fetchWeatherDetailsAndUpdateState(): Unit = coroutineScope {
+    // todo stopship - using supervisor scope doesnt reset the ui state is loading to false
+    // and also using coroutineScope crashes the entire app. See why
+    private suspend fun fetchWeatherDetailsAndUpdateState(): Unit = supervisorScope {
         _uiState.update { it.copy(isLoading = true) }
         val weatherDetailsOfChosenLocation = async {
             weatherRepository.fetchWeatherForLocation(
@@ -96,13 +99,11 @@ class WeatherDetailViewModel @Inject constructor(
 
     fun addLocationToSavedLocations() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
             weatherRepository.saveWeatherLocation(
                 nameOfLocation = nameOfLocation,
                 latitude = latitude,
                 longitude = longitude
             )
-            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
