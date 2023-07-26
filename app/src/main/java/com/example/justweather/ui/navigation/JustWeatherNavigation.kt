@@ -102,29 +102,20 @@ fun NavGraphBuilder.weatherDetailScreen(
 ) {
     composable(route) {
         val viewModel = hiltViewModel<WeatherDetailViewModel>()
-        val weatherDetails by viewModel.weatherDetailsOfChosenLocation.collectAsStateWithLifecycle()
-        val isSavedLocation by viewModel.isSavedLocation.collectAsStateWithLifecycle()
-        val precipitationProbabilityList by viewModel.precipitationProbabilityList.collectAsStateWithLifecycle()
-        val hourlyForecastList by viewModel.hourlyForecastList.collectAsStateWithLifecycle()
-        val singleWeatherDetailList by viewModel.additionalWeatherDetailsList.collectAsStateWithLifecycle()
-        val snackbarHostState = remember { SnackbarHostState() }
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val coroutineScope = rememberCoroutineScope()
-
+        val snackbarHostState = remember { SnackbarHostState() }
         WeatherDetailScreen(
-            currentWeatherDetails = weatherDetails,
+            uiState = uiState,
+            snackbarHostState = snackbarHostState,
             onBackButtonClick = onBackButtonClick,
-            isPreviouslySavedLocation = isSavedLocation,
             onSaveButtonClick = {
                 viewModel.addLocationToSavedLocations()
                 snackbarHostState.currentSnackbarData?.dismiss()
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar(message = "Added to saved locations")
                 }
-            },
-            singleWeatherDetails = singleWeatherDetailList,
-            hourlyForecasts = hourlyForecastList,
-            precipitationProbabilities = precipitationProbabilityList,
-            snackbarHostState = snackbarHostState
+            }
         )
     }
 }

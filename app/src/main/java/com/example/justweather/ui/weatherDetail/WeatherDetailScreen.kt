@@ -33,42 +33,37 @@ import com.example.justweather.domain.models.SingleWeatherDetail
 import com.example.justweather.ui.components.HourlyForecastCard
 import com.example.justweather.ui.components.PrecipitationProbabilitiesCard
 import com.example.justweather.ui.components.SingleWeatherDetailCard
-import kotlin.math.roundToInt
+
 
 /**
- * An overload of WeatherDetailScreen that takes in a nullable parameter of type
- * [CurrentWeatherDetails]. If the [CurrentWeatherDetails] parameter is set to null, then this
- * composable will display a [CircularProgressIndicator] in the middle of the screen
+ * An overload that uses [WeatherDetailScreenUiState].
  */
 @Composable
 fun WeatherDetailScreen(
-    currentWeatherDetails: CurrentWeatherDetails?,
-    onBackButtonClick: () -> Unit,
-    isPreviouslySavedLocation: Boolean,
+    uiState: WeatherDetailScreenUiState,
+    snackbarHostState: SnackbarHostState,
     onSaveButtonClick: () -> Unit,
-    singleWeatherDetails: List<SingleWeatherDetail>,
-    hourlyForecasts: List<HourlyForecast>,
-    precipitationProbabilities: List<PrecipitationProbability>,
-    snackbarHostState: SnackbarHostState
+    onBackButtonClick: () -> Unit,
 ) {
-    if (currentWeatherDetails == null) {
+    if (uiState.weatherDetailsOfChosenLocation == null) {
         Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     } else {
         WeatherDetailScreen(
-            nameOfLocation = currentWeatherDetails.nameOfLocation,
-            weatherConditionImage = currentWeatherDetails.imageResId,
-            weatherConditionIconId = currentWeatherDetails.iconResId,
-            weatherInDegrees = currentWeatherDetails.temperatureRoundedToInt,
-            weatherCondition = currentWeatherDetails.weatherCondition,
+            snackbarHostState = snackbarHostState,
+            nameOfLocation = uiState.weatherDetailsOfChosenLocation.nameOfLocation,
+            weatherConditionImage = uiState.weatherDetailsOfChosenLocation.imageResId,
+            weatherConditionIconId = uiState.weatherDetailsOfChosenLocation.iconResId,
+            weatherInDegrees = uiState.weatherDetailsOfChosenLocation.temperatureRoundedToInt,
+            weatherCondition = uiState.weatherDetailsOfChosenLocation.weatherCondition,
+            isPreviouslySavedLocation = uiState.isPreviouslySavedLocation,
+            isLoading = uiState.isLoading,
+            singleWeatherDetails = uiState.additionalWeatherInfoItems,
+            hourlyForecasts = uiState.hourlyForecasts,
+            precipitationProbabilities = uiState.precipitationProbabilities,
             onBackButtonClick = onBackButtonClick,
-            isPreviouslySavedLocation = isPreviouslySavedLocation,
             onSaveButtonClick = onSaveButtonClick,
-            singleWeatherDetails = singleWeatherDetails,
-            hourlyForecasts = hourlyForecasts,
-            precipitationProbabilities = precipitationProbabilities,
-            snackbarHostState = snackbarHostState
         )
     }
 }
@@ -81,6 +76,7 @@ fun WeatherDetailScreen(
     weatherInDegrees: Int,
     weatherCondition: String,
     onBackButtonClick: () -> Unit,
+    isLoading: Boolean,
     isPreviouslySavedLocation: Boolean,
     onSaveButtonClick: () -> Unit,
     singleWeatherDetails: List<SingleWeatherDetail>,
@@ -137,6 +133,15 @@ fun WeatherDetailScreen(
                 .navigationBarsPadding(),
             hostState = snackbarHostState
         )
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+            ) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+        }
     }
 }
 
