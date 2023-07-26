@@ -33,45 +33,6 @@ import com.example.justweather.domain.models.SingleWeatherDetail
 import com.example.justweather.ui.components.HourlyForecastCard
 import com.example.justweather.ui.components.PrecipitationProbabilitiesCard
 import com.example.justweather.ui.components.SingleWeatherDetailCard
-import kotlin.math.roundToInt
-
-/**
- * An overload of WeatherDetailScreen that takes in a nullable parameter of type
- * [CurrentWeatherDetails]. If the [CurrentWeatherDetails] parameter is set to null, then this
- * composable will display a [CircularProgressIndicator] in the middle of the screen
- */
-@Composable
-fun WeatherDetailScreen(
-    currentWeatherDetails: CurrentWeatherDetails?,
-    onBackButtonClick: () -> Unit,
-    isPreviouslySavedLocation: Boolean,
-    onSaveButtonClick: () -> Unit,
-    singleWeatherDetails: List<SingleWeatherDetail>,
-    hourlyForecasts: List<HourlyForecast>,
-    precipitationProbabilities: List<PrecipitationProbability>,
-    snackbarHostState: SnackbarHostState
-) {
-    if (currentWeatherDetails == null) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
-    } else {
-        WeatherDetailScreen(
-            nameOfLocation = currentWeatherDetails.nameOfLocation,
-            weatherConditionImage = currentWeatherDetails.imageResId,
-            weatherConditionIconId = currentWeatherDetails.iconResId,
-            weatherInDegrees = currentWeatherDetails.temperatureRoundedToInt,
-            weatherCondition = currentWeatherDetails.weatherCondition,
-            onBackButtonClick = onBackButtonClick,
-            isPreviouslySavedLocation = isPreviouslySavedLocation,
-            onSaveButtonClick = onSaveButtonClick,
-            singleWeatherDetails = singleWeatherDetails,
-            hourlyForecasts = hourlyForecasts,
-            precipitationProbabilities = precipitationProbabilities,
-            snackbarHostState = snackbarHostState
-        )
-    }
-}
 
 @Composable
 fun WeatherDetailScreen(
@@ -81,6 +42,7 @@ fun WeatherDetailScreen(
     weatherInDegrees: Int,
     weatherCondition: String,
     onBackButtonClick: () -> Unit,
+    isLoading: Boolean,
     isPreviouslySavedLocation: Boolean,
     onSaveButtonClick: () -> Unit,
     singleWeatherDetails: List<SingleWeatherDetail>,
@@ -137,6 +99,15 @@ fun WeatherDetailScreen(
                 .navigationBarsPadding(),
             hostState = snackbarHostState
         )
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+            ) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+        }
     }
 }
 
