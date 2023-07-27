@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.justweather.data.repositories.location.LocationServicesRepository
 import com.example.justweather.data.repositories.weather.WeatherRepository
 import com.example.justweather.domain.models.BriefWeatherDetails
+import com.example.justweather.domain.models.toBriefWeatherDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -27,7 +28,16 @@ class HomeViewModel @Inject constructor(
     init {
         _uiState.update { it.copy(isLoadingSavedLocations = true) }
         weatherRepository
-            .fetchWeatherStreamForPreviouslySavedLocations()
+            .getSavedLocationsListStream()
+            .map { savedLocations ->
+                savedLocations.map { savedLocation ->
+                    weatherRepository.fetchWeatherForLocation(
+                        nameOfLocation = savedLocation.nameOfLocation,
+                        latitude = savedLocation.coordinates.latitude,
+                        longitude = savedLocation.coordinates.longitude
+                    ).getOrThrow().toBriefWeatherDetails() // todo take care of exception
+                }
+            }
             .onEach { weatherDetailsOfSavedLocations ->
                 _uiState.update {
                     it.copy(
