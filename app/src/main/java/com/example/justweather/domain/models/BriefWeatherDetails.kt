@@ -10,16 +10,14 @@ import com.example.justweather.data.local.weather.SavedWeatherLocationEntity
  * @param currentTemperatureRoundedToInt The current temperature (without superscript).
  * @param shortDescription A short description of the weather.
  * @param shortDescriptionIcon An icon representing the weather.
- * @param latitude The latitude of the location.
- * @param longitude The longitude of the location.
+ * @param coordinates The [Coordinates] of the location.
  */
 data class BriefWeatherDetails(
     val nameOfLocation: String,
     val currentTemperatureRoundedToInt: Int,
     val shortDescription: String,
     @DrawableRes val shortDescriptionIcon: Int,
-    val latitude: String,
-    val longitude: String
+    val coordinates:Coordinates
 )
 
 /**
@@ -28,7 +26,7 @@ data class BriefWeatherDetails(
 fun BriefWeatherDetails.toSavedWeatherLocationEntity(): SavedWeatherLocationEntity =
     SavedWeatherLocationEntity(
         nameOfLocation = this.nameOfLocation,
-        latitude = this.latitude,
-        longitude = this.longitude
+        latitude = this.coordinates.latitude,
+        longitude = this.coordinates.longitude
     )
 

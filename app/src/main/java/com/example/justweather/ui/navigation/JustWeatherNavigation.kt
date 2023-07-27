@@ -45,8 +45,8 @@ fun JustWeatherNavigation(navController: NavHostController = rememberNavControll
             onSavedLocationItemClick = {
                 navController.navigateToWeatherDetailScreen(
                     nameOfLocation = it.nameOfLocation,
-                    latitude = it.latitude,
-                    longitude = it.longitude
+                    latitude = it.coordinates.latitude,
+                    longitude = it.coordinates.longitude
                 )
             }
         )
