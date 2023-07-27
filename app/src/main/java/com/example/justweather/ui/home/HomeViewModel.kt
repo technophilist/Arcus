@@ -25,6 +25,7 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeScreenUiState())
     val uiState = _uiState as StateFlow<HomeScreenUiState>
 
+    // a cache that stores the CurrentWeatherDetails of a specific SavedLocation
     private var currentWeatherDetailsCache = mutableMapOf<SavedLocation, CurrentWeatherDetails>()
     private var recentlyDeletedItem: BriefWeatherDetails? = null
 
@@ -36,6 +37,7 @@ class HomeViewModel @Inject constructor(
                 fetchCurrentWeatherDetailsWithCache(savedLocations.toSet())// todo handle exceptions
             }.map { currentWeatherDetails ->
                 currentWeatherDetails.map { it.toBriefWeatherDetails() }
+                    .sortedBy { it.nameOfLocation }
             }
             .onEach { weatherDetailsOfSavedLocations ->
                 _uiState.update {
@@ -93,7 +95,7 @@ class HomeViewModel @Inject constructor(
      * using the [currentWeatherDetailsCache]
      */
     private suspend fun fetchCurrentWeatherDetailsWithCache(savedLocations: Set<SavedLocation>): List<CurrentWeatherDetails> {
-        // remove locations in the cache that have been deleted
+        // remove locations in the cache that have been deleted by the user
         val removedLocations = currentWeatherDetailsCache.keys subtract savedLocations
         for (removedLocation in removedLocations) {
             currentWeatherDetailsCache.remove(removedLocation)
@@ -105,9 +107,7 @@ class HomeViewModel @Inject constructor(
                 nameOfLocation = savedLocationNotInCache.nameOfLocation,
                 latitude = savedLocationNotInCache.coordinates.latitude,
                 longitude = savedLocationNotInCache.coordinates.longitude
-            ).getOrThrow().also {
-                currentWeatherDetailsCache[savedLocationNotInCache] = it
-            }
+            ).getOrThrow().also { currentWeatherDetailsCache[savedLocationNotInCache] = it }
         }
         return currentWeatherDetailsCache.values.toList()
     }
