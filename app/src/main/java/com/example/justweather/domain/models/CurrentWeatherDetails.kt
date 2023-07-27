@@ -12,9 +12,8 @@ data class CurrentWeatherDetails(
     val isDay: Int,
     @DrawableRes val iconResId: Int,
     @DrawableRes val imageResId: Int,
-    val latitude: String,
-    val longitude: String,
-)
+    val coordinates: Coordinates
+) // todo make this class use the coordinates domain class
 
 /**
  * Used to convert an instance of [CurrentWeatherDetails] to an instance of [BriefWeatherDetails].
@@ -24,6 +23,5 @@ fun CurrentWeatherDetails.toBriefWeatherDetails(): BriefWeatherDetails = BriefWe
     currentTemperatureRoundedToInt = temperatureRoundedToInt,
     shortDescription = weatherCondition,
     shortDescriptionIcon = iconResId,
-    latitude = latitude,
-    longitude = longitude
+    coordinates = coordinates
 )

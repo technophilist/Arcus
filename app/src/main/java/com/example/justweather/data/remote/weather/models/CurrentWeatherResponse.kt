@@ -1,5 +1,6 @@
 package com.example.justweather.data.remote.weather.models
 
+import com.example.justweather.domain.models.Coordinates
 import com.example.justweather.domain.models.CurrentWeatherDetails
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -52,8 +53,10 @@ fun CurrentWeatherResponse.toCurrentWeatherDetails(nameOfLocation: String): Curr
             weatherCode = currentWeather.weatherCode,
             isDay = currentWeather.isDay == 1
         ),
-        latitude = latitude,
-        longitude = longitude,
+        coordinates = Coordinates(
+            latitude = latitude,
+            longitude = longitude,
+        )
     )
 
 
