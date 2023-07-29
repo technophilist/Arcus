@@ -32,8 +32,8 @@ data class AdditionalDailyForecastVariablesResponse(
      */
     @JsonClass(generateAdapter = true)
     data class AdditionalForecastedVariables(
-        @Json(name = "temperature_2m_max") val minTemperatureForTheDay: List<Double>,
-        @Json(name = "temperature_2m_min") val maxTemperatureForTheDay: List<Double>,
+        @Json(name = "temperature_2m_min") val minTemperatureForTheDay: List<Double>,
+        @Json(name = "temperature_2m_max") val maxTemperatureForTheDay: List<Double>,
         @Json(name = "apparent_temperature_max") val maxApparentTemperature: List<Double>,
         @Json(name = "apparent_temperature_min") val minApparentTemperature: List<Double>,
         @Json(name = "sunrise") val sunrise: List<String>,
