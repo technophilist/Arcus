@@ -36,8 +36,8 @@ data class AdditionalDailyForecastVariablesResponse(
         @Json(name = "temperature_2m_max") val maxTemperatureForTheDay: List<Double>,
         @Json(name = "apparent_temperature_max") val maxApparentTemperature: List<Double>,
         @Json(name = "apparent_temperature_min") val minApparentTemperature: List<Double>,
-        @Json(name = "sunrise") val sunrise: List<String>,
-        @Json(name = "sunset") val sunset: List<String>,
+        @Json(name = "sunrise") val sunrise: List<Long>,
+        @Json(name = "sunset") val sunset: List<Long>,
         @Json(name = "uv_index_max") val maxUvIndex: List<Double>,
         @Json(name = "winddirection_10m_dominant") val dominantWindDirection: List<Int>,
         @Json(name = "windspeed_10m_max") val windSpeed: List<Double>
@@ -71,11 +71,11 @@ private fun AdditionalDailyForecastVariablesResponse.AdditionalForecastedVariabl
         (minApparentTemperature.first().roundToInt() + maxApparentTemperature.first()
             .roundToInt()) / 2
     val sunriseTimeString = LocalDateTime.ofInstant(
-        Instant.ofEpochSecond(sunrise.first().toLong()), // todo: change type of property to long
+        Instant.ofEpochSecond(sunrise.first()), // todo: change type of property to long
         ZoneId.systemDefault()
     ).toLocalTime().format(timeFormat)
     val sunsetTimeString = LocalDateTime.ofInstant(
-        Instant.ofEpochSecond(sunset.first().toLong()), // todo: change type of property to long
+        Instant.ofEpochSecond(sunset.first()), // todo: change type of property to long
         ZoneId.systemDefault()
     ).format(timeFormat)
     // Since these single weather detail items are displayed in smaller cards, the default mac OS
