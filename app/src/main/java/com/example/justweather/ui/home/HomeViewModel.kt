@@ -78,8 +78,6 @@ class HomeViewModel @Inject constructor(
         HomeScreenUiState(
             isLoadingSuggestions = isLoadingAutofillSuggestions,
             isLoadingSavedLocations = isLoadingSavedLocations,
-            errorFetchingSavedLocations = weatherDetailsOfSavedLocationsResults.isFailure,
-            errorFetchingAutofillSuggestions = autofillSuggestionResults.isFailure,
             autofillSuggestions = autofillSuggestions,
             weatherDetailsOfSavedLocations = savedLocations
         )

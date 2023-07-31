@@ -9,8 +9,6 @@ import com.example.justweather.domain.models.LocationAutofillSuggestion
 data class HomeScreenUiState(
     val isLoadingSuggestions: Boolean = false,
     val isLoadingSavedLocations: Boolean = false,
-    val errorFetchingSavedLocations: Boolean = false,
-    val errorFetchingAutofillSuggestions: Boolean = false,
     val autofillSuggestions: List<LocationAutofillSuggestion> = emptyList(),
     val weatherDetailsOfSavedLocations: List<BriefWeatherDetails> = emptyList()
 )
