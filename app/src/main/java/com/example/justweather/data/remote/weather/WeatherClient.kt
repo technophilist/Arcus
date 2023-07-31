@@ -41,7 +41,7 @@ interface WeatherClient {
      * @param longitude The longitude of the location.
      * @param startDate The start date for the hourly forecast in YYYY-MM-DD format.
      * @param endDate The end date for the hourly forecast in YYYY-MM-DD format.
-     * @param timezone The timezone to use for the hourly forecast.
+     * @param timezoneConfiguration The [WeatherClientConstants.TimeZoneConfiguration] to use for the hourly forecast.
      * @param precipitationUnit The unit of precipitation to use.
      * @param timeFormat The time format to use for the hourly forecast.
      * @param hourlyForecastsToReturn The number of hourly forecasts to return.
@@ -53,7 +53,7 @@ interface WeatherClient {
         @Query("longitude") longitude: String,
         @Query("start_date") startDate: LocalDate,
         @Query("end_date") endDate: LocalDate,
-        @Query("timezone") timezone: String = ZoneId.systemDefault().toString(),
+        @Query("timezone") timezoneConfiguration: WeatherClientConstants.TimeZoneConfiguration = WeatherClientConstants.TimeZoneConfiguration.LOCAL_DEVICE_TIMEZONE,
         @Query("precipitation_unit") precipitationUnit: WeatherClientConstants.PrecipitationUnit = WeatherClientConstants.PrecipitationUnit.INCHES,
         @Query("timeformat") timeFormat: WeatherClientConstants.TimeFormats = WeatherClientConstants.TimeFormats.UNIX_EPOCH_TIME_IN_SECONDS,
         @Query("hourly") hourlyForecastsToReturn: WeatherClientConstants.HourlyForecastItems = WeatherClientConstants.HourlyForecastItems.ALL
@@ -67,7 +67,9 @@ interface WeatherClient {
      * @param longitude The longitude of the location.
      * @param startDate The start date of the forecast.
      * @param endDate The end date of the forecast.
-     * @param timezone The timezone of the location. Default is system default timezone.
+     * @param timezoneConfiguration The [WeatherClientConstants.TimeZoneConfiguration] to be used while
+     * fetching the information of the location. Default is
+     * [WeatherClientConstants.TimeZoneConfiguration.DEFAULT_FOR_GIVEN_COORDINATES].
      * @param timeFormat The time format of the forecast. Default is UNIX epoch time in seconds.
      * @param dailyForecastsToReturn The daily forecasts to return. Default is all forecasts.
      *
@@ -79,7 +81,7 @@ interface WeatherClient {
         @Query("longitude") longitude: String,
         @Query("start_date") startDate: LocalDate,
         @Query("end_date") endDate: LocalDate,
-        @Query("timezone") timezone: String = ZoneId.systemDefault().toString(),
+        @Query("timezone") timezoneConfiguration: WeatherClientConstants.TimeZoneConfiguration = WeatherClientConstants.TimeZoneConfiguration.DEFAULT_FOR_GIVEN_COORDINATES,
         @Query("timeformat") timeFormat: WeatherClientConstants.TimeFormats = WeatherClientConstants.TimeFormats.UNIX_EPOCH_TIME_IN_SECONDS,
         @Query("daily") dailyForecastsToReturn: WeatherClientConstants.DailyForecastItems = WeatherClientConstants.DailyForecastItems.ALL
     ): Response<AdditionalDailyForecastVariablesResponse>
