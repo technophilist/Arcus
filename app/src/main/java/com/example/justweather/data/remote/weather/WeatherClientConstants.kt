@@ -1,5 +1,7 @@
 package com.example.justweather.data.remote.weather
 
+import java.time.ZoneId
+
 /**
  * This object contains constants used by the [WeatherClient].
  */
@@ -91,4 +93,20 @@ object WeatherClientConstants {
 
         override fun toString(): String = valueToBeSentToTheApi
     }
+
+    /**
+     * Contains supported timezone configurations.
+     * WARNING: Try to avoid using the [LOCAL_DEVICE_TIMEZONE]. Using this will fetch all
+     * information according to the device's current time zone. This will almost never
+     * be needed because weather details such as the time of sunset and sunrise
+     * should always be specified based off of the timezone of the given coordinates and
+     * not the timezone of the device.
+     */
+    enum class TimeZoneConfiguration(private val valueToBeSentToTheApi: String) {
+        DEFAULT_FOR_GIVEN_COORDINATES("auto"),
+        LOCAL_DEVICE_TIMEZONE(ZoneId.systemDefault().toString());
+
+        override fun toString(): String = valueToBeSentToTheApi
+    }
+
 }
