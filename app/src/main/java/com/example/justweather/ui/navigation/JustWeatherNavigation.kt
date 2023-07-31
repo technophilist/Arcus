@@ -24,6 +24,7 @@ import com.example.justweather.ui.home.HomeViewModel
 import com.example.justweather.ui.weatherDetail.WeatherDetailViewModel
 import com.example.justweather.ui.weatherDetail.WeatherDetailScreen
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 @Composable
@@ -91,7 +92,8 @@ private fun NavGraphBuilder.homeScreen(
             },
             onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration,
             onSuggestionClick = onSuggestionClick,
-            onSavedLocationItemClick = onSavedLocationItemClick
+            onSavedLocationItemClick = onSavedLocationItemClick,
+            onLocationPermissionGranted = { Timber.d("Location permission granted") }
         )
     }
 }

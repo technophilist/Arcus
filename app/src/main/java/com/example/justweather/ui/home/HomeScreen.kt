@@ -1,5 +1,7 @@
 package com.example.justweather.ui.home
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -18,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import com.example.justweather.domain.models.BriefWeatherDetails
+import com.example.justweather.domain.models.HourlyForecast
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.components.AutofillSuggestion
 import com.example.justweather.ui.components.SwipeToDismissCompactWeatherCard
@@ -34,6 +37,7 @@ fun HomeScreen(
     onSearchQueryChange: (String) -> Unit,
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
+    onLocationPermissionGranted: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeScreen(
@@ -46,7 +50,8 @@ fun HomeScreen(
         onSavedLocationDismissed = onSavedLocationDismissed,
         onSearchQueryChange = onSearchQueryChange,
         onSuggestionClick = onSuggestionClick,
-        onSavedLocationItemClick = onSavedLocationItemClick
+        onSavedLocationItemClick = onSavedLocationItemClick,
+        onLocationPermissionGranted = onLocationPermissionGranted
     )
 }
 
@@ -69,10 +74,11 @@ fun HomeScreen(
     suggestionsForSearchQuery: List<LocationAutofillSuggestion>,
     isSuggestionsListLoading: Boolean = false,
     isWeatherForSavedLocationsLoading: Boolean = false,
+    onSearchQueryChange: (String) -> Unit,
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
     onSavedLocationDismissed: (BriefWeatherDetails) -> Unit,
-    onSearchQueryChange: (String) -> Unit,
+    onLocationPermissionGranted: () -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
     var isSearchBarActive by remember { mutableStateOf(false) }
@@ -80,6 +86,24 @@ fun HomeScreen(
     val clearQueryText = {
         currentQueryText = ""
         onSearchQueryChange("")
+    }
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = { isPermitted ->
+            val isCoarseLocationPermitted =
+                isPermitted.getOrDefault(android.Manifest.permission.ACCESS_COARSE_LOCATION, false)
+            val isFineLocationPermitted =
+                isPermitted.getOrDefault(android.Manifest.permission.ACCESS_FINE_LOCATION, false)
+            if (isCoarseLocationPermitted || isFineLocationPermitted) onLocationPermissionGranted()
+        }
+    )
+    LaunchedEffect(Unit) {
+        locationPermissionLauncher.launch(
+            arrayOf(
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )
     }
     Box {
         LazyColumn(
