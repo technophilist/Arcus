@@ -15,6 +15,7 @@ import kotlin.math.roundToInt
  */
 @JsonClass(generateAdapter = true)
 data class AdditionalDailyForecastVariablesResponse(
+    @Json(name = "timezone") val timezone: String,
     @Json(name = "daily") val additionalForecastedVariables: AdditionalForecastedVariables
 ) {
     /**
@@ -51,16 +52,21 @@ data class AdditionalDailyForecastVariablesResponse(
  */
 fun AdditionalDailyForecastVariablesResponse.toSingleWeatherDetailList(
     timeFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm a")
-): List<SingleWeatherDetail> = additionalForecastedVariables.toSingleWeatherDetailList(timeFormat)
+): List<SingleWeatherDetail> = additionalForecastedVariables.toSingleWeatherDetailList(
+    timezone = timezone,
+    timeFormat = timeFormat
+)
 
 /**
  * Used to convert an instance of [AdditionalDailyForecastVariablesResponse.AdditionalForecastedVariables]
- * to a list of [SingleWeatherDetail] items.
+ * to a list of [SingleWeatherDetail] items. All timestamps will be converted based on the
+ * [timezone] passed to this method.
  *
  * Note: The best way to do this mapping would be to allow the caller to customize the units.
  * Since this is just a hobby project, this detail has been left out.
  */
 private fun AdditionalDailyForecastVariablesResponse.AdditionalForecastedVariables.toSingleWeatherDetailList(
+    timezone: String,
     timeFormat: DateTimeFormatter
 ): List<SingleWeatherDetail> {
     require(minTemperatureForTheDay.size == 1) {
@@ -72,11 +78,11 @@ private fun AdditionalDailyForecastVariablesResponse.AdditionalForecastedVariabl
             .roundToInt()) / 2
     val sunriseTimeString = LocalDateTime.ofInstant(
         Instant.ofEpochSecond(sunrise.first()), // todo: change type of property to long
-        ZoneId.systemDefault()
+        ZoneId.of(timezone)
     ).toLocalTime().format(timeFormat)
     val sunsetTimeString = LocalDateTime.ofInstant(
         Instant.ofEpochSecond(sunset.first()), // todo: change type of property to long
-        ZoneId.systemDefault()
+        ZoneId.of(timezone)
     ).format(timeFormat)
     // Since these single weather detail items are displayed in smaller cards, the default mac OS
     // 'º' character is used instead of the other degree superscript used in other parts of the app.
