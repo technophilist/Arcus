@@ -23,6 +23,7 @@ import com.example.justweather.domain.models.BriefWeatherDetails
 import com.example.justweather.domain.models.HourlyForecast
 import com.example.justweather.domain.models.LocationAutofillSuggestion
 import com.example.justweather.ui.components.AutofillSuggestion
+import com.example.justweather.ui.components.CompactWeatherCardWithHourlyForecast
 import com.example.justweather.ui.components.SwipeToDismissCompactWeatherCard
 
 
@@ -33,6 +34,8 @@ import com.example.justweather.ui.components.SwipeToDismissCompactWeatherCard
 fun HomeScreen(
     homeScreenUiState: HomeScreenUiState,
     snackbarHostState: SnackbarHostState,
+    weatherOfCurrentUserLocation: BriefWeatherDetails?,
+    hourlyForecastsOfCurrentUserLocation: List<HourlyForecast>?,
     onSavedLocationDismissed: (BriefWeatherDetails) -> Unit,
     onSearchQueryChange: (String) -> Unit,
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
@@ -47,6 +50,8 @@ fun HomeScreen(
         suggestionsForSearchQuery = homeScreenUiState.autofillSuggestions,
         isSuggestionsListLoading = homeScreenUiState.isLoadingSuggestions,
         isWeatherForSavedLocationsLoading = homeScreenUiState.isLoadingSavedLocations,
+        weatherOfCurrentUserLocation = weatherOfCurrentUserLocation,
+        hourlyForecastsOfCurrentUserLocation = hourlyForecastsOfCurrentUserLocation,
         onSavedLocationDismissed = onSavedLocationDismissed,
         onSearchQueryChange = onSearchQueryChange,
         onSuggestionClick = onSuggestionClick,
@@ -72,6 +77,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     weatherDetailsOfSavedLocations: List<BriefWeatherDetails>,
     suggestionsForSearchQuery: List<LocationAutofillSuggestion>,
+    weatherOfCurrentUserLocation: BriefWeatherDetails?,
+    hourlyForecastsOfCurrentUserLocation: List<HourlyForecast>?,
     isSuggestionsListLoading: Boolean = false,
     isWeatherForSavedLocationsLoading: Boolean = false,
     onSearchQueryChange: (String) -> Unit,
@@ -111,46 +118,36 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = WindowInsets.navigationBars.asPaddingValues()
         ) {
-            item {
-                Header(
-                    modifier = Modifier.fillMaxWidth(),
-                    currentSearchQuery = currentQueryText,
-                    onClearSearchQueryIconClick = clearQueryText,
-                    isSearchBarActive = isSearchBarActive,
-                    onSearchQueryChange = {
-                        currentQueryText = it
-                        onSearchQueryChange(it)
-                    },
-                    onSearchBarActiveChange = { isSearchBarActive = it },
-                    onSearch = {/* TODO: handle search */ },
-                    searchBarSuggestionsContent = {
-                        AutoFillSuggestionsList(
-                            suggestions = suggestionsForSearchQuery,
-                            onSuggestionClick = onSuggestionClick,
-                            isSuggestionsListLoading = isSuggestionsListLoading
-                        )
-                    }
+            searchBarItem(
+                currentSearchQuery = currentQueryText,
+                onClearSearchQueryIconClick = clearQueryText,
+                isSearchBarActive = isSearchBarActive,
+                onSearchQueryChange = {
+                    currentQueryText = it
+                    onSearchQueryChange(it)
+                },
+                onSearchBarActiveChange = { isSearchBarActive = it },
+                suggestionsForSearchQuery = suggestionsForSearchQuery,
+                isSuggestionsListLoading = isSuggestionsListLoading,
+                onSuggestionClick = onSuggestionClick
+            )
+
+            if (weatherOfCurrentUserLocation != null && hourlyForecastsOfCurrentUserLocation != null) {
+                subHeaderItem(
+                    title = "Current Location",
+                    isLoadingAnimationVisible = false
+                )
+                currentWeatherDetailCardItem(
+                    weatherOfCurrentUserLocation = weatherOfCurrentUserLocation,
+                    hourlyForecastsOfCurrentUserLocation = hourlyForecastsOfCurrentUserLocation
                 )
             }
 
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .padding(end = 8.dp),
-                        text = "Saved Locations",
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.Normal
-                    )
-                    if (isWeatherForSavedLocationsLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(12.dp),
-                            strokeWidth = 2.dp
-                        )
-                    }
-                }
-            }
+            subHeaderItem(
+                title = "Saved Locations",
+                isLoadingAnimationVisible = isWeatherForSavedLocationsLoading
+            )
+
             savedLocationItems(
                 savedLocationItemsList = weatherDetailsOfSavedLocations,
                 onSavedLocationItemClick = onSavedLocationItemClick,
@@ -361,3 +358,75 @@ private fun LazyListScope.savedLocationItems(
     }
 }
 
+@ExperimentalMaterial3Api
+@ExperimentalAnimationApi
+private fun LazyListScope.searchBarItem(
+    currentSearchQuery: String,
+    isSearchBarActive: Boolean,
+    isSuggestionsListLoading: Boolean,
+    suggestionsForSearchQuery: List<LocationAutofillSuggestion>,
+    onClearSearchQueryIconClick: () -> Unit,
+    onSearchQueryChange: (String) -> Unit,
+    onSearchBarActiveChange: (Boolean) -> Unit,
+    onSuggestionClick: (LocationAutofillSuggestion) -> Unit
+) {
+    item {
+        Header(
+            modifier = Modifier.fillMaxWidth(),
+            currentSearchQuery = currentSearchQuery,
+            onClearSearchQueryIconClick = onClearSearchQueryIconClick,
+            isSearchBarActive = isSearchBarActive,
+            onSearchQueryChange = onSearchQueryChange,
+            onSearchBarActiveChange = onSearchBarActiveChange,
+            onSearch = {/* TODO: handle search */ },
+            searchBarSuggestionsContent = {
+                AutoFillSuggestionsList(
+                    suggestions = suggestionsForSearchQuery,
+                    onSuggestionClick = onSuggestionClick,
+                    isSuggestionsListLoading = isSuggestionsListLoading
+                )
+            }
+        )
+    }
+}
+
+private fun LazyListScope.subHeaderItem(title: String, isLoadingAnimationVisible: Boolean) {
+    item {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .padding(end = 8.dp),
+                text = title,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Normal
+            )
+            if (isLoadingAnimationVisible) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(12.dp),
+                    strokeWidth = 2.dp
+                )
+            }
+        }
+    }
+}
+
+@ExperimentalFoundationApi
+private fun LazyListScope.currentWeatherDetailCardItem(
+    weatherOfCurrentUserLocation: BriefWeatherDetails,
+    hourlyForecastsOfCurrentUserLocation: List<HourlyForecast>
+) {
+    item {
+        CompactWeatherCardWithHourlyForecast(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .animateItemPlacement(),
+            nameOfLocation = weatherOfCurrentUserLocation.nameOfLocation,
+            shortDescription = weatherOfCurrentUserLocation.shortDescription,
+            shortDescriptionIcon = weatherOfCurrentUserLocation.shortDescriptionIcon,
+            weatherInDegrees = weatherOfCurrentUserLocation.currentTemperatureRoundedToInt.toString(),
+            onClick = { /*TODO*/ },
+            hourlyForecasts = hourlyForecastsOfCurrentUserLocation
+        )
+    }
+}
