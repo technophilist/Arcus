@@ -1,5 +1,6 @@
 package com.example.justweather.ui.navigation
 
+import android.location.Geocoder
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
@@ -10,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -24,7 +26,6 @@ import com.example.justweather.ui.home.HomeViewModel
 import com.example.justweather.ui.weatherDetail.WeatherDetailViewModel
 import com.example.justweather.ui.weatherDetail.WeatherDetailScreen
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 @Composable
@@ -82,6 +83,8 @@ private fun NavGraphBuilder.homeScreen(
                 }
             }
         }
+        val hourlyForecastsForCurrentUserLocation by viewModel.hourlyForecastsForCurrentLocation.collectAsState()
+        val weatherOfCurrentUserLocation by viewModel.weatherDetailsOfCurrentLocation.collectAsState()
         HomeScreen(
             modifier = Modifier.fillMaxSize(),
             homeScreenUiState = uiState,
@@ -90,10 +93,12 @@ private fun NavGraphBuilder.homeScreen(
                 viewModel.deleteSavedWeatherLocation(it)
                 showSnackbar(it)
             },
+            weatherOfCurrentUserLocation = weatherOfCurrentUserLocation,
+            hourlyForecastsOfCurrentUserLocation = hourlyForecastsForCurrentUserLocation,
             onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration,
             onSuggestionClick = onSuggestionClick,
             onSavedLocationItemClick = onSavedLocationItemClick,
-            onLocationPermissionGranted = { Timber.d("Location permission granted") }
+            onLocationPermissionGranted = viewModel::fetchWeatherForCurrentUserLocation
         )
     }
 }
