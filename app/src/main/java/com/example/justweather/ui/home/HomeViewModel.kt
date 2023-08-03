@@ -28,7 +28,6 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val currentSearchQuery = MutableStateFlow("")
-    private val coordinatesOfCurrentLocation = MutableStateFlow<Coordinates?>(null)
 
     private val _uiState = MutableStateFlow(HomeScreenUiState())
     val uiState = _uiState as StateFlow<HomeScreenUiState>
@@ -70,35 +69,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope)
-
-        // weather details of user's current location stream
-        coordinatesOfCurrentLocation.filterNotNull()
-            .onEach { coordinates ->
-                _uiState.update {
-                    it.copy(isLoadingWeatherDetailsOfCurrentLocation = true)
-                }
-                val nameOfLocation = reverseGeocoder.getLocationNameForCoordinates(
-                    coordinates.latitude.toDouble(),
-                    coordinates.longitude.toDouble()
-                ).getOrNull() ?: return@onEach // todo : exception handling
-                val weatherDetailsForCurrentLocation = weatherRepository.fetchWeatherForLocation(
-                    nameOfLocation = nameOfLocation,
-                    latitude = coordinates.latitude,
-                    longitude = coordinates.longitude
-                ).getOrNull()?.toBriefWeatherDetails() // todo : exception handling
-                val hourlyForecastsForCurrentLocation =
-                    weatherRepository.fetchHourlyForecastsForNext24Hours(
-                        latitude = coordinates.latitude,
-                        longitude = coordinates.longitude
-                    ).getOrNull() // todo : exception handling
-                _uiState.update {
-                    it.copy(
-                        isLoadingWeatherDetailsOfCurrentLocation = false,
-                        weatherDetailsOfCurrentLocation = weatherDetailsForCurrentLocation,
-                        hourlyForecastsForCurrentLocation = hourlyForecastsForCurrentLocation
-                    )
-                }
-            }.launchIn(viewModelScope)
     }
 
     /**
@@ -145,10 +115,34 @@ class HomeViewModel @Inject constructor(
 
     fun fetchWeatherForCurrentUserLocation() {
         viewModelScope.launch {
-            val coordinatesResult =
+            _uiState.update { it.copy(isLoadingWeatherDetailsOfCurrentLocation = true) }
+            val coordinates =
                 currentLocationProvider.getCurrentLocation().getOrNull() ?: return@launch
-            coordinatesOfCurrentLocation.value = coordinatesResult
-        }
 
+            val nameOfLocation = reverseGeocoder.getLocationNameForCoordinates(
+                coordinates.latitude.toDouble(),
+                coordinates.longitude.toDouble()
+            ).getOrNull() ?: return@launch // todo : exception handling
+
+            val weatherDetailsForCurrentLocation = weatherRepository.fetchWeatherForLocation(
+                nameOfLocation = nameOfLocation,
+                latitude = coordinates.latitude,
+                longitude = coordinates.longitude
+            ).getOrNull()?.toBriefWeatherDetails() // todo : exception handling
+
+            val hourlyForecastsForCurrentLocation =
+                weatherRepository.fetchHourlyForecastsForNext24Hours(
+                    latitude = coordinates.latitude,
+                    longitude = coordinates.longitude
+                ).getOrNull() // todo : exception handling
+
+            _uiState.update {
+                it.copy(
+                    isLoadingWeatherDetailsOfCurrentLocation = false,
+                    weatherDetailsOfCurrentLocation = weatherDetailsForCurrentLocation,
+                    hourlyForecastsForCurrentLocation = hourlyForecastsForCurrentLocation
+                )
+            }
+        }
     }
 }
