@@ -47,6 +47,7 @@ fun HomeScreen(
         weatherDetailsOfSavedLocations = homeScreenUiState.weatherDetailsOfSavedLocations,
         suggestionsForSearchQuery = homeScreenUiState.autofillSuggestions,
         isSuggestionsListLoading = homeScreenUiState.isLoadingSuggestions,
+        isCurrentWeatherDetailsLoading = homeScreenUiState.isLoadingWeatherDetailsOfCurrentLocation,
         isWeatherForSavedLocationsLoading = homeScreenUiState.isLoadingSavedLocations,
         weatherOfCurrentUserLocation = homeScreenUiState.weatherDetailsOfCurrentLocation,
         hourlyForecastsOfCurrentUserLocation = homeScreenUiState.hourlyForecastsForCurrentLocation,
@@ -79,6 +80,7 @@ fun HomeScreen(
     hourlyForecastsOfCurrentUserLocation: List<HourlyForecast>?,
     isSuggestionsListLoading: Boolean = false,
     isWeatherForSavedLocationsLoading: Boolean = false,
+    isCurrentWeatherDetailsLoading: Boolean,
     onSearchQueryChange: (String) -> Unit,
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
@@ -129,6 +131,13 @@ fun HomeScreen(
                 isSuggestionsListLoading = isSuggestionsListLoading,
                 onSuggestionClick = onSuggestionClick
             )
+
+            if (isCurrentWeatherDetailsLoading) {
+                subHeaderItem(
+                    title = "Current Location",
+                    isLoadingAnimationVisible = true
+                )
+            }
 
             if (weatherOfCurrentUserLocation != null && hourlyForecastsOfCurrentUserLocation != null) {
                 subHeaderItem(
