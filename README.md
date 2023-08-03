@@ -2,6 +2,12 @@
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 Just weather is a simple weather app built completely with Jetpack Compose. Under the hood, it uses the Open-Meteo Weather API to fetch the data. This app uses the Material 3 design system and also supports dynamic colors on supported devices.
+
+## Table of contents
+1. [Screenshots](#screenshots)
+2. [Tech Stack](#tech-stack)
+3. [Source code, Architecture, & Testing](#source-code-architecture--testing)
+
 ## Screenshots
 <img src = "screenshots/home_screen.png" width = "360" height = "740"/> &nbsp; <img src = "screenshots/weather_detail_screen.png" width = "360" height = "740"/> 
 
