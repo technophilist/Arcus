@@ -97,6 +97,12 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
+    // splashscreen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // material theme - for adding dynamic colors in splash screen (work around)
+    implementation("com.google.android.material:material:1.9.0")
+
     // hilt
     implementation("com.google.dagger:hilt-android:2.44")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
