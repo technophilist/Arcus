@@ -4,7 +4,7 @@
     <style name="Theme.JustWeather.SplashScreen" parent="Theme.SplashScreen.IconBackground">
         <item name="windowSplashScreenBackground">@android:color/transparent</item>
         <item name="windowSplashScreenIconBackgroundColor">#FFFFFF</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
         <item name="postSplashScreenTheme">@style/Theme.JustWeather</item>
     </style>
     
