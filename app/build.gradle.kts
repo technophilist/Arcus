@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.justweather"
+    namespace = "com.example.arcus"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.justweather"
+        applicationId = "com.example.arcus"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
