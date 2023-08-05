@@ -7,9 +7,9 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class JustWeatherLocationServicesRepositoryTest {
+class ArcusLocationServicesRepositoryTest {
 
-    private val repository = JustWeatherLocationServicesRepository(
+    private val repository = ArcusLocationServicesRepository(
         locationClient = NetworkModule.provideLocationClient()
     )
 

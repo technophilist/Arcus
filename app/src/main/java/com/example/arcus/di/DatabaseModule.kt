@@ -2,8 +2,8 @@ package com.example.arcus.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.arcus.data.local.weather.JustWeatherDatabase
-import com.example.arcus.data.local.weather.JustWeatherDatabaseDao
+import com.example.arcus.data.local.weather.ArcusDatabase
+import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,11 +17,11 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideJustWeatherDatabaseDao(
+    fun provideArcusDatabaseDao(
         @ApplicationContext context: Context
-    ): JustWeatherDatabaseDao = Room.databaseBuilder(
+    ): ArcusDatabaseDao = Room.databaseBuilder(
         context = context,
-        klass = JustWeatherDatabase::class.java,
-        name = JustWeatherDatabase.DATABASE_NAME
+        klass = ArcusDatabase::class.java,
+        name = ArcusDatabase.DATABASE_NAME
     ).build().getDao()
 }

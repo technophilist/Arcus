@@ -10,7 +10,7 @@ import javax.inject.Inject
 /**
  * A concrete implementation of [LocationServicesRepository].
  */
-class JustWeatherLocationServicesRepository @Inject constructor(
+class ArcusLocationServicesRepository @Inject constructor(
     private val locationClient: LocationClient
 ) : LocationServicesRepository {
 

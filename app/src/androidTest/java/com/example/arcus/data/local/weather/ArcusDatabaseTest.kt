@@ -12,16 +12,16 @@ import org.junit.Test
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class JustWeatherDatabaseTest {
-    private lateinit var database: JustWeatherDatabase
-    private lateinit var dao: JustWeatherDatabaseDao
+internal class ArcusDatabaseTest {
+    private lateinit var database: ArcusDatabase
+    private lateinit var dao: ArcusDatabaseDao
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(
             context,
-            JustWeatherDatabase::class.java
+            ArcusDatabase::class.java
         ).build()
         dao = database.getDao()
     }

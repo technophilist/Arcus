@@ -7,7 +7,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-private val JustWeatherDarkColorScheme = darkColorScheme(
+private val ArcusDarkColorScheme = darkColorScheme(
     primary = Blue80,
     onPrimary = Blue20,
     primaryContainer = Blue30,
@@ -37,13 +37,13 @@ private val JustWeatherDarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun JustWeatherTheme(areDynamicColorsEnabled: Boolean = true, content: @Composable () -> Unit) {
+fun ArcusTheme(areDynamicColorsEnabled: Boolean = true, content: @Composable () -> Unit) {
     val doesDeviceSupportDynamicColors =
         areDynamicColorsEnabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val context = LocalContext.current
     MaterialTheme(
         colorScheme = if (doesDeviceSupportDynamicColors) dynamicDarkColorScheme(context)
-        else JustWeatherDarkColorScheme,
+        else ArcusDarkColorScheme,
         typography = Typography,
         content = content
     )

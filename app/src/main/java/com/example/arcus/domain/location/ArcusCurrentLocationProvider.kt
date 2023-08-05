@@ -14,10 +14,10 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 /**
- * An implementation of [JustWeatherCurrentLocationProvider] that uses [FusedLocationProviderClient]
+ * An implementation of [ArcusCurrentLocationProvider] that uses [FusedLocationProviderClient]
  * under the hood.
  */
-class JustWeatherCurrentLocationProvider @Inject constructor(
+class ArcusCurrentLocationProvider @Inject constructor(
     @ApplicationContext private val context: Context
 ) : CurrentLocationProvider {
     private val fusedLocationProviderClient by lazy {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.JustWeather.SplashScreen" parent="Theme.SplashScreen.IconBackground">
+    <style name="Theme.Arcus.SplashScreen" parent="Theme.SplashScreen.IconBackground">
         <item name="windowSplashScreenBackground">@android:color/transparent</item>
         <item name="windowSplashScreenIconBackgroundColor">#FFFFFF</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-        <item name="postSplashScreenTheme">@style/Theme.JustWeather</item>
+        <item name="postSplashScreenTheme">@style/Theme.Arcus</item>
     </style>
     
 </resources>

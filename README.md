@@ -27,7 +27,7 @@ Just weather is a simple weather app built completely with Jetpack Compose. Unde
 - Google play location services for getting the user’s location.
 
 ## Source code, Architecture, & Testing
-- All concrete implementations are prefixed by the term “JustWeather”.
+- All concrete implementations are prefixed by the term “Arcus”.
 - Uses multi-repository pattern.
 - MVVM architecture.
 - Commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.JustWeather" parent="Theme.Material3.DynamicColors.Dark">
+    <style name="Theme.Arcus" parent="Theme.Material3.DynamicColors.Dark">
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>

@@ -1,6 +1,6 @@
 package com.example.arcus.data.repositories.weather
 
-import com.example.arcus.data.local.weather.JustWeatherDatabaseDao
+import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import com.example.arcus.data.local.weather.SavedWeatherLocationEntity
 import com.example.arcus.di.NetworkModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,9 +14,9 @@ import java.time.LocalDate
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class JustWeatherWeatherRepositoryTest {
+class ArcusWeatherRepositoryTest {
 
-    private lateinit var weatherRepository: JustWeatherWeatherRepository
+    private lateinit var weatherRepository: ArcusWeatherRepository
     private val savedLocations = listOf(
         SavedWeatherLocationEntity(
             nameOfLocation = "Seattle",
@@ -37,14 +37,14 @@ class JustWeatherWeatherRepositoryTest {
 
     @Before
     fun setup() {
-        val daoMock = mock<JustWeatherDatabaseDao> {
+        val daoMock = mock<ArcusDatabaseDao> {
             onBlocking { getAllWeatherEntitiesMarkedAsNotDeleted() } doAnswer {
                 flowOf(savedLocations)
             }
         }
-        weatherRepository = JustWeatherWeatherRepository(
+        weatherRepository = ArcusWeatherRepository(
             weatherClient = NetworkModule.provideWeatherClient(),
-            justWeatherDatabaseDao = daoMock
+            ArcusDatabaseDao = daoMock
         )
     }
 

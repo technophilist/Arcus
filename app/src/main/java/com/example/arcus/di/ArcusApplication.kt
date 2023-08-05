@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
-class JustWeatherApplication : Application(), Configuration.Provider {
+class ArcusApplication : Application(), Configuration.Provider {
 
     @Inject
     lateinit var hiltWorkerFactory: HiltWorkerFactory
@@ -43,6 +43,6 @@ class JustWeatherApplication : Application(), Configuration.Provider {
 
     companion object {
         private const val DELETE_MARKED_ITEMS_WORK_ID =
-            "com.example.justweather.data.workers.DeleteMarkedItemsWorker"
+            "com.example.Arcus.data.workers.DeleteMarkedItemsWorker"
     }
 }

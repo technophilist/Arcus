@@ -7,7 +7,7 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface JustWeatherDatabaseDao {
+interface ArcusDatabaseDao {
     @Query("SELECT * FROM savedweatherlocations WHERE isDeleted == 0")
     fun getAllWeatherEntitiesMarkedAsNotDeleted(): Flow<List<SavedWeatherLocationEntity>>
 

@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import java.util.Locale
 import javax.inject.Inject
 
-class JustWeatherReverseGeocoder @Inject constructor(
+class ArcusReverseGeocoder @Inject constructor(
     @ApplicationContext private val context: Context,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ReverseGeocoder {

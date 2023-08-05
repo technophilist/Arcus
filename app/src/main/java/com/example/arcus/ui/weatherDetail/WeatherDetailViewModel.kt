@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.arcus.data.repositories.weather.WeatherRepository
 import com.example.arcus.data.repositories.weather.fetchHourlyForecastsForNext24Hours
 import com.example.arcus.data.repositories.weather.fetchPrecipitationProbabilitiesForNext24hours
-import com.example.arcus.ui.navigation.JustWeatherNavigationDestinations.WeatherDetailScreen
+import com.example.arcus.ui.navigation.ArcusNavigationDestinations.WeatherDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async

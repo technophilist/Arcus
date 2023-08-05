@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.arcus.data.local.weather.JustWeatherDatabaseDao
+import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import com.example.arcus.di.IODispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 class DeleteMarkedItemsWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val dao: JustWeatherDatabaseDao,
+    private val dao: ArcusDatabaseDao,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : CoroutineWorker(context, workerParameters) {
 

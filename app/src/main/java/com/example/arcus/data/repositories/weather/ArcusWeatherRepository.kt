@@ -1,7 +1,7 @@
 package com.example.arcus.data.repositories.weather
 
 import com.example.arcus.data.getBodyOrThrowException
-import com.example.arcus.data.local.weather.JustWeatherDatabaseDao
+import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import com.example.arcus.data.local.weather.SavedWeatherLocationEntity
 import com.example.arcus.data.local.weather.toSavedLocation
 import com.example.arcus.data.remote.weather.WeatherClient
@@ -18,9 +18,9 @@ import javax.inject.Inject
 /**
  * The default concrete implementation of [WeatherRepository].
  */
-class JustWeatherWeatherRepository @Inject constructor(
+class ArcusWeatherRepository @Inject constructor(
     private val weatherClient: WeatherClient,
-    private val justWeatherDatabaseDao: JustWeatherDatabaseDao
+    private val ArcusDatabaseDao: ArcusDatabaseDao
 ) : WeatherRepository {
 
     override suspend fun fetchWeatherForLocation(
@@ -38,7 +38,7 @@ class JustWeatherWeatherRepository @Inject constructor(
         Result.failure(exception)
     }
 
-    override fun getSavedLocationsListStream(): Flow<List<SavedLocation>> = justWeatherDatabaseDao
+    override fun getSavedLocationsListStream(): Flow<List<SavedLocation>> = ArcusDatabaseDao
         .getAllWeatherEntitiesMarkedAsNotDeleted()
         .map { savedLocationEntitiesList -> savedLocationEntitiesList.map { it.toSavedLocation() } }
 
@@ -52,17 +52,17 @@ class JustWeatherWeatherRepository @Inject constructor(
             latitude = latitude,
             longitude = longitude
         )
-        justWeatherDatabaseDao.addSavedWeatherEntity(savedWeatherEntity)
+        ArcusDatabaseDao.addSavedWeatherEntity(savedWeatherEntity)
     }
 
     override suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails) {
         val savedLocationEntity = briefWeatherLocation.toSavedWeatherLocationEntity()
-        justWeatherDatabaseDao.markWeatherEntityAsDeleted(savedLocationEntity.nameOfLocation)
+        ArcusDatabaseDao.markWeatherEntityAsDeleted(savedLocationEntity.nameOfLocation)
     }
 
     override suspend fun permanentlyDeleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails) {
         briefWeatherLocation.toSavedWeatherLocationEntity().run {
-            justWeatherDatabaseDao.deleteSavedWeatherEntity(this)
+            ArcusDatabaseDao.deleteSavedWeatherEntity(this)
         }
     }
 
@@ -117,6 +117,6 @@ class JustWeatherWeatherRepository @Inject constructor(
     }
 
     override suspend fun tryRestoringDeletedWeatherLocation(nameOfLocation: String) {
-        justWeatherDatabaseDao.markWeatherEntityAsUnDeleted(nameOfLocation)
+        ArcusDatabaseDao.markWeatherEntityAsUnDeleted(nameOfLocation)
     }
 }

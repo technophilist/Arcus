@@ -27,14 +27,14 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun JustWeatherNavigation(navController: NavHostController = rememberNavController()) {
+fun ArcusNavigation(navController: NavHostController = rememberNavController()) {
     NavHost(
         navController = navController,
-        startDestination = JustWeatherNavigationDestinations.HomeScreen.route
+        startDestination = ArcusNavigationDestinations.HomeScreen.route
     ) {
 
         homeScreen(
-            route = JustWeatherNavigationDestinations.HomeScreen.route,
+            route = ArcusNavigationDestinations.HomeScreen.route,
             onSuggestionClick = {
                 navController.navigateToWeatherDetailScreen(
                     nameOfLocation = it.nameOfLocation,
@@ -52,7 +52,7 @@ fun JustWeatherNavigation(navController: NavHostController = rememberNavControll
         )
 
         weatherDetailScreen(
-            route = JustWeatherNavigationDestinations.WeatherDetailScreen.route,
+            route = ArcusNavigationDestinations.WeatherDetailScreen.route,
             onBackButtonClick = navController::popBackStack
         )
     }
@@ -129,7 +129,7 @@ private fun NavHostController.navigateToWeatherDetailScreen(
     latitude: String,
     longitude: String
 ) {
-    val destination = JustWeatherNavigationDestinations.WeatherDetailScreen.buildRoute(
+    val destination = ArcusNavigationDestinations.WeatherDetailScreen.buildRoute(
         nameOfLocation = nameOfLocation,
         latitude = latitude,
         longitude = longitude
