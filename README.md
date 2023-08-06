@@ -6,10 +6,23 @@ Arcus is a simple weather app built completely with Jetpack Compose. Under the h
 ## Table of contents
 1. [Screenshots](#screenshots)
 2. [Tech Stack](#tech-stack)
-3. [Source code, Architecture, & Testing](#source-code-architecture--testing)
+3. [Themed App Icon](#themed-app-icon)
+4. [Source code, Architecture, & Testing](#source-code-architecture--testing)
 
 ## Screenshots
 <img src = "screenshots/home_screen.png" width = "360" height = "740"/> &nbsp; <img src = "screenshots/weather_detail_screen.png" width = "360" height = "740"/> 
+
+## Themed App Icon
+The app also supports the "Themed Icons" feature available on Android 13 and later. If the user has opted in for the feature on a device that is running Android 
+13 and higher, the app's icon will be tinted to inherit the coloring of the user’s chosen wallpaper and other themes.
+
+<table>
+  <tr>
+    <td> <img src = "screenshots/themed_icon_red.png" width = "166" height = "164" /> </td>
+    <td> <img src = "screenshots/themed_icon_green.png" width = "166" height = "164" /> </td>
+    <td> <img src = "screenshots/themed_icon_blue.png" width = "166" height = "164" /> </td>
+  </tr>
+</table>
 
 ## Tech Stack
 - Entirely written in [Kotlin](https://kotlinlang.org/).
