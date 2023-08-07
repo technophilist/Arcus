@@ -96,7 +96,7 @@ fun WeatherDetailScreen(
                 Header(
                     modifier = Modifier
                         .requiredWidth(screenWidth)
-                        .height(360.dp),
+                        .height(350.dp),
                     headerImageResId = weatherConditionImage,
                     weatherConditionIconId = weatherConditionIconId,
                     onBackButtonClick = onBackButtonClick,
