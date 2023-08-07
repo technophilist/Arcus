@@ -23,7 +23,7 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
     data class Suggestion(
         @Json(name = "id") val idOfPlace: String,
         @Json(name = "name") val nameOfPlace: String,
-        @Json(name = "country") val country: String,
+        @Json(name = "country") val country: String?,
         @Json(name = "admin1") val state: String?,
         val latitude: String,
         val longitude: String
@@ -38,7 +38,7 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
  * the [SuggestionsResponse.Suggestion.state] set to null.**
  */
 fun List<SuggestionsResponse.Suggestion>.toLocationAutofillSuggestionList(): List<LocationAutofillSuggestion> =
-    this.filter { it.state != null }
+    this.filter { it.state != null && it.country != null }
         .map {
             LocationAutofillSuggestion(
                 idOfLocation = it.idOfPlace,
