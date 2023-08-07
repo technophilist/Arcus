@@ -132,18 +132,12 @@ fun HomeScreen(
                 onSuggestionClick = onSuggestionClick
             )
 
-            if (isCurrentWeatherDetailsLoading) {
-                subHeaderItem(
-                    title = "Current Location",
-                    isLoadingAnimationVisible = true
-                )
-            }
+            subHeaderItem(
+                title = "Current Location",
+                isLoadingAnimationVisible = isCurrentWeatherDetailsLoading
+            )
 
             if (weatherOfCurrentUserLocation != null && hourlyForecastsOfCurrentUserLocation != null) {
-                subHeaderItem(
-                    title = "Current Location",
-                    isLoadingAnimationVisible = false
-                )
                 currentWeatherDetailCardItem(
                     weatherOfCurrentUserLocation = weatherOfCurrentUserLocation,
                     hourlyForecastsOfCurrentUserLocation = hourlyForecastsOfCurrentUserLocation,
