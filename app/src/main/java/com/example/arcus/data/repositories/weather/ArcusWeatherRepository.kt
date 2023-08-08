@@ -3,12 +3,7 @@ package com.example.arcus.data.repositories.weather
 import com.example.arcus.data.getBodyOrThrowException
 import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import com.example.arcus.data.local.weather.SavedWeatherLocationEntity
-import com.example.arcus.data.local.weather.toSavedLocation
 import com.example.arcus.data.remote.weather.WeatherClient
-import com.example.arcus.data.remote.weather.models.toCurrentWeatherDetails
-import com.example.arcus.data.remote.weather.models.toHourlyForecasts
-import com.example.arcus.data.remote.weather.models.toPrecipitationProbabilities
-import com.example.arcus.data.remote.weather.models.toSingleWeatherDetailList
 import com.example.arcus.domain.models.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.*

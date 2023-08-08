@@ -1,7 +1,5 @@
 package com.example.arcus.data.remote.location.models
 
-import com.example.arcus.domain.models.Coordinates
-import com.example.arcus.domain.models.LocationAutofillSuggestion
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -29,24 +27,3 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
         val longitude: String
     )
 }
-
-/**
- * A mapper function used to map a list of type [SuggestionsResponse.Suggestion] to a list of
- * of type [LocationAutofillSuggestion].
- *
- * Note: This method **filters out all instances of [SuggestionsResponse.Suggestion] that have
- * the [SuggestionsResponse.Suggestion.state] set to null.**
- */
-fun List<SuggestionsResponse.Suggestion>.toLocationAutofillSuggestionList(): List<LocationAutofillSuggestion> =
-    this.filter { it.state != null && it.country != null }
-        .map {
-            LocationAutofillSuggestion(
-                idOfLocation = it.idOfPlace,
-                nameOfLocation = it.nameOfPlace,
-                addressOfLocation = "${it.state}, ${it.country}",
-                coordinatesOfLocation = Coordinates(
-                    latitude = it.latitude,
-                    longitude = it.longitude
-                )
-            )
-        }

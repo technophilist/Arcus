@@ -1,5 +1,7 @@
 package com.example.arcus.domain.models
 
+import com.example.arcus.data.remote.location.models.SuggestionsResponse
+
 /**
  * This is a data class that models an auto-fill suggestion for a location query.
  * @param idOfLocation The id of the location.
@@ -13,3 +15,24 @@ data class LocationAutofillSuggestion(
     val addressOfLocation: String,
     val coordinatesOfLocation: Coordinates
 )
+
+/**
+ * A mapper function used to map a list of type [SuggestionsResponse.Suggestion] to a list of
+ * of type [LocationAutofillSuggestion].
+ *
+ * Note: This method **filters out all instances of [SuggestionsResponse.Suggestion] that have
+ * the [SuggestionsResponse.Suggestion.state] set to null.**
+ */
+fun List<SuggestionsResponse.Suggestion>.toLocationAutofillSuggestionList(): List<LocationAutofillSuggestion> =
+    this.filter { it.state != null && it.country != null }
+        .map {
+            LocationAutofillSuggestion(
+                idOfLocation = it.idOfPlace,
+                nameOfLocation = it.nameOfPlace,
+                addressOfLocation = "${it.state}, ${it.country}",
+                coordinatesOfLocation = Coordinates(
+                    latitude = it.latitude,
+                    longitude = it.longitude
+                )
+            )
+        }
