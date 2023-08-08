@@ -4,10 +4,14 @@
 Arcus is a simple weather app built completely with Jetpack Compose. Under the hood, it uses the Open-Meteo Weather API to fetch the data. This app uses the Material 3 design system and also supports dynamic colors on supported devices.
 
 ## Table of contents
-1. [Screenshots](#screenshots)
+1. [Demo](#demo)
+2. [Screenshots](#screenshots)
 2. [Tech Stack](#tech-stack)
 3. [Themed App Icon](#themed-app-icon)
 4. [Source code, Architecture, & Testing](#source-code-architecture--testing)
+
+## Demo
+https://github.com/t3chkid/Arcus/assets/54663474/99953e95-c5b8-4b2b-aea6-703eb08a81f8
 
 ## Screenshots
 <img src = "screenshots/home_screen.png" width = "360" height = "740"/> &nbsp; <img src = "screenshots/weather_detail_screen.png" width = "360" height = "740"/> 
