@@ -27,17 +27,11 @@ android {
         val properties = Properties().apply {
             load(project.rootProject.file("local.properties").inputStream())
         }
-        val openWeatherMapApiKey = properties.getProperty("OPEN_WEATHER_MAP_API_KEY")
-        val mapBoxApiKey = properties.getProperty("MAP_BOX_ACCESS_TOKEN")
+        val openAiApiToken = properties.getProperty("OPEN_AI_API_TOKEN")
         buildConfigField(
             type = "String",
-            name = "OPEN_WEATHER_MAP_API_KEY",
-            value = "\"$openWeatherMapApiKey\""
-        )
-        buildConfigField(
-            type = "String",
-            name = "MAP_BOX_API_KEY",
-            value = "\"$mapBoxApiKey\""
+            name = "OPEN_AI_API_TOKEN",
+            value = "\"$openAiApiToken\""
         )
     }
 
