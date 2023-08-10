@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 class ArcusWeatherRepository @Inject constructor(
     private val weatherClient: WeatherClient,
-    private val ArcusDatabaseDao: ArcusDatabaseDao
+    private val arcusDatabaseDao: ArcusDatabaseDao
 ) : WeatherRepository {
 
     override suspend fun fetchWeatherForLocation(
@@ -33,7 +33,7 @@ class ArcusWeatherRepository @Inject constructor(
         Result.failure(exception)
     }
 
-    override fun getSavedLocationsListStream(): Flow<List<SavedLocation>> = ArcusDatabaseDao
+    override fun getSavedLocationsListStream(): Flow<List<SavedLocation>> = arcusDatabaseDao
         .getAllWeatherEntitiesMarkedAsNotDeleted()
         .map { savedLocationEntitiesList -> savedLocationEntitiesList.map { it.toSavedLocation() } }
 
@@ -47,17 +47,17 @@ class ArcusWeatherRepository @Inject constructor(
             latitude = latitude,
             longitude = longitude
         )
-        ArcusDatabaseDao.addSavedWeatherEntity(savedWeatherEntity)
+        arcusDatabaseDao.addSavedWeatherEntity(savedWeatherEntity)
     }
 
     override suspend fun deleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails) {
         val savedLocationEntity = briefWeatherLocation.toSavedWeatherLocationEntity()
-        ArcusDatabaseDao.markWeatherEntityAsDeleted(savedLocationEntity.nameOfLocation)
+        arcusDatabaseDao.markWeatherEntityAsDeleted(savedLocationEntity.nameOfLocation)
     }
 
     override suspend fun permanentlyDeleteWeatherLocationFromSavedItems(briefWeatherLocation: BriefWeatherDetails) {
         briefWeatherLocation.toSavedWeatherLocationEntity().run {
-            ArcusDatabaseDao.deleteSavedWeatherEntity(this)
+            arcusDatabaseDao.deleteSavedWeatherEntity(this)
         }
     }
 
@@ -112,6 +112,6 @@ class ArcusWeatherRepository @Inject constructor(
     }
 
     override suspend fun tryRestoringDeletedWeatherLocation(nameOfLocation: String) {
-        ArcusDatabaseDao.markWeatherEntityAsUnDeleted(nameOfLocation)
+        arcusDatabaseDao.markWeatherEntityAsUnDeleted(nameOfLocation)
     }
 }
