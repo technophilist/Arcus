@@ -61,9 +61,7 @@ interface WeatherRepository {
     /**
      * Used to try restoring a recently deleted weather location with the provided [nameOfLocation].
      * This method doesn't guarantee that the item would be restored. As the name indicates, it only
-     * tries to restore the item. If the item gets restored successfully, then the
-     * [fetchWeatherStreamForPreviouslySavedLocations] will automatically emit a new list with the
-     * item added to it.
+     * tries to restore the item.
      */
     suspend fun tryRestoringDeletedWeatherLocation(nameOfLocation: String)
 
@@ -103,4 +101,10 @@ interface WeatherRepository {
         latitude: String,
         longitude: String
     ): Result<List<SingleWeatherDetail>>
+
+    /**
+     * Used to fetch an AI generated summary based on the provided [currentWeatherDetails]. The
+     * summary would be encapsulated in an instance of [Result].
+     */
+    suspend fun fetchGeneratedSummaryForWeatherDetails(currentWeatherDetails: CurrentWeatherDetails): Result<String>
 }

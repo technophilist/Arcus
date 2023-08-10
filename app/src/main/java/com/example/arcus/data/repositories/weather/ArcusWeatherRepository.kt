@@ -3,6 +3,9 @@ package com.example.arcus.data.repositories.weather
 import com.example.arcus.data.getBodyOrThrowException
 import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import com.example.arcus.data.local.weather.SavedWeatherLocationEntity
+import com.example.arcus.data.remote.languagemodel.TextGeneratorClient
+import com.example.arcus.data.remote.languagemodel.models.MessageDTO
+import com.example.arcus.data.remote.languagemodel.models.TextGenerationPromptBody
 import com.example.arcus.data.remote.weather.WeatherClient
 import com.example.arcus.domain.models.*
 import kotlinx.coroutines.CancellationException
@@ -15,6 +18,7 @@ import javax.inject.Inject
  */
 class ArcusWeatherRepository @Inject constructor(
     private val weatherClient: WeatherClient,
+    private val textGeneratorClient: TextGeneratorClient,
     private val arcusDatabaseDao: ArcusDatabaseDao
 ) : WeatherRepository {
 
@@ -113,5 +117,37 @@ class ArcusWeatherRepository @Inject constructor(
 
     override suspend fun tryRestoringDeletedWeatherLocation(nameOfLocation: String) {
         arcusDatabaseDao.markWeatherEntityAsUnDeleted(nameOfLocation)
+    }
+
+    override suspend fun fetchGeneratedSummaryForWeatherDetails(currentWeatherDetails: CurrentWeatherDetails): Result<String> {
+        // prompts
+        val systemPrompt = """
+            You are a weather reporter. Generate a very short, but whimsical description of the weather,
+            based on the given information.
+        """.trimIndent()
+        val userPrompt = """
+            location = ${currentWeatherDetails.nameOfLocation};
+            currentTemperature = ${currentWeatherDetails.temperatureRoundedToInt};
+            weatherCondition = ${currentWeatherDetails.weatherCondition};
+        """.trimIndent()
+        // prompt messages
+        val promptMessages = listOf(
+            MessageDTO(role = "system", content = systemPrompt),
+            MessageDTO(role = "user", content = userPrompt)
+        )
+        val textGenerationPrompt = TextGenerationPromptBody(
+            messages = promptMessages,
+            model = "gpt-3.5-turbo-0613"
+        )
+        // request to generate text based on prompt body
+        return try {
+            val generatedTextResponse = textGeneratorClient.getModelResponseForConversations(
+                textGenerationPostBody = textGenerationPrompt
+            ).getBodyOrThrowException()
+            Result.success(generatedTextResponse.generatedResponses.first().message.content)
+        } catch (exception: Exception) {
+            if (exception is CancellationException) throw exception
+            Result.failure(exception)
+        }
     }
 }
