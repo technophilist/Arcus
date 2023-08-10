@@ -26,12 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.arcus.R
 import com.example.arcus.domain.models.HourlyForecast
 import com.example.arcus.domain.models.PrecipitationProbability
 import com.example.arcus.domain.models.SingleWeatherDetail
 import com.example.arcus.ui.components.HourlyForecastCard
 import com.example.arcus.ui.components.PrecipitationProbabilitiesCard
 import com.example.arcus.ui.components.SingleWeatherDetailCard
+import com.example.arcus.ui.components.TypingAnimatedText
 
 
 /**
@@ -56,6 +58,7 @@ fun WeatherDetailScreen(
             weatherConditionIconId = uiState.weatherDetailsOfChosenLocation.iconResId,
             weatherInDegrees = uiState.weatherDetailsOfChosenLocation.temperatureRoundedToInt,
             weatherCondition = uiState.weatherDetailsOfChosenLocation.weatherCondition,
+            aiGeneratedWeatherSummaryText = uiState.weatherSummaryText,
             isPreviouslySavedLocation = uiState.isPreviouslySavedLocation,
             isLoading = uiState.isLoading,
             singleWeatherDetails = uiState.additionalWeatherInfoItems,
@@ -70,13 +73,14 @@ fun WeatherDetailScreen(
 @Composable
 fun WeatherDetailScreen(
     nameOfLocation: String,
+    weatherCondition: String,
+    aiGeneratedWeatherSummaryText: String?,
     @DrawableRes weatherConditionImage: Int,
     @DrawableRes weatherConditionIconId: Int,
     weatherInDegrees: Int,
-    weatherCondition: String,
-    onBackButtonClick: () -> Unit,
     isLoading: Boolean,
     isPreviouslySavedLocation: Boolean,
+    onBackButtonClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
     singleWeatherDetails: List<SingleWeatherDetail>,
     hourlyForecasts: List<HourlyForecast>,
@@ -106,6 +110,12 @@ fun WeatherDetailScreen(
                     currentWeatherInDegrees = weatherInDegrees,
                     weatherCondition = weatherCondition
                 )
+            }
+
+            if (aiGeneratedWeatherSummaryText != null) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    WeatherSummaryTextCard(summaryText = aiGeneratedWeatherSummaryText)
+                }
             }
 
             item(span = { GridItemSpan(maxLineSpan) }) {
@@ -239,5 +249,33 @@ private fun Header(
                 Text(text = weatherCondition)
             }
         }
+    }
+}
+
+@Composable
+private fun WeatherSummaryTextCard(
+    modifier: Modifier = Modifier,
+    summaryText: String,
+) {
+    Card(modifier = modifier) {
+        Row(
+            modifier = Modifier.padding(top = 8.dp, start = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                modifier = Modifier.size(16.dp),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_bard_logo),
+                contentDescription = null
+            )
+            Text(
+                text = "Summary",
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+        TypingAnimatedText(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            text = summaryText
+        )
     }
 }
