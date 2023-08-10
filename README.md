@@ -1,14 +1,15 @@
 # Arcus - A Material 3 Weather App for Android
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
-Arcus is a simple weather app built completely with Jetpack Compose. Under the hood, it uses the Open-Meteo Weather API to fetch the data. This app uses the Material 3 design system and also supports dynamic colors on supported devices.
+Arcus is a simple weather app built completely with Jetpack Compose. Under the hood, it uses the [Open-Meteo Weather API](https://open-meteo.com) to fetch the data. It also uses the [OpenAI API](https://openai.com/blog/openai-api) to display a short whimsical summary of the current weather of a particular location. This app uses the Material 3 design system and also supports dynamic colors on supported devices. 
 
 ## Table of contents
 1. [Demo](#demo)
 2. [Screenshots](#screenshots)
 2. [Tech Stack](#tech-stack)
-3. [Themed App Icon](#themed-app-icon)
-4. [Source code, Architecture, & Testing](#source-code-architecture--testing)
+3. [API's](#)
+4. [Themed App Icon](#themed-app-icon)
+5. [Source code, Architecture, & Testing](#source-code-architecture--testing)
 
 ## Demo
 https://github.com/t3chkid/Arcus/assets/54663474/99953e95-c5b8-4b2b-aea6-703eb08a81f8
@@ -43,6 +44,10 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 - [Work Manager](https://developer.android.com/topic/libraries/architecture/workmanager?gclid=EAIaIQobChMIwJy33ufG8QIVGcEWBR31Mwa-EAAYASAAEgIF3vD_BwE&gclsrc=aw.ds) for background tasks.
 - Moshi + Moshi Kotlin CodeGen for deserializing responses from the API.
 - Google play location services for getting the user’s location.
+
+## API's
+- [Open-Meteo weather api](https://open-meteo.com) for fetching weather information.
+- [OpenAI API](https://openai.com/blog/openai-api) for generating a short, whimsical summary of the current weather of a particular location.
 
 ## Source code, Architecture, & Testing
 - All concrete implementations are prefixed by the term “Arcus”.
