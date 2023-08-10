@@ -12,7 +12,7 @@ data class WeatherDetailScreenUiState(
     val isLoading: Boolean = false,
     val isPreviouslySavedLocation: Boolean = false,
     val weatherDetailsOfChosenLocation: CurrentWeatherDetails? = null,
-    val weatherSummaryText: String? = "",
+    val weatherSummaryText: String? = null,
     val errorMessage: String? = null,
     val precipitationProbabilities: List<PrecipitationProbability> = emptyList(),
     val hourlyForecasts: List<HourlyForecast> = emptyList(),
