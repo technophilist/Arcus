@@ -2,6 +2,7 @@ package com.example.arcus.data.repositories.weather
 
 import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import com.example.arcus.data.local.weather.SavedWeatherLocationEntity
+import com.example.arcus.data.remote.languagemodel.TextGeneratorClient
 import com.example.arcus.di.NetworkModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -10,6 +11,8 @@ import org.mockito.kotlin.mock
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.stub
+import org.mockito.kotlin.stubbing
 import java.time.LocalDate
 
 
@@ -44,7 +47,8 @@ class ArcusWeatherRepositoryTest {
         }
         weatherRepository = ArcusWeatherRepository(
             weatherClient = NetworkModule.provideWeatherClient(),
-            ArcusDatabaseDao = daoMock
+            arcusDatabaseDao = daoMock,
+            textGeneratorClient = mock()
         )
     }
 
