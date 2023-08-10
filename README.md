@@ -7,7 +7,7 @@ Arcus is a simple weather app built completely with Jetpack Compose. Under the h
 1. [Demo](#demo)
 2. [Screenshots](#screenshots)
 2. [Tech Stack](#tech-stack)
-3. [API's](#)
+3. [API's](#apis)
 4. [Themed App Icon](#themed-app-icon)
 5. [Source code, Architecture, & Testing](#source-code-architecture--testing)
 
