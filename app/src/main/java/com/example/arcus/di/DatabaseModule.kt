@@ -2,6 +2,8 @@ package com.example.arcus.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.arcus.data.local.textgeneration.ArcusGeneratedTextCacheDatabase
+import com.example.arcus.data.local.textgeneration.GeneratedTextCacheDatabaseDao
 import com.example.arcus.data.local.weather.ArcusDatabase
 import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import dagger.Module
@@ -24,4 +26,15 @@ object DatabaseModule {
         klass = ArcusDatabase::class.java,
         name = ArcusDatabase.DATABASE_NAME
     ).build().getDao()
+
+    @Provides
+    @Singleton
+    fun provideGeneratedTextCacheDatabaseDao(
+        @ApplicationContext context: Context
+    ): GeneratedTextCacheDatabaseDao = Room.databaseBuilder(
+        context = context,
+        klass = ArcusGeneratedTextCacheDatabase::class.java,
+        name = ArcusGeneratedTextCacheDatabase.DATABASE_NAME
+    ).build().getDao()
+
 }
