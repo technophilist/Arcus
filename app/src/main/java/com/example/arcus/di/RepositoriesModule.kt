@@ -2,6 +2,8 @@ package com.example.arcus.di
 
 import com.example.arcus.data.repositories.location.ArcusLocationServicesRepository
 import com.example.arcus.data.repositories.location.LocationServicesRepository
+import com.example.arcus.data.repositories.textgenerator.ArcusGenerativeTextRepository
+import com.example.arcus.data.repositories.textgenerator.GenerativeTextRepository
 import com.example.arcus.data.repositories.weather.ArcusWeatherRepository
 import com.example.arcus.data.repositories.weather.WeatherRepository
 import dagger.Binds
@@ -22,4 +24,9 @@ abstract class RepositoriesModule {
     abstract fun bindWeatherRepository(
         impl: ArcusWeatherRepository
     ): WeatherRepository
+
+    @Binds
+    abstract fun bindGenerativeTextRepository(
+        impl: ArcusGenerativeTextRepository
+    ): GenerativeTextRepository
 }
