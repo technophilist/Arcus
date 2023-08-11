@@ -1,6 +1,8 @@
 package com.example.arcus.data.repositories.textgenerator
 
 import com.example.arcus.data.getBodyOrThrowException
+import com.example.arcus.data.local.textgeneration.GeneratedTextCacheDatabaseDao
+import com.example.arcus.data.local.textgeneration.GeneratedTextForLocationEntity
 import com.example.arcus.data.remote.languagemodel.TextGeneratorClient
 import com.example.arcus.data.remote.languagemodel.models.MessageDTO
 import com.example.arcus.data.remote.languagemodel.models.TextGenerationPromptBody
@@ -10,14 +12,14 @@ import javax.inject.Inject
 
 
 class ArcusGenerativeTextRepository @Inject constructor(
-    private val textGeneratorClient: TextGeneratorClient
+    private val textGeneratorClient: TextGeneratorClient,
+    private val generatedTextCacheDatabaseDao: GeneratedTextCacheDatabaseDao,
 ) : GenerativeTextRepository {
 
-    private val cache = mutableMapOf<CacheKey, String>()
-
     override suspend fun generateTextForWeatherDetails(weatherDetails: CurrentWeatherDetails): Result<String> {
-        val cacheKey = getCacheKey(weatherDetails)
-        if (cacheKey in cache.keys) return Result.success(cache.getValue(cacheKey))
+        val generatedTextEntity =
+            generatedTextCacheDatabaseDao.getGeneratedTextForLocation(weatherDetails.nameOfLocation)
+        if (generatedTextEntity != null) return Result.success(generatedTextEntity.generatedDescription)
         // prompts
         val systemPrompt = """
             You are a weather reporter. Generate a very short, but whimsical description of the weather,
@@ -39,12 +41,22 @@ class ArcusGenerativeTextRepository @Inject constructor(
         )
         // request to generate text based on prompt body
         return try {
+            // generate text
             val generatedTextResponse = textGeneratorClient.getModelResponseForConversations(
                 textGenerationPostBody = textGenerationPrompt
             ).getBodyOrThrowException()
                 .generatedResponses
                 .first().message
-                .content.also { cache[cacheKey] = it }
+                .content
+            // save the generated text in database
+            val generatedTextForLocationEntity = GeneratedTextForLocationEntity(
+                nameOfLocation = weatherDetails.nameOfLocation,
+                temperature = weatherDetails.temperatureRoundedToInt,
+                conciseWeatherDescription = weatherDetails.weatherCondition,
+                generatedDescription = generatedTextResponse
+            )
+            generatedTextCacheDatabaseDao.addGeneratedTextForLocation(generatedTextForLocationEntity)
+            // return the result
             Result.success(generatedTextResponse)
         } catch (exception: Exception) {
             if (exception is CancellationException) throw exception
@@ -52,12 +64,4 @@ class ArcusGenerativeTextRepository @Inject constructor(
         }
     }
 
-    private fun getCacheKey(weatherDetails: CurrentWeatherDetails): CacheKey {
-        val keyValue =
-            "${weatherDetails.nameOfLocation};${weatherDetails.temperatureRoundedToInt};${weatherDetails.weatherCondition}"
-        return CacheKey(value = keyValue)
-    }
-
-    @JvmInline
-    private value class CacheKey(val value: String)
 }
