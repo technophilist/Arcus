@@ -3,6 +3,8 @@ package com.example.arcus.ui.weatherDetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.arcus.data.repositories.textgenerator.ArcusGenerativeTextRepository
+import com.example.arcus.data.repositories.textgenerator.GenerativeTextRepository
 import com.example.arcus.data.repositories.weather.WeatherRepository
 import com.example.arcus.data.repositories.weather.fetchHourlyForecastsForNext24Hours
 import com.example.arcus.data.repositories.weather.fetchPrecipitationProbabilitiesForNext24hours
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val generativeTextRepository: GenerativeTextRepository
 ) : ViewModel() {
     private val latitude: String =
         savedStateHandle[WeatherDetailScreen.NAV_ARG_LATITUDE]!!
@@ -75,8 +78,8 @@ class WeatherDetailViewModel @Inject constructor(
         }
 
         val summaryMessage = async {
-            weatherRepository.fetchGeneratedSummaryForWeatherDetails(
-                currentWeatherDetails = weatherDetailsOfChosenLocation.await()
+            generativeTextRepository.generateTextForWeatherDetails(
+                weatherDetails = weatherDetailsOfChosenLocation.await()
             ).getOrThrow()
         }
 
