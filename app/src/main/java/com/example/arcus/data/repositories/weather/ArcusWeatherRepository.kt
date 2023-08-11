@@ -118,36 +118,4 @@ class ArcusWeatherRepository @Inject constructor(
     override suspend fun tryRestoringDeletedWeatherLocation(nameOfLocation: String) {
         arcusDatabaseDao.markWeatherEntityAsUnDeleted(nameOfLocation)
     }
-
-    override suspend fun fetchGeneratedSummaryForWeatherDetails(currentWeatherDetails: CurrentWeatherDetails): Result<String> {
-        // prompts
-        val systemPrompt = """
-            You are a weather reporter. Generate a very short, but whimsical description of the weather,
-            based on the given information.
-        """.trimIndent()
-        val userPrompt = """
-            location = ${currentWeatherDetails.nameOfLocation};
-            currentTemperature = ${currentWeatherDetails.temperatureRoundedToInt};
-            weatherCondition = ${currentWeatherDetails.weatherCondition};
-        """.trimIndent()
-        // prompt messages
-        val promptMessages = listOf(
-            MessageDTO(role = "system", content = systemPrompt),
-            MessageDTO(role = "user", content = userPrompt)
-        )
-        val textGenerationPrompt = TextGenerationPromptBody(
-            messages = promptMessages,
-            model = "gpt-3.5-turbo-0613"
-        )
-        // request to generate text based on prompt body
-        return try {
-            val generatedTextResponse = textGeneratorClient.getModelResponseForConversations(
-                textGenerationPostBody = textGenerationPrompt
-            ).getBodyOrThrowException()
-            Result.success(generatedTextResponse.generatedResponses.first().message.content)
-        } catch (exception: Exception) {
-            if (exception is CancellationException) throw exception
-            Result.failure(exception)
-        }
-    }
 }

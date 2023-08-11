@@ -101,10 +101,4 @@ interface WeatherRepository {
         latitude: String,
         longitude: String
     ): Result<List<SingleWeatherDetail>>
-
-    /**
-     * Used to fetch an AI generated summary based on the provided [currentWeatherDetails]. The
-     * summary would be encapsulated in an instance of [Result].
-     */
-    suspend fun fetchGeneratedSummaryForWeatherDetails(currentWeatherDetails: CurrentWeatherDetails): Result<String>
 }
