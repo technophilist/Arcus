@@ -50,9 +50,9 @@ fun TypingAnimatedText(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
 ) {
-    var currentText by rememberSaveable { mutableStateOf("") }
-    var currentIndex by rememberSaveable { mutableStateOf(0) }
-    LaunchedEffect(Unit) {
+    var currentText by rememberSaveable(text) { mutableStateOf("") }
+    var currentIndex by rememberSaveable(text) { mutableStateOf(0) }
+    LaunchedEffect(text) {
         while (currentIndex in text.indices) {
             currentText += text[currentIndex]
             currentIndex++
