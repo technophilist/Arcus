@@ -51,9 +51,11 @@ fun TypingAnimatedText(
     style: TextStyle = LocalTextStyle.current
 ) {
     var currentText by rememberSaveable { mutableStateOf("") }
+    var currentIndex by rememberSaveable { mutableStateOf(0) }
     LaunchedEffect(Unit) {
-        for (char in text) {
-            currentText += char
+        while (currentIndex in text.indices) {
+            currentText += text[currentIndex]
+            currentIndex++
             delay(delayBetweenEachChar())
         }
     }
