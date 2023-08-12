@@ -8,10 +8,12 @@ import com.example.arcus.data.repositories.textgenerator.GenerativeTextRepositor
 import com.example.arcus.data.repositories.weather.WeatherRepository
 import com.example.arcus.data.repositories.weather.fetchHourlyForecastsForNext24Hours
 import com.example.arcus.data.repositories.weather.fetchPrecipitationProbabilitiesForNext24hours
+import com.example.arcus.domain.models.CurrentWeatherDetails
 import com.example.arcus.ui.navigation.ArcusNavigationDestinations.WeatherDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -35,7 +37,6 @@ class WeatherDetailViewModel @Inject constructor(
     val uiState = _uiState as StateFlow<WeatherDetailScreenUiState>
 
     init {
-        viewModelScope.launch { fetchWeatherDetailsAndUpdateState() }
         weatherRepository.getSavedLocationsListStream()
             .map { namesOfSavedLocationsList ->
                 namesOfSavedLocationsList.any { it.nameOfLocation == nameOfLocation }
@@ -44,6 +45,7 @@ class WeatherDetailViewModel @Inject constructor(
                 _uiState.update { it.copy(isPreviouslySavedLocation = isPreviouslySavedLocation) }
             }
             .launchIn(scope = viewModelScope)
+        viewModelScope.launch { fetchWeatherDetailsAndUpdateState() }
     }
 
     // todo stopship - using supervisor scope doesnt reset the ui state is loading to false
@@ -57,6 +59,12 @@ class WeatherDetailViewModel @Inject constructor(
                 longitude = longitude
             ).getOrThrow()
         }
+        launch {
+            // This request, relatively takes a while before returning.
+            // Hence launch it in a separate coroutine.
+            fetchAiGeneratedTextAndUpdateState(weatherDetailsOfChosenLocation.await())
+        }
+
         val precipitationProbabilities =
             async {
                 weatherRepository.fetchPrecipitationProbabilitiesForNext24hours(
@@ -77,18 +85,11 @@ class WeatherDetailViewModel @Inject constructor(
             ).getOrThrow()
         }
 
-        val summaryMessage = async {
-            generativeTextRepository.generateTextForWeatherDetails(
-                weatherDetails = weatherDetailsOfChosenLocation.await()
-            ).getOrThrow()
-        }
-
         try {
             _uiState.update {
                 it.copy(
                     isLoading = false,
                     weatherDetailsOfChosenLocation = weatherDetailsOfChosenLocation.await(),
-                    weatherSummaryText = summaryMessage.await(),
                     precipitationProbabilities = precipitationProbabilities.await(),
                     hourlyForecasts = hourlyForecasts.await(),
                     additionalWeatherInfoItems = additionalWeatherInfoItems.await()
@@ -100,6 +101,23 @@ class WeatherDetailViewModel @Inject constructor(
                 it.copy(
                     isLoading = false,
                     errorMessage = "Oops! An error occurred while fetching the weather details."
+                )
+            }
+        }
+    }
+
+    private suspend fun fetchAiGeneratedTextAndUpdateState(weatherDetailsOfChosenLocation: CurrentWeatherDetails) {
+        coroutineScope {
+            _uiState.update { it.copy(isWeatherSummaryTextLoading = true) }
+            val summaryMessage = async {
+                generativeTextRepository.generateTextForWeatherDetails(
+                    weatherDetails = weatherDetailsOfChosenLocation
+                ).getOrThrow()
+            }
+            _uiState.update {
+                it.copy(
+                    isWeatherSummaryTextLoading = false,
+                    weatherSummaryText = summaryMessage.await()
                 )
             }
         }
