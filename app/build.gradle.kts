@@ -91,6 +91,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
+    // image loading
+    implementation("io.coil-kt:coil-gif:2.4.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     // splashscreen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
