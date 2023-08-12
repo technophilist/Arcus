@@ -33,6 +33,8 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 - Entirely written in [Kotlin](https://kotlinlang.org/).
 - [Hilt](https://www.google.com/url?client=internal-element-cse&cx=000521750095050289010:zpcpi1ea4s8&q=https://developer.android.com/training/dependency-injection/hilt-android&sa=U&ved=2ahUKEwiW5omeu6z4AhWRR2wGHVUsCo0QFnoECAMQAQ&usg=AOvVaw3dCbP79C6od3KVCnJub3v0) for dependency injection.
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) for UI and navigation.
+- [Coil compose](https://coil-kt.github.io/coil/compose/) for image loading and caching.
+- [Coil-gif](https://coil-kt.github.io/coil/gifs/) for loading and displaying gif's.
 - [SplashScreen API](https://developer.android.com/develop/ui/views/launch/splash-screen) for displaying a splashscreen in a backwards compatible way.
 - [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines/coroutines-guide.html) for threading.
 - [Kotlin Flows](https://developer.android.com/kotlin/flow) for creating reactive streams.
