@@ -12,7 +12,7 @@ Arcus is a simple weather app built completely with Jetpack Compose. Under the h
 5. [Source code, Architecture, & Testing](#source-code-architecture--testing)
 
 ## Demo
-https://github.com/t3chkid/Arcus/assets/54663474/99953e95-c5b8-4b2b-aea6-703eb08a81f8
+https://github.com/t3chkid/Arcus/assets/54663474/901b67e3-9762-4a30-9f6b-5840d5bd65b2
 
 ## Screenshots
 <img src = "screenshots/home_screen.png" width = "360" height = "740"/> &nbsp; <img src = "screenshots/weather_detail_screen.png" width = "360" height = "740"/> 
