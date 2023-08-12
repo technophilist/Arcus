@@ -1,4 +1,4 @@
-# Arcus - A Material 3 Weather App for Android
+# Arcus - AI powered Material 3 Weather App for Android
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 Arcus is a simple weather app built completely with Jetpack Compose. Under the hood, it uses the [Open-Meteo Weather API](https://open-meteo.com) to fetch the data. It also uses the [OpenAI API](https://openai.com/blog/openai-api) to display a short whimsical summary of the current weather of a particular location. This app uses the Material 3 design system and also supports dynamic colors on supported devices. 
