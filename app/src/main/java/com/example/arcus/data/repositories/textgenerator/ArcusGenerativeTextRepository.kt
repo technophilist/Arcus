@@ -29,6 +29,7 @@ class ArcusGenerativeTextRepository @Inject constructor(
             location = ${weatherDetails.nameOfLocation};
             currentTemperature = ${weatherDetails.temperatureRoundedToInt};
             weatherCondition = ${weatherDetails.weatherCondition};
+            isNight = ${weatherDetails.isDay != 1}
         """.trimIndent()
         // prompt messages
         val promptMessages = listOf(
