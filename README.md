@@ -7,7 +7,7 @@ Arcus is a simple weather app built completely with Jetpack Compose. Under the h
 1. [Demo](#demo)
 2. [Screenshots](#screenshots)
 2. [Tech Stack](#tech-stack)
-3. [API's](#apis)
+3. [Remote API's](#remote-apis)
 4. [Themed App Icon](#themed-app-icon)
 5. [Source code, Architecture, & Testing](#source-code-architecture--testing)
 
@@ -47,7 +47,7 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 - Moshi + Moshi Kotlin CodeGen for deserializing responses from the API.
 - Google play location services for getting the user’s location.
 
-## API's
+## Remote API's
 - [Open-Meteo weather api](https://open-meteo.com) for fetching weather information.
 - [OpenAI API](https://openai.com/blog/openai-api) for generating a short, whimsical summary of the current weather of a particular location.
 
