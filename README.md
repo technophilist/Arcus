@@ -10,7 +10,7 @@ Arcus is a simple weather app built completely with Jetpack Compose. Under the h
 4. [Remote API's](#remote-apis)
 5. [Themed App Icon](#themed-app-icon)
 6. [Source code, Architecture, & Testing](#source-code-architecture--testing)
-7. [Building and running the app](#buliding-and-running-the-app)
+7. [Building and running the app](#building-and-running-the-app)
 ## Demo
 https://github.com/t3chkid/Arcus/assets/54663474/901b67e3-9762-4a30-9f6b-5840d5bd65b2
 
@@ -59,7 +59,7 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 - Consists of extensive unit tests with a predominant focus on testing the data layer.
 - All api methods that use the “get” procedure under the hood, have the word “get” as the prefix of the method name. All repository methods that fetch some data have the prefix “fetch” in the name of the method. This way, api specific terminologies like “get” and “post” are abstracted away from the clients of the repositories.
 
-## Buliding and running the app
+## Building and running the app
 1. Create an [Open-AI developer account](https://openai.com/blog/openai-api) and generate an API token.
 2. Add the API token to the `local.properties` file of your project in the following manner.
 ```properties
