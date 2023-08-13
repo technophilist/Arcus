@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import com.example.arcus.domain.models.BriefWeatherDetails
-import com.example.arcus.domain.models.HourlyForecast
+import com.example.arcus.domain.models.weather.BriefWeatherDetails
+import com.example.arcus.domain.models.weather.HourlyForecast
 import com.example.arcus.domain.models.location.LocationAutofillSuggestion
 import com.example.arcus.ui.components.AutofillSuggestion
 import com.example.arcus.ui.components.CompactWeatherCardWithHourlyForecast

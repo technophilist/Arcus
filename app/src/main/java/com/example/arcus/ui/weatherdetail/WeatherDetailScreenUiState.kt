@@ -1,9 +1,9 @@
 package com.example.arcus.ui.weatherdetail
 
-import com.example.arcus.domain.models.CurrentWeatherDetails
-import com.example.arcus.domain.models.HourlyForecast
-import com.example.arcus.domain.models.PrecipitationProbability
-import com.example.arcus.domain.models.SingleWeatherDetail
+import com.example.arcus.domain.models.weather.CurrentWeatherDetails
+import com.example.arcus.domain.models.weather.HourlyForecast
+import com.example.arcus.domain.models.weather.PrecipitationProbability
+import com.example.arcus.domain.models.weather.SingleWeatherDetail
 
 /**
  * A UI state class that represents the current UI state of the [WeatherDetailScreen].

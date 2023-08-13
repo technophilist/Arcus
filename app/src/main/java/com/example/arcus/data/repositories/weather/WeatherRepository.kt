@@ -1,11 +1,11 @@
 package com.example.arcus.data.repositories.weather
 
-import com.example.arcus.domain.models.BriefWeatherDetails
-import com.example.arcus.domain.models.CurrentWeatherDetails
-import com.example.arcus.domain.models.HourlyForecast
-import com.example.arcus.domain.models.PrecipitationProbability
+import com.example.arcus.domain.models.weather.BriefWeatherDetails
+import com.example.arcus.domain.models.weather.CurrentWeatherDetails
+import com.example.arcus.domain.models.weather.HourlyForecast
+import com.example.arcus.domain.models.weather.PrecipitationProbability
 import com.example.arcus.domain.models.location.SavedLocation
-import com.example.arcus.domain.models.SingleWeatherDetail
+import com.example.arcus.domain.models.weather.SingleWeatherDetail
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 

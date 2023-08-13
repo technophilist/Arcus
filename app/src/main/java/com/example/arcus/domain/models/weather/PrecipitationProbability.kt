@@ -1,4 +1,4 @@
-package com.example.arcus.domain.models
+package com.example.arcus.domain.models.weather
 
 import com.example.arcus.data.remote.weather.models.HourlyWeatherInfoResponse
 import java.time.Instant

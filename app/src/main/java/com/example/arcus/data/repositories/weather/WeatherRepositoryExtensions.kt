@@ -1,7 +1,7 @@
 package com.example.arcus.data.repositories.weather
 
-import com.example.arcus.domain.models.HourlyForecast
-import com.example.arcus.domain.models.PrecipitationProbability
+import com.example.arcus.domain.models.weather.HourlyForecast
+import com.example.arcus.domain.models.weather.PrecipitationProbability
 import kotlinx.coroutines.CancellationException
 import java.time.LocalDate
 import java.time.LocalDateTime

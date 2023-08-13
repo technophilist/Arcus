@@ -35,9 +35,9 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.arcus.R
-import com.example.arcus.domain.models.HourlyForecast
-import com.example.arcus.domain.models.PrecipitationProbability
-import com.example.arcus.domain.models.SingleWeatherDetail
+import com.example.arcus.domain.models.weather.HourlyForecast
+import com.example.arcus.domain.models.weather.PrecipitationProbability
+import com.example.arcus.domain.models.weather.SingleWeatherDetail
 import com.example.arcus.ui.components.HourlyForecastCard
 import com.example.arcus.ui.components.PrecipitationProbabilitiesCard
 import com.example.arcus.ui.components.SingleWeatherDetailCard

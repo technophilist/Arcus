@@ -6,7 +6,7 @@ import com.example.arcus.data.local.textgeneration.GeneratedTextForLocationEntit
 import com.example.arcus.data.remote.languagemodel.TextGeneratorClient
 import com.example.arcus.data.remote.languagemodel.models.MessageDTO
 import com.example.arcus.data.remote.languagemodel.models.TextGenerationPromptBody
-import com.example.arcus.domain.models.CurrentWeatherDetails
+import com.example.arcus.domain.models.weather.CurrentWeatherDetails
 import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 

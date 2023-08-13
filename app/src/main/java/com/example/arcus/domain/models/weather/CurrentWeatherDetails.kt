@@ -1,4 +1,4 @@
-package com.example.arcus.domain.models
+package com.example.arcus.domain.models.weather
 
 import androidx.annotation.DrawableRes
 import com.example.arcus.data.remote.weather.models.CurrentWeatherResponse

@@ -1,7 +1,7 @@
 package com.example.arcus.ui.home
 
-import com.example.arcus.domain.models.BriefWeatherDetails
-import com.example.arcus.domain.models.HourlyForecast
+import com.example.arcus.domain.models.weather.BriefWeatherDetails
+import com.example.arcus.domain.models.weather.HourlyForecast
 import com.example.arcus.domain.models.location.LocationAutofillSuggestion
 
 /**
