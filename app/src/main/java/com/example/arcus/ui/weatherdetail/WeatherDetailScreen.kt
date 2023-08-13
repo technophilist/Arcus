@@ -1,4 +1,4 @@
-package com.example.arcus.ui.weatherDetail
+package com.example.arcus.ui.weatherdetail
 
 import android.os.Build.VERSION.SDK_INT
 import androidx.annotation.DrawableRes
@@ -29,7 +29,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.ImageLoader
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder

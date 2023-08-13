@@ -1,4 +1,4 @@
-package com.example.arcus.ui.weatherDetail
+package com.example.arcus.ui.weatherdetail
 
 import com.example.arcus.domain.models.CurrentWeatherDetails
 import com.example.arcus.domain.models.HourlyForecast

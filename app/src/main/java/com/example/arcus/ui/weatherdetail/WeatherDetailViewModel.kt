@@ -1,9 +1,8 @@
-package com.example.arcus.ui.weatherDetail
+package com.example.arcus.ui.weatherdetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.arcus.data.repositories.textgenerator.ArcusGenerativeTextRepository
 import com.example.arcus.data.repositories.textgenerator.GenerativeTextRepository
 import com.example.arcus.data.repositories.weather.WeatherRepository
 import com.example.arcus.data.repositories.weather.fetchHourlyForecastsForNext24Hours

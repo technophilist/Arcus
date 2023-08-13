@@ -21,8 +21,8 @@ import com.example.arcus.domain.models.BriefWeatherDetails
 import com.example.arcus.domain.models.LocationAutofillSuggestion
 import com.example.arcus.ui.home.HomeScreen
 import com.example.arcus.ui.home.HomeViewModel
-import com.example.arcus.ui.weatherDetail.WeatherDetailViewModel
-import com.example.arcus.ui.weatherDetail.WeatherDetailScreen
+import com.example.arcus.ui.weatherdetail.WeatherDetailViewModel
+import com.example.arcus.ui.weatherdetail.WeatherDetailScreen
 import kotlinx.coroutines.launch
 
 
