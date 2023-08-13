@@ -18,7 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.arcus.domain.models.BriefWeatherDetails
-import com.example.arcus.domain.models.LocationAutofillSuggestion
+import com.example.arcus.domain.models.location.LocationAutofillSuggestion
 import com.example.arcus.ui.home.HomeScreen
 import com.example.arcus.ui.home.HomeViewModel
 import com.example.arcus.ui.weatherdetail.WeatherDetailViewModel

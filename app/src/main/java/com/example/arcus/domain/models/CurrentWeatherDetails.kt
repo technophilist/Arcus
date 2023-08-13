@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import com.example.arcus.data.remote.weather.models.CurrentWeatherResponse
 import com.example.arcus.data.remote.weather.models.getWeatherIconResForCode
 import com.example.arcus.data.remote.weather.models.getWeatherImageForCode
+import com.example.arcus.domain.models.location.Coordinates
 import kotlin.math.roundToInt
 
 /**

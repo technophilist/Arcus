@@ -2,8 +2,8 @@ package com.example.arcus.data.repositories.location
 
 import com.example.arcus.data.getBodyOrThrowException
 import com.example.arcus.data.remote.location.LocationClient
-import com.example.arcus.domain.models.LocationAutofillSuggestion
-import com.example.arcus.domain.models.toLocationAutofillSuggestionList
+import com.example.arcus.domain.models.location.LocationAutofillSuggestion
+import com.example.arcus.domain.models.location.toLocationAutofillSuggestionList
 import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 

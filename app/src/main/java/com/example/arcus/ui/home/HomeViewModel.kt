@@ -9,7 +9,7 @@ import com.example.arcus.data.repositories.weather.fetchHourlyForecastsForNext24
 import com.example.arcus.domain.location.CurrentLocationProvider
 import com.example.arcus.domain.models.BriefWeatherDetails
 import com.example.arcus.domain.models.CurrentWeatherDetails
-import com.example.arcus.domain.models.SavedLocation
+import com.example.arcus.domain.models.location.SavedLocation
 import com.example.arcus.domain.models.toBriefWeatherDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

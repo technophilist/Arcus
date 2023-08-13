@@ -4,10 +4,10 @@ import com.example.arcus.data.getBodyOrThrowException
 import com.example.arcus.data.local.weather.ArcusDatabaseDao
 import com.example.arcus.data.local.weather.SavedWeatherLocationEntity
 import com.example.arcus.data.remote.languagemodel.TextGeneratorClient
-import com.example.arcus.data.remote.languagemodel.models.MessageDTO
-import com.example.arcus.data.remote.languagemodel.models.TextGenerationPromptBody
 import com.example.arcus.data.remote.weather.WeatherClient
 import com.example.arcus.domain.models.*
+import com.example.arcus.domain.models.location.SavedLocation
+import com.example.arcus.domain.models.location.toSavedLocation
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.*
 import java.time.LocalDate

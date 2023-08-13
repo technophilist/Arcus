@@ -5,7 +5,7 @@ import com.example.arcus.data.local.textgeneration.GeneratedTextForLocationEntit
 import com.example.arcus.data.remote.languagemodel.TextGeneratorClient
 import com.example.arcus.data.remote.languagemodel.models.GeneratedTextResponse
 import com.example.arcus.data.remote.languagemodel.models.MessageDTO
-import com.example.arcus.domain.models.Coordinates
+import com.example.arcus.domain.models.location.Coordinates
 import com.example.arcus.domain.models.CurrentWeatherDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

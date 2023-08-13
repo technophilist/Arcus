@@ -2,7 +2,7 @@ package com.example.arcus.domain.location
 
 import android.content.Context
 import androidx.annotation.RequiresPermission
-import com.example.arcus.domain.models.Coordinates
+import com.example.arcus.domain.models.location.Coordinates
 import com.google.android.gms.location.CurrentLocationRequest
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity

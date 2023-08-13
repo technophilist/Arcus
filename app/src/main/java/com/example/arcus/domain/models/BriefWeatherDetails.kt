@@ -2,6 +2,7 @@ package com.example.arcus.domain.models
 
 import androidx.annotation.DrawableRes
 import com.example.arcus.data.local.weather.SavedWeatherLocationEntity
+import com.example.arcus.domain.models.location.Coordinates
 
 /**
  * A data class that holds brief weather details of a particular location.
@@ -17,7 +18,7 @@ data class BriefWeatherDetails(
     val currentTemperatureRoundedToInt: Int,
     val shortDescription: String,
     @DrawableRes val shortDescriptionIcon: Int,
-    val coordinates:Coordinates
+    val coordinates: Coordinates
 )
 
 /**

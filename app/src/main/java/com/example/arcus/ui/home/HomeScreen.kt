@@ -21,7 +21,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import com.example.arcus.domain.models.BriefWeatherDetails
 import com.example.arcus.domain.models.HourlyForecast
-import com.example.arcus.domain.models.LocationAutofillSuggestion
+import com.example.arcus.domain.models.location.LocationAutofillSuggestion
 import com.example.arcus.ui.components.AutofillSuggestion
 import com.example.arcus.ui.components.CompactWeatherCardWithHourlyForecast
 import com.example.arcus.ui.components.SwipeToDismissCompactWeatherCard

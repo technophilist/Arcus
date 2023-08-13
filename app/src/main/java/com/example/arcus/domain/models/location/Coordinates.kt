@@ -1,4 +1,4 @@
-package com.example.arcus.domain.models
+package com.example.arcus.domain.models.location
 
 
 /**

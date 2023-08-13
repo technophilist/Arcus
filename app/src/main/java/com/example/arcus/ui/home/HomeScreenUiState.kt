@@ -2,7 +2,7 @@ package com.example.arcus.ui.home
 
 import com.example.arcus.domain.models.BriefWeatherDetails
 import com.example.arcus.domain.models.HourlyForecast
-import com.example.arcus.domain.models.LocationAutofillSuggestion
+import com.example.arcus.domain.models.location.LocationAutofillSuggestion
 
 /**
  * A UI state class that represents the current UI state of the [HomeScreen].

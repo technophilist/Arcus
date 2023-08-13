@@ -1,6 +1,6 @@
 package com.example.arcus.domain.location
 
-import com.example.arcus.domain.models.Coordinates
+import com.example.arcus.domain.models.location.Coordinates
 
 /**
  * A provider that provides the current location of the device.

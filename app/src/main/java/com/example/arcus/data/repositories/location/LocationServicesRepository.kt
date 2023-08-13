@@ -1,6 +1,6 @@
 package com.example.arcus.data.repositories.location
 
-import com.example.arcus.domain.models.LocationAutofillSuggestion
+import com.example.arcus.domain.models.location.LocationAutofillSuggestion
 
 /**
  * A repository that is responsible for managing all location related operations.

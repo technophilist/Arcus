@@ -4,7 +4,7 @@ import com.example.arcus.domain.models.BriefWeatherDetails
 import com.example.arcus.domain.models.CurrentWeatherDetails
 import com.example.arcus.domain.models.HourlyForecast
 import com.example.arcus.domain.models.PrecipitationProbability
-import com.example.arcus.domain.models.SavedLocation
+import com.example.arcus.domain.models.location.SavedLocation
 import com.example.arcus.domain.models.SingleWeatherDetail
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
