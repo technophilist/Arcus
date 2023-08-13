@@ -7,7 +7,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.arcus.BuildConfig
-import com.example.arcus.data.workers.DeleteMarkedItemsWorker
+import com.example.arcus.data.workers.CleanupWorker
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -29,7 +29,7 @@ class ArcusApplication : Application(), Configuration.Provider {
         .build()
 
     private fun enqueueDeleteMarkedItemsWorker() {
-        val periodicWorkRequest = PeriodicWorkRequestBuilder<DeleteMarkedItemsWorker>(
+        val periodicWorkRequest = PeriodicWorkRequestBuilder<CleanupWorker>(
             repeatInterval = 7, // repeat every week
             repeatIntervalTimeUnit = TimeUnit.DAYS
         ).build()
