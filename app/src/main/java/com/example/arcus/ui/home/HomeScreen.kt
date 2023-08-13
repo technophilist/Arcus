@@ -259,15 +259,15 @@ private fun AnimatedSearchBarLeadingIcon(
         transitionSpec = {
             val isActive = this.targetState
             val slideIn = slideIntoContainer(
-                if (isActive) AnimatedContentScope.SlideDirection.Start
-                else AnimatedContentScope.SlideDirection.End
+                if (isActive) AnimatedContentTransitionScope.SlideDirection.Start
+                else AnimatedContentTransitionScope.SlideDirection.End
             )
             val slideOut = slideOutOfContainer(
-                if (isActive) AnimatedContentScope.SlideDirection.Start
-                else AnimatedContentScope.SlideDirection.End
+                if (isActive) AnimatedContentTransitionScope.SlideDirection.Start
+                else AnimatedContentTransitionScope.SlideDirection.End
             )
-            slideIn with slideOut
-        }
+            slideIn togetherWith slideOut
+        }, label = ""
     ) { isActive ->
         if (isActive) {
             IconButton(
