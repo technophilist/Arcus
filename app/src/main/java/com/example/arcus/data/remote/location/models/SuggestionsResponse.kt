@@ -23,6 +23,7 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
         @Json(name = "name") val nameOfPlace: String,
         @Json(name = "country") val country: String?,
         @Json(name = "admin1") val state: String?,
+        @Json(name = "country_code") val countryCode: String,
         val latitude: String,
         val longitude: String
     )
