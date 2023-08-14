@@ -96,6 +96,10 @@ dependencies {
     implementation("io.coil-kt:coil-gif:2.4.0")
     implementation("io.coil-kt:coil-svg:2.4.0")
 
+    // placeholders
+    implementation("com.google.accompanist:accompanist-placeholder-material3:0.30.1")
+
+
     // splashscreen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
