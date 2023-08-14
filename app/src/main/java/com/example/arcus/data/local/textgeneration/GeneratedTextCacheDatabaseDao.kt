@@ -10,8 +10,20 @@ interface GeneratedTextCacheDatabaseDao {
     @Upsert
     suspend fun addGeneratedTextForLocation(generatedTextForLocationEntity: GeneratedTextForLocationEntity)
 
-    @Query("SELECT * FROM GeneratedTextForLocationEntities where nameOfLocation = :nameOfLocation")
-    suspend fun getGeneratedTextForLocation(nameOfLocation: String): GeneratedTextForLocationEntity?
+    @Query(
+        """
+    SELECT * 
+    FROM GeneratedTextForLocationEntities
+    WHERE nameOfLocation = :nameOfLocation AND
+          temperature = :temperature AND
+          conciseWeatherDescription = :conciseWeatherDescription
+    """
+    )
+    suspend fun getSavedGeneratedTextForDetails(
+        nameOfLocation: String,
+        temperature: Int,
+        conciseWeatherDescription: String
+    ): GeneratedTextForLocationEntity?
 
     @Query("DELETE from GeneratedTextForLocationEntities")
     suspend fun deleteAllSavedText()
