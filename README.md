@@ -38,6 +38,8 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) for UI and navigation.
 - [Coil compose](https://coil-kt.github.io/coil/compose/) for image loading and caching.
 - [Coil-gif](https://coil-kt.github.io/coil/gifs/) for loading and displaying gif's.
+- [Coil-svg](https://coil-kt.github.io/coil/svgs/) for loading and displaying svg's from URL's.
+- [Accompanist Placeholder](https://github.com/google/accompanist/tree/main/placeholder-material3) for adding shimmer animation when loading an image. 
 - [SplashScreen API](https://developer.android.com/develop/ui/views/launch/splash-screen) for displaying a splashscreen in a backwards compatible way.
 - [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines/coroutines-guide.html) for threading.
 - [Kotlin Flows](https://developer.android.com/kotlin/flow) for creating reactive streams.
