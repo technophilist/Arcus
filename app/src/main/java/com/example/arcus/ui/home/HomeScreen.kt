@@ -17,14 +17,25 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.example.arcus.domain.models.weather.BriefWeatherDetails
 import com.example.arcus.domain.models.weather.HourlyForecast
 import com.example.arcus.domain.models.location.LocationAutofillSuggestion
 import com.example.arcus.ui.components.AutofillSuggestion
 import com.example.arcus.ui.components.CompactWeatherCardWithHourlyForecast
 import com.example.arcus.ui.components.SwipeToDismissCompactWeatherCard
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material3.placeholder
+import com.google.accompanist.placeholder.material3.shimmer
+import com.google.accompanist.placeholder.placeholder
 
 
 /**
@@ -317,7 +328,8 @@ private fun LazyListScope.autofillSuggestionItems(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            onClick = { onSuggestionClick(it) }
+            onClick = { onSuggestionClick(it) },
+            leadingIcon = { AutofillSuggestionLeadingIcon(countryFlagUrl = it.countryFlagUrl) }
         )
     }
 }
@@ -438,4 +450,30 @@ private fun LazyListScope.currentWeatherDetailCardItem(
             hourlyForecasts = hourlyForecastsOfCurrentUserLocation
         )
     }
+}
+
+@Composable
+private fun AutofillSuggestionLeadingIcon(countryFlagUrl: String) {
+    val context = LocalContext.current
+    val imageRequest = remember(countryFlagUrl) {
+        ImageRequest.Builder(context)
+            .data(countryFlagUrl)
+            .decoderFactory(SvgDecoder.Factory())
+            .build()
+    }
+    var isLoadingAnimationVisible by remember { mutableStateOf(false) }
+    AsyncImage(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .placeholder(
+                visible = isLoadingAnimationVisible,
+                highlight = PlaceholderHighlight.shimmer()
+            ),
+        model = imageRequest,
+        contentDescription = null,
+        onState = { asyncPainterState ->
+            isLoadingAnimationVisible = asyncPainterState is AsyncImagePainter.State.Loading
+        }
+    )
 }
