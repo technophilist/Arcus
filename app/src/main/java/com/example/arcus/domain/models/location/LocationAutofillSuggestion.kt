@@ -26,7 +26,7 @@ data class LocationAutofillSuggestion(
  * the [SuggestionsResponse.Suggestion.state] set to null.**
  */
 fun List<SuggestionsResponse.Suggestion>.toLocationAutofillSuggestionList(): List<LocationAutofillSuggestion> =
-    this.filter { it.state != null && it.country != null }
+    this.filter { it.state != null && it.country != null && it.circularCountryFlagUrl != null }
         .map {
             LocationAutofillSuggestion(
                 idOfLocation = it.idOfPlace,
@@ -36,6 +36,6 @@ fun List<SuggestionsResponse.Suggestion>.toLocationAutofillSuggestionList(): Lis
                     latitude = it.latitude,
                     longitude = it.longitude
                 ),
-                countryFlagUrl = it.circularCountryFlagUrl
+                countryFlagUrl = it.circularCountryFlagUrl!!
             )
         }

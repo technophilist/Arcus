@@ -23,7 +23,7 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
         @Json(name = "name") val nameOfPlace: String,
         @Json(name = "country") val country: String?,
         @Json(name = "admin1") val state: String?,
-        @Json(name = "country_code") val countryCode: String,
+        @Json(name = "country_code") val countryCode: String?,
         val latitude: String,
         val longitude: String
     )
@@ -33,4 +33,8 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
  * An extension property that contains a url pointing to an svg file containing a circular image
  * of a country's flag.
  */
-val SuggestionsResponse.Suggestion.circularCountryFlagUrl get() = "https://open-meteo.com/images/country-flags/$countryCode.svg"
+val SuggestionsResponse.Suggestion.circularCountryFlagUrl: String?
+    get() = countryCode?.let {
+        "https://open-meteo.com/images/country-flags/$countryCode.svg"
+    }
+
