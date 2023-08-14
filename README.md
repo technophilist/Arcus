@@ -18,7 +18,7 @@ Arcus is a simple weather app built completely with Jetpack Compose. Under the h
 https://github.com/t3chkid/Arcus/assets/54663474/901b67e3-9762-4a30-9f6b-5840d5bd65b2
 
 ## Screenshots
-<img src = "screenshots/home_screen.png" width = "360" height = "740"/> &nbsp; <img src = "screenshots/weather_detail_screen.png" width = "360" height = "740"/> 
+<img src = "screenshots/home_screen.png" width = "240" height = "493"/> &nbsp; <img src = "screenshots/search_screen.png" width = "240" height = "493"/> &nbsp;  <img src = "screenshots/weather_detail_screen.png" width = "240" height = "493"/>
 
 ## Themed App Icon
 The app also supports the "Themed Icons" feature available on Android 13 and later. If the user has opted in for the feature on a device that is running Android 
