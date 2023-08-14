@@ -28,3 +28,9 @@ data class SuggestionsResponse(@Json(name = "results") val suggestions: List<Sug
         val longitude: String
     )
 }
+
+/**
+ * An extension property that contains a url pointing to an svg file containing a circular image
+ * of a country's flag.
+ */
+val SuggestionsResponse.Suggestion.circularCountryFlagUrl get() = "https://open-meteo.com/images/country-flags/$countryCode.svg"
