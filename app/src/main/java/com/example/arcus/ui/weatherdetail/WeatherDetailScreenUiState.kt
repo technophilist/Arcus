@@ -9,10 +9,10 @@ import com.example.arcus.domain.models.weather.SingleWeatherDetail
  * A UI state class that represents the current UI state of the [WeatherDetailScreen].
  */
 data class WeatherDetailScreenUiState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val isPreviouslySavedLocation: Boolean = false,
     val weatherDetailsOfChosenLocation: CurrentWeatherDetails? = null,
-    val isWeatherSummaryTextLoading:Boolean = false,
+    val isWeatherSummaryTextLoading: Boolean = false,
     val weatherSummaryText: String? = null,
     val errorMessage: String? = null,
     val precipitationProbabilities: List<PrecipitationProbability> = emptyList(),
