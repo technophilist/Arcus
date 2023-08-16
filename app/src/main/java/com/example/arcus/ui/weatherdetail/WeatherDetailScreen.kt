@@ -58,6 +58,20 @@ fun WeatherDetailScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
+    } else if (uiState.errorMessage != null) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier.padding(16.dp),
+                textAlign = TextAlign.Center,
+                text = uiState.errorMessage
+            )
+            Button(onClick = onBackButtonClick, content = { Text("Go back") })
+        }
+
     } else {
         WeatherDetailScreen(
             snackbarHostState = snackbarHostState,
