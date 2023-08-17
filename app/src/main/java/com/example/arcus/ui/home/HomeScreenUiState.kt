@@ -12,6 +12,7 @@ data class HomeScreenUiState(
     val isLoadingSavedLocations: Boolean = false,
     val isLoadingWeatherDetailsOfCurrentLocation: Boolean = false,
     val errorFetchingWeatherForCurrentLocation: Boolean = false,
+    val errorFetchingWeatherForSavedLocations: Boolean = false,
     val weatherDetailsOfCurrentLocation: BriefWeatherDetails? = null,
     val hourlyForecastsForCurrentLocation: List<HourlyForecast>? = null,
     val autofillSuggestions: List<LocationAutofillSuggestion> = emptyList(),
