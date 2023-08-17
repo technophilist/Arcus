@@ -36,7 +36,6 @@ import com.example.arcus.ui.components.SwipeToDismissCompactWeatherCard
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material3.placeholder
 import com.google.accompanist.placeholder.material3.shimmer
-import com.google.accompanist.placeholder.placeholder
 
 
 /**
@@ -169,14 +168,11 @@ fun HomeScreen(
             }
 
             if (errorFetchingWeatherForCurrentLocation) {
-                item {
-                    CurrentWeatherForLocationErrorCard(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .animateItemPlacement(),
-                        onRetryButtonClick = onRetryFetchingWeatherForCurrentLocation
-                    )
-                }
+                errorCardItem(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    errorMessage = "An error occurred when fetching the weather for the current location.",
+                    onRetryButtonClick = onRetryFetchingWeatherForCurrentLocation
+                )
             }
 
             subHeaderItem(
@@ -495,23 +491,29 @@ private fun AutofillSuggestionLeadingIcon(countryFlagUrl: String) {
     )
 }
 
-@Composable
-private fun CurrentWeatherForLocationErrorCard(
+@ExperimentalFoundationApi
+private fun LazyListScope.errorCardItem(
+    errorMessage: String,
     modifier: Modifier = Modifier,
+    retryButtonText: String = "Retry",
     onRetryButtonClick: () -> Unit
 ) {
-    OutlinedCard(modifier = modifier) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "An error occurred when fetching the weather for the current location.",
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.size(16.dp))
-            OutlinedButton(onClick = onRetryButtonClick, content = { Text(text = "Retry") })
+    item {
+        OutlinedCard(modifier = modifier.animateItemPlacement()) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = errorMessage,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                OutlinedButton(
+                    onClick = onRetryButtonClick,
+                    content = { Text(text = retryButtonText) })
+            }
         }
     }
 }
