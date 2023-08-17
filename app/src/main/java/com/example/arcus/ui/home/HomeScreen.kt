@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.decode.SvgDecoder
@@ -50,7 +51,8 @@ fun HomeScreen(
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
     onLocationPermissionGranted: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRetryFetchingWeatherForCurrentLocation: () -> Unit = onLocationPermissionGranted
 ) {
     HomeScreen(
         modifier = modifier,
@@ -62,6 +64,8 @@ fun HomeScreen(
         isWeatherForSavedLocationsLoading = homeScreenUiState.isLoadingSavedLocations,
         weatherOfCurrentUserLocation = homeScreenUiState.weatherDetailsOfCurrentLocation,
         hourlyForecastsOfCurrentUserLocation = homeScreenUiState.hourlyForecastsForCurrentLocation,
+        errorFetchingWeatherForCurrentLocation = homeScreenUiState.errorFetchingWeatherForCurrentLocation,
+        onRetryFetchingWeatherForCurrentLocation = onRetryFetchingWeatherForCurrentLocation,
         onSavedLocationDismissed = onSavedLocationDismissed,
         onSearchQueryChange = onSearchQueryChange,
         onSuggestionClick = onSuggestionClick,
@@ -92,6 +96,8 @@ fun HomeScreen(
     isSuggestionsListLoading: Boolean = false,
     isWeatherForSavedLocationsLoading: Boolean = false,
     isCurrentWeatherDetailsLoading: Boolean,
+    errorFetchingWeatherForCurrentLocation: Boolean,
+    onRetryFetchingWeatherForCurrentLocation: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
@@ -160,6 +166,17 @@ fun HomeScreen(
                     hourlyForecastsOfCurrentUserLocation = hourlyForecastsOfCurrentUserLocation,
                     onClick = { onSavedLocationItemClick(weatherOfCurrentUserLocation) }
                 )
+            }
+
+            if (errorFetchingWeatherForCurrentLocation) {
+                item {
+                    CurrentWeatherForLocationErrorCard(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .animateItemPlacement(),
+                        onRetryButtonClick = onRetryFetchingWeatherForCurrentLocation
+                    )
+                }
             }
 
             subHeaderItem(
@@ -476,4 +493,25 @@ private fun AutofillSuggestionLeadingIcon(countryFlagUrl: String) {
             isLoadingAnimationVisible = asyncPainterState is AsyncImagePainter.State.Loading
         }
     )
+}
+
+@Composable
+private fun CurrentWeatherForLocationErrorCard(
+    modifier: Modifier = Modifier,
+    onRetryButtonClick: () -> Unit
+) {
+    OutlinedCard(modifier = modifier) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "An error occurred when fetching the weather for the current location.",
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            OutlinedButton(onClick = onRetryButtonClick, content = { Text(text = "Retry") })
+        }
+    }
 }
