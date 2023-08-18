@@ -66,6 +66,7 @@ fun HomeScreen(
         hourlyForecastsOfCurrentUserLocation = homeScreenUiState.hourlyForecastsForCurrentLocation,
         errorFetchingWeatherForCurrentLocation = homeScreenUiState.errorFetchingWeatherForCurrentLocation,
         errorFetchingWeatherForSavedLocations = homeScreenUiState.errorFetchingWeatherForSavedLocations,
+        errorLoadingAutofillSuggestions = homeScreenUiState.errorFetchingAutofillSuggestions,
         onRetryFetchingWeatherForCurrentLocation = onRetryFetchingWeatherForCurrentLocation,
         onRetryFetchingWeatherForSavedLocations = onRetryFetchingWeatherForSavedLocations,
         onSavedLocationDismissed = onSavedLocationDismissed,
@@ -100,6 +101,7 @@ fun HomeScreen(
     isCurrentWeatherDetailsLoading: Boolean,
     errorFetchingWeatherForCurrentLocation: Boolean,
     errorFetchingWeatherForSavedLocations: Boolean,
+    errorLoadingAutofillSuggestions: Boolean,
     onRetryFetchingWeatherForSavedLocations: () -> Unit,
     onRetryFetchingWeatherForCurrentLocation: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
@@ -147,6 +149,7 @@ fun HomeScreen(
                 currentSearchQuery = currentQueryText,
                 onClearSearchQueryIconClick = clearQueryText,
                 isSearchBarActive = isSearchBarActive,
+                errorLoadingSuggestions = errorLoadingAutofillSuggestions,
                 onSearchQueryChange = {
                     currentQueryText = it
                     onSearchQueryChange(it)
@@ -411,6 +414,7 @@ private fun LazyListScope.searchBarItem(
     currentSearchQuery: String,
     isSearchBarActive: Boolean,
     isSuggestionsListLoading: Boolean,
+    errorLoadingSuggestions: Boolean,
     suggestionsForSearchQuery: List<LocationAutofillSuggestion>,
     onClearSearchQueryIconClick: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
@@ -418,6 +422,25 @@ private fun LazyListScope.searchBarItem(
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit
 ) {
     item {
+        val searchBarSuggestionsContent = @Composable {
+            AutoFillSuggestionsList(
+                suggestions = suggestionsForSearchQuery,
+                onSuggestionClick = onSuggestionClick,
+                isSuggestionsListLoading = isSuggestionsListLoading
+            )
+        }
+        val errorSearchBarSuggestionsContent = @Composable {
+            OutlinedCard(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center,
+                    text = "An error occurred when fetching the suggestions. Please retype to try again."
+                )
+            }
+        }
+
         Header(
             modifier = Modifier.fillMaxWidth(),
             currentSearchQuery = currentSearchQuery,
@@ -427,11 +450,8 @@ private fun LazyListScope.searchBarItem(
             onSearchBarActiveChange = onSearchBarActiveChange,
             onSearch = {/* TODO: handle search */ },
             searchBarSuggestionsContent = {
-                AutoFillSuggestionsList(
-                    suggestions = suggestionsForSearchQuery,
-                    onSuggestionClick = onSuggestionClick,
-                    isSuggestionsListLoading = isSuggestionsListLoading
-                )
+                if (errorLoadingSuggestions) errorSearchBarSuggestionsContent()
+                else searchBarSuggestionsContent()
             }
         )
     }
