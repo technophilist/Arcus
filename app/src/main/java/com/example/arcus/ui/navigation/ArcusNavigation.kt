@@ -95,7 +95,8 @@ private fun NavGraphBuilder.homeScreen(
             onSearchQueryChange = viewModel::setSearchQueryForSuggestionsGeneration,
             onSuggestionClick = onSuggestionClick,
             onSavedLocationItemClick = onSavedLocationItemClick,
-            onLocationPermissionGranted = viewModel::fetchWeatherForCurrentUserLocation
+            onLocationPermissionGranted = viewModel::fetchWeatherForCurrentUserLocation,
+            onRetryFetchingWeatherForSavedLocations = viewModel::retryFetchingSavedLocations
         )
     }
 }

@@ -50,6 +50,7 @@ fun HomeScreen(
     onSuggestionClick: (LocationAutofillSuggestion) -> Unit,
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit,
     onLocationPermissionGranted: () -> Unit,
+    onRetryFetchingWeatherForSavedLocations: () -> Unit,
     modifier: Modifier = Modifier,
     onRetryFetchingWeatherForCurrentLocation: () -> Unit = onLocationPermissionGranted
 ) {
@@ -66,7 +67,7 @@ fun HomeScreen(
         errorFetchingWeatherForCurrentLocation = homeScreenUiState.errorFetchingWeatherForCurrentLocation,
         errorFetchingWeatherForSavedLocations = homeScreenUiState.errorFetchingWeatherForSavedLocations,
         onRetryFetchingWeatherForCurrentLocation = onRetryFetchingWeatherForCurrentLocation,
-        onRetryFetchingWeatherForSavedLocations = {/**/ },
+        onRetryFetchingWeatherForSavedLocations = onRetryFetchingWeatherForSavedLocations,
         onSavedLocationDismissed = onSavedLocationDismissed,
         onSearchQueryChange = onSearchQueryChange,
         onSuggestionClick = onSuggestionClick,
@@ -189,7 +190,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
                     errorMessage = "An error occurred when fetching the current weather details of saved locations.",
-                    onRetryButtonClick = {}
+                    onRetryButtonClick = onRetryFetchingWeatherForSavedLocations
                 )
             }
 
