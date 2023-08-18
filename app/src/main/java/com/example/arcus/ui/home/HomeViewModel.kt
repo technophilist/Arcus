@@ -17,10 +17,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -76,13 +74,13 @@ class HomeViewModel @Inject constructor(
             .distinctUntilChanged()
             .mapLatest { query ->
                 if (query.isBlank()) return@mapLatest emptyList()
-                _uiState.update { it.copy(isLoadingSuggestions = true) }
+                _uiState.update { it.copy(isLoadingAutofillSuggestions = true) }
                 locationServicesRepository.fetchSuggestedPlacesForQuery(query)
                     .getOrThrow()// todo exception handling
             }
             .onEach { autofillSuggestions ->
                 _uiState.update {
-                    it.copy(isLoadingSuggestions = false, autofillSuggestions = autofillSuggestions)
+                    it.copy(isLoadingAutofillSuggestions = false, autofillSuggestions = autofillSuggestions)
                 }
             }
             .launchIn(viewModelScope)

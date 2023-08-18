@@ -59,7 +59,7 @@ fun HomeScreen(
         snackbarHostState = snackbarHostState,
         weatherDetailsOfSavedLocations = homeScreenUiState.weatherDetailsOfSavedLocations,
         suggestionsForSearchQuery = homeScreenUiState.autofillSuggestions,
-        isSuggestionsListLoading = homeScreenUiState.isLoadingSuggestions,
+        isSuggestionsListLoading = homeScreenUiState.isLoadingAutofillSuggestions,
         isCurrentWeatherDetailsLoading = homeScreenUiState.isLoadingWeatherDetailsOfCurrentLocation,
         isWeatherForSavedLocationsLoading = homeScreenUiState.isLoadingSavedLocations,
         weatherOfCurrentUserLocation = homeScreenUiState.weatherDetailsOfCurrentLocation,
