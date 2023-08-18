@@ -27,7 +27,6 @@ import javax.inject.Inject
  */
 class ArcusWeatherRepository @Inject constructor(
     private val weatherClient: WeatherClient,
-    private val textGeneratorClient: TextGeneratorClient,
     private val arcusDatabaseDao: ArcusDatabaseDao
 ) : WeatherRepository {
 
