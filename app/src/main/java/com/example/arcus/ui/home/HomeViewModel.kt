@@ -12,14 +12,15 @@ import com.example.arcus.domain.models.weather.CurrentWeatherDetails
 import com.example.arcus.domain.models.location.SavedLocation
 import com.example.arcus.domain.models.weather.toBriefWeatherDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +32,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val currentSearchQuery = MutableStateFlow("")
+    private val isCurrentlyRetryingToFetchSavedLocation = MutableStateFlow(false)
 
     private val _uiState = MutableStateFlow(HomeScreenUiState())
     val uiState = _uiState as StateFlow<HomeScreenUiState>
@@ -41,20 +43,32 @@ class HomeViewModel @Inject constructor(
 
     init {
         // saved locations stream
-        weatherRepository.getSavedLocationsListStream()
-            .onEach { _uiState.update { it.copy(isLoadingSavedLocations = true) } }
-            .map { savedLocations ->
-                fetchCurrentWeatherDetailsWithCache(savedLocations.toSet()).sortedBy { it.nameOfLocation }
+        combine(
+            weatherRepository.getSavedLocationsListStream(),
+            isCurrentlyRetryingToFetchSavedLocation
+        ) { savedLocations, _ ->
+            savedLocations
+        }.onEach {
+            _uiState.update {
+                it.copy(
+                    isLoadingSavedLocations = true,
+                    errorFetchingWeatherForSavedLocations = false
+                )
             }
-            .onEach { weatherDetailsOfSavedLocations ->
-                _uiState.update {
-                    it.copy(
-                        isLoadingSavedLocations = false,
-                        weatherDetailsOfSavedLocations = weatherDetailsOfSavedLocations
-                    )
-                }
+        }.map { savedLocations ->
+            fetchCurrentWeatherDetailsWithCache(savedLocations)
+        }.onEach { weatherDetailsOfSavedLocationsResult ->
+            val weatherDetailsOfSavedLocations =
+                weatherDetailsOfSavedLocationsResult.getOrNull()
+            _uiState.update {
+                it.copy(
+                    isLoadingSavedLocations = false,
+                    weatherDetailsOfSavedLocations = weatherDetailsOfSavedLocations ?: emptyList(),
+                    errorFetchingWeatherForSavedLocations = weatherDetailsOfSavedLocations == null
+                )
             }
-            .launchIn(viewModelScope) // todo take care of exception
+            isCurrentlyRetryingToFetchSavedLocation.update { false }
+        }.launchIn(viewModelScope)
 
         // suggestions for current search query stream
         @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -72,6 +86,12 @@ class HomeViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    fun retryFetchingSavedLocations() {
+        val isCurrentlyRetrying = isCurrentlyRetryingToFetchSavedLocation.value
+        if (isCurrentlyRetrying) return
+        isCurrentlyRetryingToFetchSavedLocation.update { true }
     }
 
     /**
@@ -98,22 +118,29 @@ class HomeViewModel @Inject constructor(
      * Used to fetch a list of [BriefWeatherDetails] for all the [savedLocations] efficiently
      * using the [currentWeatherDetailsCache]
      */
-    private suspend fun fetchCurrentWeatherDetailsWithCache(savedLocations: Set<SavedLocation>): List<BriefWeatherDetails> {
+    private suspend fun fetchCurrentWeatherDetailsWithCache(savedLocations: List<SavedLocation>): Result<List<BriefWeatherDetails>?> {
+        val savedLocationsSet = savedLocations.toSet()
         // remove locations in the cache that have been deleted by the user
-        val removedLocations = currentWeatherDetailsCache.keys subtract savedLocations
+        val removedLocations = currentWeatherDetailsCache.keys subtract savedLocationsSet
         for (removedLocation in removedLocations) {
             currentWeatherDetailsCache.remove(removedLocation)
         }
         // only fetch weather details of the items that are not in cache.
-        val locationsNotInCache = savedLocations subtract currentWeatherDetailsCache.keys
+        val locationsNotInCache = savedLocationsSet subtract currentWeatherDetailsCache.keys
         for (savedLocationNotInCache in locationsNotInCache) {
-            weatherRepository.fetchWeatherForLocation(
-                nameOfLocation = savedLocationNotInCache.nameOfLocation,
-                latitude = savedLocationNotInCache.coordinates.latitude,
-                longitude = savedLocationNotInCache.coordinates.longitude
-            ).getOrThrow().also { currentWeatherDetailsCache[savedLocationNotInCache] = it }
+            try {
+                weatherRepository.fetchWeatherForLocation(
+                    nameOfLocation = savedLocationNotInCache.nameOfLocation,
+                    latitude = savedLocationNotInCache.coordinates.latitude,
+                    longitude = savedLocationNotInCache.coordinates.longitude
+                ).getOrThrow().also { currentWeatherDetailsCache[savedLocationNotInCache] = it }
+            } catch (exception: Exception) {
+                if (exception is CancellationException) throw exception
+                return Result.failure(exception)
+            }
         }
-        return currentWeatherDetailsCache.values.toList().map { it.toBriefWeatherDetails() }
+        return Result.success(
+            currentWeatherDetailsCache.values.toList().map { it.toBriefWeatherDetails() })
     }
 
     fun fetchWeatherForCurrentUserLocation() {
