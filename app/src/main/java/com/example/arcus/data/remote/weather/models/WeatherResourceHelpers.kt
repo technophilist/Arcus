@@ -52,7 +52,7 @@ fun getWeatherImageForCode(weatherCode: Int, isDay: Boolean): Int {
 fun getWeatherIconResForCode(
     weatherCode: Int,
     isDay: Boolean
-): Int { // todo check if it works properly
+): Int {
     // day icons
     if (isDay) {
         return when (weatherCode) {
