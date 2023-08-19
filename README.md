@@ -60,6 +60,8 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 - All concrete implementations are prefixed by the term “Arcus”.
 - Uses multi-repository pattern.
 - MVVM architecture.
+- Each package is considered as an individual module / submodule. Most notably, the data "module" is ensured that it is considered as a separate module
+  and is ensured that it doesn't depend upon any other "modules" in the upper layers of the architecture.
 - Commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 - Consists of extensive unit tests with a predominant focus on testing the data layer.
 - All api methods that use the “get” procedure under the hood, have the word “get” as the prefix of the method name. All repository methods that fetch some data have the prefix “fetch” in the name of the method. This way, api specific terminologies like “get” and “post” are abstracted away from the clients of the repositories.
