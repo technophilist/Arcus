@@ -24,7 +24,7 @@ interface WeatherClient {
      * **MUST ALWAYS BE SET TO TRUE!**
      * @return A [Response] object containing the current weather information.
      */
-    @GET(WeatherClientConstants.EndPoints.GET_WEATHER_ENDPOINT)
+    @GET(WeatherClientConstants.EndPoints.FORECAST)
     suspend fun getWeatherForCoordinates(
         @Query("latitude") latitude: String,
         @Query("longitude") longitude: String,
@@ -46,7 +46,7 @@ interface WeatherClient {
      * @param hourlyForecastsToReturn The number of hourly forecasts to return.
      * @return A [Response] object containing the hourly forecast information.
      */
-    @GET(WeatherClientConstants.EndPoints.GET_WEATHER_ENDPOINT)
+    @GET(WeatherClientConstants.EndPoints.FORECAST)
     suspend fun getHourlyForecast(
         @Query("latitude") latitude: String,
         @Query("longitude") longitude: String,
@@ -74,7 +74,7 @@ interface WeatherClient {
      *
      * @return Response<AdditionalDailyForecastVariablesResponse>
      */
-    @GET(WeatherClientConstants.EndPoints.GET_WEATHER_ENDPOINT)
+    @GET(WeatherClientConstants.EndPoints.FORECAST)
     suspend fun getAdditionalDailyForecastVariables(
         @Query("latitude") latitude: String,
         @Query("longitude") longitude: String,
