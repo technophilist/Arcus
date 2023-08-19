@@ -135,5 +135,5 @@ private fun NavHostController.navigateToWeatherDetailScreen(
         latitude = latitude,
         longitude = longitude
     )
-    navigate(destination)
+    navigate(destination) { launchSingleTop = true }
 }
