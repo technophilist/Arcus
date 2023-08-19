@@ -18,7 +18,7 @@ data class CurrentWeatherDetails(
     @DrawableRes val iconResId: Int,
     @DrawableRes val imageResId: Int,
     val coordinates: Coordinates
-) // todo make this class use the coordinates domain class
+)
 
 /**
  * Used to convert an instance of [CurrentWeatherDetails] to an instance of [BriefWeatherDetails].
