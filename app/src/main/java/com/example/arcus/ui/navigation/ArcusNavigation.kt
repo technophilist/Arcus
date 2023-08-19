@@ -64,8 +64,6 @@ private fun NavGraphBuilder.homeScreen(
     onSavedLocationItemClick: (BriefWeatherDetails) -> Unit
 ) {
     composable(route = route) {
-        // todo : stopship add loading animation for when the current weather
-        // of the users location is loaded. Currently it's jarring.
         val viewModel = hiltViewModel<HomeViewModel>()
         val uiState by viewModel.uiState.collectAsState()
         val snackbarHostState = remember { SnackbarHostState() }
