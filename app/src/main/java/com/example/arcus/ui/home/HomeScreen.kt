@@ -232,7 +232,6 @@ private fun Header(
     isSearchBarActive: Boolean,
     onSearchQueryChange: (String) -> Unit,
     onSearchBarActiveChange: (Boolean) -> Unit,
-    onSearch: (String) -> Unit,
     searchBarSuggestionsContent: @Composable (ColumnScope.() -> Unit)
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
@@ -247,7 +246,9 @@ private fun Header(
                 ),
             query = currentSearchQuery,
             onQueryChange = onSearchQueryChange,
-            onSearch = onSearch,
+            onSearch = {
+                // no need for this callback because this app uses instant search
+            },
             active = isSearchBarActive,
             onActiveChange = onSearchBarActiveChange,
             leadingIcon = {
@@ -448,7 +449,6 @@ private fun LazyListScope.searchBarItem(
             isSearchBarActive = isSearchBarActive,
             onSearchQueryChange = onSearchQueryChange,
             onSearchBarActiveChange = onSearchBarActiveChange,
-            onSearch = {/* TODO: handle search */ },
             searchBarSuggestionsContent = {
                 if (errorLoadingSuggestions) errorSearchBarSuggestionsContent()
                 else searchBarSuggestionsContent()
