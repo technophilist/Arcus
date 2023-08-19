@@ -11,9 +11,10 @@ Arcus is a simple weather app built completely with Jetpack Compose. Under the h
 2. [Screenshots](#screenshots)
 3. [Tech Stack](#tech-stack)
 4. [Remote API's](#remote-apis)
-5. [Themed App Icon](#themed-app-icon)
-6. [Source code, Architecture, & Testing](#source-code-architecture--testing)
-7. [Building and running the app](#building-and-running-the-app)
+5. [Notable Features](#notable-features)
+6. [Themed App Icon](#themed-app-icon)
+7. [Source code, Architecture, & Testing](#source-code-architecture--testing)
+8. [Building and running the app](#building-and-running-the-app)
 ## Demo
 https://github.com/t3chkid/Arcus/assets/54663474/a7247543-afc8-4761-92b7-f8b002819380
 
@@ -55,6 +56,22 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 ## Remote API's
 - [Open-Meteo weather api](https://open-meteo.com) for fetching weather information.
 - [OpenAI API](https://openai.com/blog/openai-api) for generating a short, whimsical summary of the current weather of a particular location.
+
+## Notable Features
+
+<dl>
+  
+  <dt> Adaptive UI based on permissions 🪄</dt>
+  <dd> The main permission that this app needs is the location permission. The UI of the app adapts based on whether the location permission is granted or not. If it is granted, the weather for the user’s current location would be displayed directly in the Home Screen. If it is not, that portion of the UI would simply not be displayed, ensuring that the UX is not undermined even if the user chooses to not provide the location permission. </dd>
+    
+  <dt> Themed splash screen 🎨</dt>
+  <dd> In Android 12 and above, the background color of the splash screen matches the system theme. This minor detail, unique to this app, helps in improving the synergy of the app, with the rest of the system, from the moment the app is launched.  </dd>
+    
+  <dt> Error handling ⚠️ </dt>
+  <dd>When an error is encountered, the app ensures that it displays an appropriate error message and also provides a way to retry the operation that caused the error to occur.</dd>
+
+</dl>
+  
 
 ## Source code, Architecture, & Testing
 - All concrete implementations are prefixed by the term “Arcus”.
