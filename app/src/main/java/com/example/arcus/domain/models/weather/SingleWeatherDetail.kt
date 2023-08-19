@@ -51,11 +51,11 @@ private fun AdditionalDailyForecastVariablesResponse.AdditionalForecastedVariabl
         (minApparentTemperature.first().roundToInt() + maxApparentTemperature.first()
             .roundToInt()) / 2
     val sunriseTimeString = LocalDateTime.ofInstant(
-        Instant.ofEpochSecond(sunrise.first()), // todo: change type of property to long
+        Instant.ofEpochSecond(sunrise.first()),
         ZoneId.of(timezone)
     ).toLocalTime().format(timeFormat)
     val sunsetTimeString = LocalDateTime.ofInstant(
-        Instant.ofEpochSecond(sunset.first()), // todo: change type of property to long
+        Instant.ofEpochSecond(sunset.first()),
         ZoneId.of(timezone)
     ).format(timeFormat)
     // Since these single weather detail items are displayed in smaller cards, the default mac OS
