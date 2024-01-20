@@ -10,4 +10,9 @@ import com.squareup.moshi.JsonClass
 data class MessageDTO(
     val role: String,
     val content: String
-)
+) {
+    object Roles {
+        const val SYSTEM = "system"
+        const val USER = "user"
+    }
+}

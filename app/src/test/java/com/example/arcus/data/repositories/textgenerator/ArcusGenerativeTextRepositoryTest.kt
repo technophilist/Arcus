@@ -29,7 +29,7 @@ class ArcusGenerativeTextRepositoryTest {
         textGeneratorClientMock = mock {
             val fakeResponses = listOf(
                 GeneratedTextResponse.GeneratedResponse(
-                    message = MessageDTO(role = "", content = "")
+                    message = MessageDTO(role = Roles.USER", content = "")
                 )
             )
             val fakeGeneratedTextResponse = GeneratedTextResponse(
