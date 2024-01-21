@@ -1,6 +1,7 @@
 package com.example.arcus.di
 
 import com.example.arcus.BuildConfig
+import com.example.arcus.data.remote.languagemodel.GeminiTextGeneratorClient
 import com.example.arcus.data.remote.languagemodel.TextGeneratorClient
 import com.example.arcus.data.remote.languagemodel.TextGeneratorClientConstants
 import com.example.arcus.data.remote.location.LocationClient
@@ -14,7 +15,14 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Qualifier
+annotation class OpenAIClient
+
+@Qualifier
+annotation class GeminiClient
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -38,7 +46,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTextGeneratorClient(): TextGeneratorClient = Retrofit.Builder()
+    @OpenAIClient
+    fun provideOpenAITextGeneratorClient(): TextGeneratorClient = Retrofit.Builder()
         .client(
             OkHttpClient.Builder()
                 .addInterceptor { chain ->
@@ -54,4 +63,8 @@ object NetworkModule {
         .build()
         .create(TextGeneratorClient::class.java)
 
+    @Provides
+    @Singleton
+    @GeminiClient
+    fun provideGeminiTextGeneratorClient(): TextGeneratorClient = GeminiTextGeneratorClient()
 }

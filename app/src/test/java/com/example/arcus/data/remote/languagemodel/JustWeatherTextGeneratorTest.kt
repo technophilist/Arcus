@@ -6,14 +6,12 @@ import com.example.arcus.di.NetworkModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class JustWeatherTextGeneratorTest {
 
-    private val textGeneratorClient = NetworkModule.provideTextGeneratorClient()
+    private val textGeneratorClient = NetworkModule.provideOpenAITextGeneratorClient()
 
     @Test
     fun `Given a valid system & user prompt, the API must return a response with the generated text`() =
