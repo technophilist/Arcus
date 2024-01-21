@@ -4,7 +4,7 @@
     <a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." /></a>
 </p>
 
-Arcus is a simple weather app built completely with Jetpack Compose. Under the hood, it uses the [Open-Meteo Weather API](https://open-meteo.com) to fetch the data. It also uses the [OpenAI API](https://openai.com/blog/openai-api) to display a short whimsical summary of the current weather of a particular location. This app uses the Material 3 design system and also supports dynamic colors on supported devices. 
+Arcus is a simple weather app built completely with Jetpack Compose. Under the hood, it uses the [Open-Meteo Weather API](https://open-meteo.com) to fetch the data. It also uses either the [OpenAI API](https://openai.com/blog/openai-api) or [Google's Gemini client SDK](https://ai.google.dev) to display a short whimsical summary of the current weather of a particular location. This app uses the Material 3 design system and also supports dynamic colors on supported devices.  
 
 ## Table of contents
 1. [Demo](#demo)
@@ -55,7 +55,7 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 
 ## Remote API's
 - [Open-Meteo weather api](https://open-meteo.com) for fetching weather information.
-- [OpenAI API](https://openai.com/blog/openai-api) for generating a short, whimsical summary of the current weather of a particular location.
+- [Gemini](https://ai.google.dev) / [OpenAI API](https://openai.com/blog/openai-api) for generating a short, whimsical summary of the current weather of a particular location.
 
 ## Notable Features
 
@@ -84,9 +84,16 @@ The app also supports the "Themed Icons" feature available on Android 13 and lat
 - All api methods that use the “get” procedure under the hood, have the word “get” as the prefix of the method name. All repository methods that fetch some data have the prefix “fetch” in the name of the method. This way, api specific terminologies like “get” and “post” are abstracted away from the clients of the repositories.
 
 ## Building and running the app
-1. Create an [Open-AI developer account](https://openai.com/blog/openai-api) and generate an API token.
+1. The app can be made to either use [Gemini](https://ai.google.dev) or [Chat-GPT](https://openai.com/blog/introducing-chatgpt-and-whisper-apis)
+for it's contextual text generation features. To use either of the two, make sure to get the access / api key for the chosen LLM service,
+and paste it in the `local.properties` file as follows. 
 2. Add the API token to the `local.properties` file of your project in the following manner.
 ```properties
 OPEN_AI_API_TOKEN = PASTE-YOUR-TOKEN-HERE
+            or
+GOOGLE_GEMINI_API_KEY = PASTE-YOUR-TOKEN-HERE
 ```
+3. By default, the app uses Gemini for text generation. If you want to use Chat-GPT, then replace the '@GeminiClient'
+di qualifier with the `@OpenAiClient` qualifier in all places where an instance of `TextGeneratorClient` is
+injected.
 3. Build the project and run the app on an emulator or physical device.
