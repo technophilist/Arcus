@@ -6,13 +6,14 @@ import com.example.arcus.data.local.textgeneration.GeneratedTextForLocationEntit
 import com.example.arcus.data.remote.languagemodel.TextGeneratorClient
 import com.example.arcus.data.remote.languagemodel.models.MessageDTO
 import com.example.arcus.data.remote.languagemodel.models.TextGenerationPromptBody
+import com.example.arcus.di.GeminiClient
 import com.example.arcus.domain.models.weather.CurrentWeatherDetails
 import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 
 
 class ArcusGenerativeTextRepository @Inject constructor(
-    private val textGeneratorClient: TextGeneratorClient,
+    @GeminiClient private val textGeneratorClient: TextGeneratorClient,
     private val generatedTextCacheDatabaseDao: GeneratedTextCacheDatabaseDao,
 ) : GenerativeTextRepository {
 

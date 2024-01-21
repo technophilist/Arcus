@@ -33,6 +33,13 @@ android {
             name = "OPEN_AI_API_TOKEN",
             value = "\"$openAiApiToken\""
         )
+        // google-gemini api key
+        val geminiApiKey = properties.getProperty("GOOGLE_GEMINI_API_KEY")
+        buildConfigField(
+            type = "String",
+            name = "GOOGLE_GEMINI_API_KEY",
+            value = "\"$geminiApiKey\""
+        )
     }
 
     buildTypes {
@@ -148,4 +155,7 @@ dependencies {
 
     // mockito
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+
+    // sdk for google's gemini models
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
 }
